@@ -1,0 +1,21 @@
+﻿@using BookingTickets.Core.Entities
+@model List<Service>
+@foreach (var service in Model)
+{
+    <!--Services One Single Start-->
+    <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInLeft" data-wow-delay="100ms">
+        <div class="services-one__single">
+            <div class="services-one__icon">
+                <span class="@service.Icon"></span>
+            </div>
+            <h3 class="services-one__title"><a asp-action="detail" asp-route-id="@service.Id">@service.Title</a></h3>
+            <p class="services-one__text">
+                @service.Description
+            </p>
+            <a asp-action="detail" asp-controller="Service" asp-route-id="@service.Id" class="services-one__read-more">
+                @service.ButtonText <span class="icon-arrow-right"></span>
+            </a>
+        </div>
+    </div>
+    <!--Services One Single End-->
+}

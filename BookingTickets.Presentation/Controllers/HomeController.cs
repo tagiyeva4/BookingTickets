@@ -1,21 +1,29 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BookingTickets.Presentation.Models;
+using BookingTickets.DataAccess.Data;
+using BookingTickets.Presentation.ViewModels;
 
 namespace BookingTickets.Presentation.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly BookingTicketsDbContext _dbContext;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, BookingTicketsDbContext dbContext)
     {
         _logger = logger;
+        _dbContext = dbContext;
     }
 
     public IActionResult Index()
     {
-        return View();
+        HomeVm homeVm = new HomeVm();
+        homeVm.Sliders=_dbContext.Sliders.ToList();
+        homeVm.SlidingTexts=_dbContext.SlidingTexts.ToList();
+        homeVm.Brands=_dbContext.Brands.ToList();
+        return View(homeVm);
     }
 
     public IActionResult Privacy()
