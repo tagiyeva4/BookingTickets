@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BookingTickets.Core.Entities
 {
-    public class SlidingText : BaseEntity
+   public class SubscribeEmail:BaseEntity
     {
-        public string Text { get; set; }
+        public string Email { get; set; }
     }
 }

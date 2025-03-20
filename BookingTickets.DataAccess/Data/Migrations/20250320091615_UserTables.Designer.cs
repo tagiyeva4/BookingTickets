@@ -4,6 +4,7 @@ using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingTickets.DataAccess.Data.Migrations
 {
     [DbContext(typeof(BookingTicketsDbContext))]
-    partial class BookingTicketsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250320091615_UserTables")]
+    partial class UserTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,23 +91,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "cb6be47f-6125-40a6-a237-ba5642963f26",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4ef333d7-6f9c-46d5-a7af-ae81daa75607",
-                            EmailConfirmed = false,
-                            FullName = "Test testov",
-                            LockoutEnabled = false,
-                            NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEWtUGCbTP3qWuiszzW4oiUjJAE4ND+F7cWRXmiBciCBt2Hu8e4fGVuawK59GQIBNQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "cd1aa63a-96ce-4172-aaca-bd5902068690",
-                            TwoFactorEnabled = false,
-                            UserName = "_test"
-                        });
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Brands", b =>
@@ -217,23 +203,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.ToTable("SlidingTexts");
                 });
 
-            modelBuilder.Entity("BookingTickets.Core.Entities.SubscribeEmail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SubscribeEmails");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -259,32 +228,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1c6ec3f8-f2c1-479e-8912-117282f7e991",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "ea750971-f479-4aad-afb2-6133ecae1fdc",
-                            Name = "Member",
-                            NormalizedName = "MEMBER"
-                        },
-                        new
-                        {
-                            Id = "e75f72c5-f75a-4391-90b6-4107a3ad5a5b",
-                            Name = "EventOrganizer",
-                            NormalizedName = "EVENTORGANIZER"
-                        },
-                        new
-                        {
-                            Id = "d90120c6-2a12-4005-baeb-5f34ee816d9e",
-                            Name = "VipMember",
-                            NormalizedName = "VIPMEMBER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -372,13 +315,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "cb6be47f-6125-40a6-a237-ba5642963f26",
-                            RoleId = "ea750971-f479-4aad-afb2-6133ecae1fdc"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

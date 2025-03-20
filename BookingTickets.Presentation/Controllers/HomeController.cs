@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BookingTickets.Presentation.Models;
-using BookingTickets.DataAccess.Data;
 using BookingTickets.Presentation.ViewModels;
+using BookingTickets.DataAccess.Data.Contexts;
 
 namespace BookingTickets.Presentation.Controllers;
 

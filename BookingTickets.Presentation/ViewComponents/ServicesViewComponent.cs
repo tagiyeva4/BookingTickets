@@ -1,4 +1,4 @@
-﻿using BookingTickets.DataAccess.Data;
+﻿using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingTickets.Presentation.ViewComponents
