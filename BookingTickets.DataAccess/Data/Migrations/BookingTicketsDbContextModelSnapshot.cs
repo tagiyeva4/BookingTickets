@@ -92,19 +92,107 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cb6be47f-6125-40a6-a237-ba5642963f26",
+                            Id = "1f2463e2-ae9c-4b51-a72c-be0f399b1f65",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4ef333d7-6f9c-46d5-a7af-ae81daa75607",
+                            ConcurrencyStamp = "8a84c603-158c-4ed5-8742-ac742aec98ec",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEWtUGCbTP3qWuiszzW4oiUjJAE4ND+F7cWRXmiBciCBt2Hu8e4fGVuawK59GQIBNQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAKX8kHE2+twkjZ4OxpBaniT0MYnLVFHvs/l3mnqb7z3x2u5o35JY5ENZG5vWpvaxg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cd1aa63a-96ce-4172-aaca-bd5902068690",
+                            SecurityStamp = "ac71141c-94ba-4e91-95ff-9f8b9c4e4f05",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WriteOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.BlogComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CommentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("BlogsComment");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.BlogImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("BlogsImage");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Brands", b =>
@@ -263,25 +351,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1c6ec3f8-f2c1-479e-8912-117282f7e991",
+                            Id = "2c810b00-c6ba-4a84-b560-fb5f5a5a42a4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ea750971-f479-4aad-afb2-6133ecae1fdc",
+                            Id = "8d696b4a-6e5a-45f7-9ec0-b04e95b10fa5",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "e75f72c5-f75a-4391-90b6-4107a3ad5a5b",
+                            Id = "4ea1c19e-e96e-438d-a372-b7d9dd31ae0b",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "d90120c6-2a12-4005-baeb-5f34ee816d9e",
+                            Id = "e40b440b-c049-4d40-9650-23ddc1c5cdb8",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -376,8 +464,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "cb6be47f-6125-40a6-a237-ba5642963f26",
-                            RoleId = "ea750971-f479-4aad-afb2-6133ecae1fdc"
+                            UserId = "1f2463e2-ae9c-4b51-a72c-be0f399b1f65",
+                            RoleId = "8d696b4a-6e5a-45f7-9ec0-b04e95b10fa5"
                         });
                 });
 
@@ -398,6 +486,36 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.BlogComment", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingTickets.Core.Entities.Blog", "Blog")
+                        .WithMany("BlogComments")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Blog");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.BlogImage", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.Blog", "Blog")
+                        .WithMany("BlogImages")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -449,6 +567,13 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Blog", b =>
+                {
+                    b.Navigation("BlogComments");
+
+                    b.Navigation("BlogImages");
                 });
 #pragma warning restore 612, 618
         }

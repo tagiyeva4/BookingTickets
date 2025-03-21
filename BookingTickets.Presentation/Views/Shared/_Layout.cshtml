@@ -1,4 +1,5 @@
 ﻿@using BookingTickets.Business.Services
+@using BookingTickets.Business.Services.Implementations
 @inject LayoutServices layoutServices
 @{
     var settings = layoutServices.GetSettings();
@@ -51,10 +52,10 @@
 
 
 
-    <div class="preloader">
+@*     <div class="preloader">
         <div class="preloader__image"></div>
     </div>
-    <!-- /.preloader -->
+    <!-- /.preloader --> *@
     <!-- Start sidebar widget content -->
     <div class="xs-sidebar-group info-group info-sidebar">
         <div class="xs-overlay xs-bg-black"></div>

@@ -13,8 +13,12 @@ namespace BookingTickets.Presentation.Controllers
            List<Service> Services=dbContext.Services.ToList();
             return View(Services);
         }
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int? id)
         {
+            if(id == null)
+            {
+                return BadRequest();
+            }
             Service? service = dbContext.Services.FirstOrDefault(x => x.Id == id);
             if (service == null)
             {

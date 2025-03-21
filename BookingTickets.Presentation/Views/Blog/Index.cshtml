@@ -1,0 +1,48 @@
+﻿@model List<Blog> 
+<!--Blog Page Start-->
+<section class="blog-page">
+    <div class="container">
+        <div class="row">
+            @foreach(var blog in Model)
+            {
+                <!--Blog One Single Start-->
+                <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInLeft" data-wow-delay="100ms">
+                    <div class="blog-one__single">
+                        <div class="blog-one__img">
+                            <img src=@blog.BlogImages.FirstOrDefault(x=>x.Id==1) alt="">
+                            <div class="blog-one__hover">
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id">
+                                    <div class="blog-one__hover-icon-1">
+                                        <span class="blog-one__hover-icon-2"></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="blog-one__content">
+                            <ul class="blog-one__meta list-unstyled">
+                                <li>
+                                    <a><span class="icon-user"></span>By admin</a>
+                                </li>
+                                <li>
+                                    <a><span class="icon-calendar"></span>@blog.WriteOn.ToString("MMMM dd, yyyy")</a>
+                                </li>
+                            </ul>
+                            <h3 class="blog-one__title">
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id">
+                                    @Html.Raw(blog.Title)
+                                </a>
+                            </h3>
+                            <div class="blog-one__btn-box-two">
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id" class="blog-one__btn-2 thm-btn">
+                                    Read More<span class="icon-arrow-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Blog One Single End-->
+            }
+        </div>
+    </div>
+</section>
+<!--Blog Page End-->

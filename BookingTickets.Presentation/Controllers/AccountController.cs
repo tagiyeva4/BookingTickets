@@ -1,4 +1,4 @@
-﻿using BookingTickets.Business.Services;
+﻿using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.Core.ViewModels.UserSystemViewModels;
 using BookingTickets.DataAccess.Data.Contexts;
@@ -212,15 +212,24 @@ namespace BookingTickets.Presentation.Controllers
         public IActionResult GoogleLogin()
         {
             var redirectUrl = Url.Action("GoogleResponse", "Account");
-            var prosperities = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, redirectUrl);
-            return new ChallengeResult(GoogleDefaults.AuthenticationScheme, prosperities);
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, redirectUrl);
+            return new ChallengeResult(GoogleDefaults.AuthenticationScheme, properties);
         }
+
         public async Task<IActionResult> GoogleResponse()
         {
             var result = await _signInManager.GetExternalLoginInfoAsync();
+            if (result == null)
+            {
+                return RedirectToAction("Login", "Account"); // Əgər Google-dan məlumat gəlməyibsə, Login səhifəsinə yönləndir
+            }
 
             var email = result.Principal.FindFirstValue(ClaimTypes.Email);
-            if (email == null) return View();
+            if (email == null)
+            {
+                return View("Error"); // Email tapılmayıbsa, səhv səhifəsinə yönləndir
+            }
+
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
@@ -230,12 +239,20 @@ namespace BookingTickets.Presentation.Controllers
                     UserName = email,
                     FullName = result.Principal.FindFirstValue(ClaimTypes.Name)
                 };
-                await _userManager.CreateAsync(user);
+
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    return View("Error", createResult.Errors); // Əgər user yaratmaqda səhv olarsa, error səhifəsi göstər
+                }
+
                 await _userManager.AddToRoleAsync(user, "Member");
-                await _signInManager.SignInAsync(user, true);
             }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
             return RedirectToAction("Index", "Home");
         }
+
 
     }
 }

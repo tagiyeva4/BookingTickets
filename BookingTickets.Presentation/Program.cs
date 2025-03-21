@@ -1,8 +1,15 @@
-using BookingTickets.Business.Services;
+using BookingTickets.Business.AutoMappers;
+using BookingTickets.Business.Services.Abstractions;
+using BookingTickets.Business.Services.Abstractions.Generic;
+using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.DataAccess.Data.Contexts;
+using BookingTickets.DataAccess.Repositories.Abstractions;
+using BookingTickets.DataAccess.Repositories.Implementations;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var config=builder.Configuration;
@@ -10,14 +17,24 @@ builder.Services.AddDbContext<BookingTicketsDbContext>(options =>
 {
     options.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
 });
+//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(SliderAutoMapper));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<LayoutServices>();
 builder.Services.AddScoped<EmailService>();
-builder.Services.AddAuthentication()
- .AddGoogle(options =>
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<ISliderRepository, SliderRepository>();
+builder.Services.AddAuthentication(options =>
 {
-options.ClientId =config["Authentication:Google:ClientId"];
-options.ClientSecret = config["Authentication:Google:ClientSecret"];
-options.SaveTokens = true;
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie("Cookies")
+.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 });
 builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
 {
@@ -53,6 +70,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapControllerRoute(
+  name: "areas",
+  pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
+);
 
 app.MapControllerRoute(
     name: "default",

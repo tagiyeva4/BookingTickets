@@ -15,6 +15,9 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<SlidingText> SlidingTexts { get; set; }
         public DbSet<Brands> Brands { get; set; }
         public DbSet<SubscribeEmail> SubscribeEmails { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogImage> BlogsImage { get; set; }
+        public DbSet<BlogComment> BlogsComment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

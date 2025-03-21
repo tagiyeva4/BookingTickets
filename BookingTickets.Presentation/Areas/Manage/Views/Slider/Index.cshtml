@@ -1,0 +1,38 @@
+﻿@model List<SliderReturnDto>
+@{
+    int count = 0;
+}
+<div class="container">
+    <div class="row">
+        <a asp-action="Create" class="btn btn-outline-success">Create</a>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Count</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Setting</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var slider in Model)
+                {
+                    <tr>
+                        <td>@(++count)</td>
+                        <td>
+                            <img src=@slider.Image width="150" height="150" alt="sliderimage" />
+                        </td>
+                        <td>@Html.Raw(slider.Title)</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Update" asp-route-id="@slider.Id">Edit</a>
+                            <a class="btn btn-primary" asp-action="detail" asp-route-id="@slider.Id">Detail</a>
+                            <a class="btn btn-primary" asp-action="Delete" asp-route-id="@slider.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

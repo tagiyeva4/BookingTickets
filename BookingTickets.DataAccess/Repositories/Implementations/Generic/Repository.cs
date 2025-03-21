@@ -1,0 +1,65 @@
+﻿using BookingTickets.DataAccess.Data.Contexts;
+using BookingTickets.DataAccess.Repositories.Abstractions.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace BookingTickets.DataAccess.Repositories.Implementations.Generic
+{
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    {
+        private readonly BookingTicketsDbContext _dbContext;
+        private readonly DbSet<TEntity> Table;
+        public Repository(BookingTicketsDbContext dbContext)
+        {
+            _dbContext = dbContext;
+            Table=_dbContext.Set<TEntity>();
+        }
+        public async Task AddAsync(TEntity entity)
+        {
+            Table.Add(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task AddManyAsync(IEnumerable<TEntity> entities)
+        {
+            Table.AddRange(entities);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task DeleteAsync(TEntity entity)
+        {
+             Table.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task DeleteManyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            var entities = Find(predicate);
+             Table.RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.FirstOrDefault(predicate)!;
+        }
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Where(predicate);
+        }
+        public IQueryable<TEntity> GetAll()
+        {
+            return Table;
+        }
+        public async Task UpdateAsync(TEntity entity)
+        {
+             Table.Update(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return  Table.Any(predicate);
+        }
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return  Table.Count(predicate);
+        }
+        
+    }
+}

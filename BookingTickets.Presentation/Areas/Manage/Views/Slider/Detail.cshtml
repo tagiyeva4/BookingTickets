@@ -1,0 +1,15 @@
+﻿@model SliderReturnDto
+<div class="container px-4">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border bg-light">Event: @Model.FestName</div>
+            <div class="p-3 border bg-light">Title: @Model.Title</div>
+            <div class="p-3 border bg-light">Description: @Model.Description</div>
+            <div class="p-3 border bg-light">Btn Text: @Model.ButtonText</div>
+        </div>
+        <div class="col">
+            <a class="btn btn-outline-primary" asp-action="index">Go back</a>
+        </div>
+    </div>
+</div>
+

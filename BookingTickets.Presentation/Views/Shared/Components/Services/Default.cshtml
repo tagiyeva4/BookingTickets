@@ -8,7 +8,7 @@
             <div class="services-one__icon">
                 <span class="@service.Icon"></span>
             </div>
-            <h3 class="services-one__title"><a asp-action="detail" asp-route-id="@service.Id">@service.Title</a></h3>
+            <h3 class="services-one__title"><a asp-action="detail" asp-controller="Service" asp-route-id="@service.Id">@service.Title</a></h3>
             <p class="services-one__text">
                 @service.Description
             </p>
