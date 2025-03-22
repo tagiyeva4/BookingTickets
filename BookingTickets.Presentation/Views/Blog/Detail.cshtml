@@ -1,4 +1,8 @@
-﻿@model Blog
+﻿@using BookingTickets.Core.ViewModels
+@model BlogDetailVm
+@{
+    var count = ViewBag.Blogs;
+}
 
 <!--Blog Details Start-->
 <section class="blog-details">
@@ -7,15 +11,19 @@
             <div class="col-xl-8 col-lg-7">
                 <div class="blog-details__left">
                     <div class="blog-details__img-1">
-                        <img src=@Model.BlogImages.FirstOrDefault(x=>x.Id==1) alt="">
+                        <img src=@Model.Blog.BlogImages.FirstOrDefault(x => x.Id == 1) alt="">
                         <div class="blog-details__date">
-                            <p>@Model.WriteOn.ToString("MMMM dd, yyyy")</p>
+                            <p>
+                                @(Model.Blog.CreatedDate.HasValue
+                                ? Model.Blog.CreatedDate.Value.ToString("MMMM dd, yyyy")
+                                : "No date available")
+                            </p>
                         </div>
                     </div>
                     <div class="blog-details__content">
-                        <h3 class="blog-details__title-1">@Model.SubTitle</h3>
+                        <h3 class="blog-details__title-1">@Model.Blog.SubTitle</h3>
                         <p class="blog-details__text-1">
-                            @Model.Description
+                            @Model.Blog.Description
                         </p>
                         @* <p class="blog-details__text-2">
                             Real estate is a lucrative industry that involves the
@@ -38,7 +46,7 @@
                         </div>
                         <h3 class="blog-details__title-2">Your Event Our Expertise</h3>
                         <p class="blog-details__text-3">
-                            @Model.SecondDescription
+                            @Model.Blog.SecondDescription
                         </p>
                         <div class="blog-details__points-box">
                             <ul class="blog-details__points list-unstyled">
@@ -77,7 +85,7 @@
                         </p>
                         <div class="blog-details__img-box">
                             <div class="row">
-                                @foreach(var image in Model.BlogImages)
+                                @foreach(var image in Model.Blog.BlogImages)
                                 {
                                     <div class="col-xl-6">
                                         <div class="blog-details__img-box-img-1">
@@ -89,14 +97,14 @@
                         </div>
                         <div class="blog-details__prev-and-next">
                             <div class="blog-details__prev-box">
-                                <a href="#" class="blog-details__prev-arrow">
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@(Model.Blog.Id-1>6? (Model.Blog.Id-1):(Model.Blog.Id))" class="blog-details__prev-arrow">
                                     <span class="icon-arrow-left"></span>
                                 </a>
-                                <a href="#" class="blog-details__prev">Previous<br> post</a>
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@(Model.Blog.Id-1>6? (Model.Blog.Id-1):(Model.Blog.Id))" class="blog-details__prev">Previous<br> post</a>
                             </div>
                             <div class="blog-details__next-box">
-                                <a href="#" class="blog-details__next">Next<br> post</a>
-                                <a href="#" class="blog-details__next-arrow">
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@(Model.Blog.Id+1<=count? (Model.Blog.Id+1):(Model.Blog.Id))" class="blog-details__next">Next<br> post</a>
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@(Model.Blog.Id+1<=count? (Model.Blog.Id+1):(Model.Blog.Id))" class="blog-details__next-arrow">
                                     <span class="icon-arrow-right"></span>
                                 </a>
                             </div>
@@ -116,13 +124,13 @@
                             </div>
                         </div>
                         <div class="blog-details__comment-box">
-                            @if (Model.BlogComments.Count > 0)
+                            @if (Model.Blog.BlogComments.Count > 0)
                             {
-                                <h3 class="blog-details__comment-title">@Model.BlogComments.Count</h3>
-                                <p class="blog-details__comment-date">@Model.BlogComments.FirstOrDefault().DateTime.ToString("MMMM dd, yyyy")</p>
-                                <h4 class="blog-details__comment-client-name">@Model.BlogComments.FirstOrDefault().AppUser.FullName</h4>
+                                <h3 class="blog-details__comment-title">@Model.Blog.BlogComments.Count</h3>
+                                <p class="blog-details__comment-date">@Model.Blog.BlogComments.FirstOrDefault().DateTime.ToString("MMMM dd, yyyy")</p>
+                                <h4 class="blog-details__comment-client-name">@Model.Blog.BlogComments.FirstOrDefault().AppUser.FullName</h4>
                                 <p class="blog-details__comment-text">
-                                    @Model.BlogComments.FirstOrDefault().Message
+                                    @Model.Blog.BlogComments.FirstOrDefault().Message
                                 </p>
                                 <div class="blog-details__comment-btn-box">
                                     <a href="#" class="blog-details__comment-btn thm-btn">Reply</a>
@@ -134,38 +142,33 @@
                             }
                         </div>
                     </div>
-                    <div class="comment-one">
-                        <h3 class="comment-one__title">Leave a comment</h3>
-                        <p class="comment-one__text">
-                            Share your thoughts and join the discussion! Leave a comment below to engage with our community.
-                        </p>
-                        <form class="contact-form-validated comment-one__form" action="assets/inc/sendemail.php"
-                              method="post" novalidate="novalidate">
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="comment-one__input-box">
-                                        <input type="text" name="name" placeholder="Name" required="">
+                    @if (!Model.HasCommentUser)
+                    {
+                        <div class="comment-one">
+                            <h3 class="comment-one__title">Leave a comment</h3>
+                            <p class="comment-one__text">
+                                **Share your thoughts and join the discussion! Leave a comment below to engage with our community.**
+                            </p>
+                            <form class="contact-form-validated comment-one__form" asp-action="AddComment" asp-controller="Blog"
+                                  method="post"  novalidate="novalidate">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="comment-one__input-box text-message-box">
+                                            <input type="hidden" asp-for="@Model.BlogComment.BlogId" value="@Model.Blog.Id" />
+                                            <label asp-for="@Model.BlogComment.Message"></label>
+                                            <textarea asp-for="@Model.BlogComment.Message" placeholder="Message here.." class="form-control" required></textarea>
+                                        </div>
+                                        <div class="comment-one__btn-box">
+                                            <button type="submit" class="thm-btn comment-one__btn">
+                                                Sent Message<span class="icon-arrow-right"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-12">
-                                    <div class="comment-one__input-box">
-                                        <input type="email" name="email" placeholder="Email" required="">
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="comment-one__input-box text-message-box">
-                                        <textarea name="message" placeholder="Message here.."></textarea>
-                                    </div>
-                                    <div class="comment-one__btn-box">
-                                        <button type="submit" class="thm-btn comment-one__btn">
-                                            Sent Message<span class="icon-arrow-right"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="result"></div>
-                    </div>
+                            </form>
+                            <div class="result"></div>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="col-xl-4 col-lg-5">

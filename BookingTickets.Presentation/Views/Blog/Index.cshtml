@@ -24,7 +24,12 @@
                                     <a><span class="icon-user"></span>By admin</a>
                                 </li>
                                 <li>
-                                    <a><span class="icon-calendar"></span>@blog.WriteOn.ToString("MMMM dd, yyyy")</a>
+                                    <a>
+                                        <span class="icon-calendar"></span>
+                                        @(blog.CreatedDate.HasValue
+                                            ? blog.CreatedDate.Value.ToString("MMMM dd, yyyy")
+                                            : "No date available")
+                                        </a>
                                 </li>
                             </ul>
                             <h3 class="blog-one__title">

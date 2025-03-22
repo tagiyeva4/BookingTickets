@@ -67,9 +67,7 @@ namespace BookingTickets.Business.Services.Implementations
 
        public async Task<List<SliderReturnDto>> GetAllAsync()
         {
-            var query=_repository.GetAll();
-
-            var sliders=await query.ToListAsync();
+            var sliders = _repository.GetAllAsync();
 
             var dtos=_mapper.Map<List<SliderReturnDto>>(sliders);
 

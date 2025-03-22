@@ -18,8 +18,8 @@ namespace BookingTickets.Business.Services.Abstractions.Generic
         Task<bool> CreateAsync(TCreateDto dto, ModelStateDictionary ModelState);
         Task<bool> UpdateAsync(TUpdateDto dto, ModelStateDictionary ModelState);
         Task<TUpdateDto> GetUpdatedDtoAsync(int id);
-        Task<List<SliderReturnDto>> GetAllAsync();
-        Task<SliderReturnDto> GetAsync(int id);
+        Task<List<TReturnDto>> GetAllAsync();
+        Task<TReturnDto> GetAsync(int id);
         Task DeleteAsync(int id);
     }
 }

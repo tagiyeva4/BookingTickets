@@ -19,12 +19,16 @@ builder.Services.AddDbContext<BookingTicketsDbContext>(options =>
 });
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(SliderAutoMapper));
+builder.Services.AddAutoMapper(typeof(BlogAutoMapper));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<LayoutServices>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<ISliderRepository, SliderRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
