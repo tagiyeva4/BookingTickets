@@ -1,33 +1,18 @@
-using BookingTickets.Business.AutoMappers;
-using BookingTickets.Business.Services.Abstractions;
-using BookingTickets.Business.Services.Abstractions.Generic;
-using BookingTickets.Business.Services.Implementations;
+using BookingTickets.Business.ServiceRegistration;
 using BookingTickets.Core.Entities;
 using BookingTickets.DataAccess.Data.Contexts;
-using BookingTickets.DataAccess.Repositories.Abstractions;
-using BookingTickets.DataAccess.Repositories.Implementations;
+using BookingTickets.DataAccess.ServiceRegistration;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-var config=builder.Configuration;
-builder.Services.AddDbContext<BookingTicketsDbContext>(options =>
-{
-    options.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
-});
+var config = builder.Configuration;
+
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddAutoMapper(typeof(SliderAutoMapper));
-builder.Services.AddAutoMapper(typeof(BlogAutoMapper));
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ISliderService, SliderService>();
-builder.Services.AddScoped<IBlogService, BlogService>();
-builder.Services.AddScoped<LayoutServices>();
-builder.Services.AddScoped<EmailService>();
-builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
-builder.Services.AddScoped<ISliderRepository, SliderRepository>();
-builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddBusinessServices();  
+builder.Services.AddDataAccessServices(config);
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -52,7 +37,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
     opt.Lockout.MaxFailedAccessAttempts = 3;
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
     opt.Lockout.AllowedForNewUsers = true;
-}).AddEntityFrameworkStores<BookingTicketsDbContext>().AddDefaultTokenProviders();
+})
+.AddEntityFrameworkStores<BookingTicketsDbContext>()
+.AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

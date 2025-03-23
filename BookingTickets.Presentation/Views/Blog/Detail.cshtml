@@ -15,8 +15,8 @@
                         <div class="blog-details__date">
                             <p>
                                 @(Model.Blog.CreatedDate.HasValue
-                                ? Model.Blog.CreatedDate.Value.ToString("MMMM dd, yyyy")
-                                : "No date available")
+                                        ? Model.Blog.CreatedDate.Value.ToString("MMMM dd, yyyy")
+                                        : "No date available")
                             </p>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                                 **Share your thoughts and join the discussion! Leave a comment below to engage with our community.**
                             </p>
                             <form class="contact-form-validated comment-one__form" asp-action="AddComment" asp-controller="Blog"
-                                  method="post"  novalidate="novalidate">
+                            method="post"  novalidate="novalidate">
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="comment-one__input-box text-message-box">
@@ -181,38 +181,24 @@
                         </form>
                     </div>
                     <div class="sidebar__single sidebar__all-category">
-                        <h3 class="sidebar__title">Catagory</h3>
+                        <h3 class="sidebar__title">Category</h3>
                         <ul class="sidebar__all-category-list list-unstyled">
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Event Prodigy
-                                    <span>(02)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Stellar Events
-                                    Co<span>(04)</span>
-                                </a>
-                            </li>
-                            <li class="active">
+
+                            @foreach(var category in Model.Categories)
+                            {
+                                <li>
+                                    <a href="blog-details.html">
+                                        <i class="icon-double-angle"></i>@category.Name<span>(03)</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @*  <li class="active">
                                 <a href="blog-details.html">
                                     <i class="icon-double-angle"></i>Elite Event
                                     Management<span>(01)</span>
                                 </a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Infinite
-                                    Occasions<span>(06)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Dream Event
-                                    Planners<span>(03)</span>
-                                </a>
-                            </li>
+                            </li> *@
                         </ul>
                     </div>
                     <div class="sidebar__single sidebar__post">
@@ -263,11 +249,10 @@
                         <h3 class="sidebar__title">Tags</h3>
                         <div class="sidebar__tags-list">
                             <a href="#">All Project</a>
-                            <a href="#">Prodigy</a>
-                            <a href="#">Stellar Events</a>
-                            <a href="#">Occasions</a>
-                            <a href="#">Spectacular</a>
-                            <a href="#">Moments</a>
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <a href="#">@tag.Name</a>
+                            }
                         </div>
                     </div>
                 </div>

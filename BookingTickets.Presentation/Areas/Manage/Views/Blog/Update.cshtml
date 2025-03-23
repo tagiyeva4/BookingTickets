@@ -1,0 +1,38 @@
+﻿@model BlogUpdateDto
+<div class="container">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Title"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubTitle"></label>
+                <input asp-for="SubTitle" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="SubTitle"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondDescription"></label>
+                <input asp-for="SecondDescription" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="SecondDescription"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photos"></label>
+                <input asp-for="Photos" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Photos"></span>
+                <input asp-for="BlogImages" type="hidden" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+@section scripts {
+    @await Html.PartialAsync("_ValidationPartial")
+}
+

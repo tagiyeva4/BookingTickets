@@ -1,29 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace BookingTickets.Core.Attributes
+namespace BookingTickets.Core.Attributes;
+
+public class AllowedTypeAttribute:ValidationAttribute
 {
-   public class AllowedTypeAttribute:ValidationAttribute
+    private string[] _allowedtypes;
+    public AllowedTypeAttribute(params string[] types)
     {
-        private string[] _allowedtypes;
-        public AllowedTypeAttribute(params string[] types)
+        _allowedtypes = types;
+    }
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    {
+        List<IFormFile> files = new List<IFormFile>();
+        if (value is List<IFormFile> fileList) files = fileList;
+        if (value is IFormFile file) files.Add(file);
+        foreach (var item in files)
         {
-            _allowedtypes = types;
-        }
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            List<IFormFile> files = new List<IFormFile>();
-            if (value is List<IFormFile> fileList) files = fileList;
-            if (value is IFormFile file) files.Add(file);
-            foreach (var item in files)
+            if (!_allowedtypes.Contains(item.ContentType))
             {
-                if (!_allowedtypes.Contains(item.ContentType))
-                {
-                    string message = "File Content Type Is Invalid... ";
-                    return new ValidationResult(message);
-                }
+                string message = "File Content Type Is Invalid... ";
+                return new ValidationResult(message);
             }
-            return ValidationResult.Success;
         }
+        return ValidationResult.Success;
     }
 }

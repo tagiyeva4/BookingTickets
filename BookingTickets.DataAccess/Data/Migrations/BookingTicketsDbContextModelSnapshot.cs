@@ -92,16 +92,16 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1f05bbd4-4c65-4448-913a-b64b82791a9f",
+                            Id = "ce5a9007-de25-4f73-9911-56f704a0ac40",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9144152a-1419-42c2-b1cc-1ac3ed578848",
+                            ConcurrencyStamp = "d7a72649-7c06-479e-848c-0a1aeeec241d",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHMscrnvnk4MRIKzcwYSpFFjYVUTgWuYX4K6PJrDKJekna4WdQZ2ASDxbVppd2rxqQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMBO/dRKrQMIsw1zTWKlhsmPu+mlbWPO0xcTyIuoyTbem5SuWZCuUm03yqhPiiU0nw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "66e27037-8448-4b92-ba5e-e3d5461f1299",
+                            SecurityStamp = "82a8a9e3-2a8b-431e-a83b-ab7d158d3363",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
@@ -221,6 +221,23 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("BookingTickets.Core.Entities.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -331,6 +348,23 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.ToTable("SubscribeEmails");
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -360,25 +394,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8cf3b860-66d3-4bff-9645-414d9d6a7a5e",
+                            Id = "d6f88d06-eea4-4c52-a3f8-ad6b80fd164d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "fbe0ae21-0794-4616-adf6-e5e421400809",
+                            Id = "57e116e4-0d33-4330-b1e0-a0742039140b",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "3cc2a692-3a91-4b3a-956c-25b328d5f619",
+                            Id = "b13d9921-7df4-4352-82a6-0c1dd0850d4d",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "e5e8fe35-2982-4f05-9c2c-d68c2a953ec9",
+                            Id = "58e34d72-822d-4619-9a36-2e74993222a6",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -473,8 +507,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "1f05bbd4-4c65-4448-913a-b64b82791a9f",
-                            RoleId = "fbe0ae21-0794-4616-adf6-e5e421400809"
+                            UserId = "ce5a9007-de25-4f73-9911-56f704a0ac40",
+                            RoleId = "57e116e4-0d33-4330-b1e0-a0742039140b"
                         });
                 });
 

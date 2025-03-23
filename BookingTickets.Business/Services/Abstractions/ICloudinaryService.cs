@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BookingTickets.Business.Services.Abstractions
+namespace BookingTickets.Business.Services.Abstractions;
+
+public interface ICloudinaryService
 {
-   public interface ICloudinaryService
-    {
-        Task<string> FileCreateAsync(IFormFile file);
-        Task<bool> FileDeleteAsync(string filePath);
-    }
+    Task<string> FileCreateAsync(IFormFile file);
+    Task<bool> FileDeleteAsync(string filePath);
 }

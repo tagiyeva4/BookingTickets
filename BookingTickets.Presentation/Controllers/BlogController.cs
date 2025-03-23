@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace BookingTickets.Presentation.Controllers
 {
@@ -28,6 +27,8 @@ namespace BookingTickets.Presentation.Controllers
             {
                 Blog = existBlog,
                 HasCommentUser = _dbContext.BlogsComment.Any(x => x.BlogId == blogId && x.CommentStatus == CommentStatus.Accepted),
+                Categories = _dbContext.Categories.ToList(),
+                Tags = _dbContext.Tags.ToList(),
             };
             blogDetailVm.TotalCommentsCount = existBlog.BlogComments.Count(x => x.Id != existBlog.Id);
             return blogDetailVm;
@@ -43,6 +44,8 @@ namespace BookingTickets.Presentation.Controllers
             {
                 Blog = existBlog,
                 HasCommentUser = _dbContext.BlogsComment.Any(x => x.BlogId == blogId && x.CommentStatus == CommentStatus.Accepted),
+                Categories=_dbContext.Categories.ToList(),
+                Tags=_dbContext.Tags.ToList(),
             };
             blogDetailVm.TotalCommentsCount = existBlog.BlogComments.Count(x => x.Id != existBlog.Id);
             return blogDetailVm;

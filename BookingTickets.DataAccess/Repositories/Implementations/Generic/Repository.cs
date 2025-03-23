@@ -1,87 +1,102 @@
 ﻿using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.DataAccess.Repositories.Abstractions.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace BookingTickets.DataAccess.Repositories.Implementations.Generic
+namespace BookingTickets.DataAccess.Repositories.Implementations.Generic;
+
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    private readonly BookingTicketsDbContext _dbContext;
+    private readonly DbSet<TEntity> Table;
+    public Repository(BookingTicketsDbContext dbContext)
     {
-        private readonly BookingTicketsDbContext _dbContext;
-        private readonly DbSet<TEntity> Table;
-        public Repository(BookingTicketsDbContext dbContext)
+        _dbContext = dbContext;
+        Table=_dbContext.Set<TEntity>();
+    }
+
+    public async Task AddAsync(TEntity entity)
+    {
+        Table.Add(entity);
+        await _dbContext.SaveChangesAsync();
+
+    }
+
+    public async Task AddManyAsync(IEnumerable<TEntity> entities)
+    {
+        Table.AddRange(entities);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return Table.Any(predicate);
+    }
+
+    public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return Table.Count(predicate);
+
+    }
+
+    public async Task DeleteAsync(TEntity entity)
+    {
+        Table.Remove(entity);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteManyAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var entities = Find(predicate);
+        Table.RemoveRange(entities);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+    {
+        return Table.Where(predicate);
+    }
+
+    public async Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+    {
+        var query = Table.AsQueryable();
+
+        foreach (var include in includes)
         {
-            _dbContext = dbContext;
-            Table=_dbContext.Set<TEntity>();
+            query = query.Include(include);
         }
 
-        public async Task AddAsync(TEntity entity)
+        var result = await query.FirstOrDefaultAsync(predicate);
+
+        return result;
+
+    }
+
+    public async Task<List<TEntity>> GetAllAsync(params string[] includes)
+    {
+        var query =Table.AsQueryable();
+        foreach (var include in includes)
         {
-            Table.Add(entity);
-            await _dbContext.SaveChangesAsync();
-
+            query = query.Include(include);  //Select*from Books b join Author a on b.AuthorId=a.Id  join Sales s  on b.SalesId=s.Id  join Customer c s.CustomerId=c.Id 
         }
+        var result = await query.ToListAsync(); //List<Book> books
 
-        public async Task AddManyAsync(IEnumerable<TEntity> entities)
-        {
-            Table.AddRange(entities);
-            await _dbContext.SaveChangesAsync();
-        }
+        return result;
 
-        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Table.Any(predicate);
-        }
+    }
 
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Table.Count(predicate);
+    public async Task UpdateAsync(TEntity entity)
+    {
+        Table.Update(entity);
+        await _dbContext.SaveChangesAsync();
+    }
 
-        }
+    public async Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var query = Table.AsQueryable();
 
-        public async Task DeleteAsync(TEntity entity)
-        {
-            Table.Remove(entity);
-            await _dbContext.SaveChangesAsync();
-        }
+        var result = await query.AnyAsync(predicate);
 
-        public async Task DeleteManyAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            var entities = Find(predicate);
-            Table.RemoveRange(entities);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Table.Where(predicate);
-        }
-
-        public async Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
-        {
-            return Table.FirstOrDefault(predicate)!;
-
-        }
-
-        public async Task<List<TEntity>> GetAllAsync(params string[] includes)
-        {
-            var query =Table.AsQueryable();
-            foreach (var include in includes)
-            {
-                query = query.Include(include);  //Select*from Books b join Author a on b.AuthorId=a.Id  join Sales s  on b.SalesId=s.Id  join Customer c s.CustomerId=c.Id 
-            }
-            var result = await query.ToListAsync(); //List<Book> books
-
-            return result;
-
-        }
-
-        public async Task UpdateAsync(TEntity entity)
-        {
-            Table.Update(entity);
-            await _dbContext.SaveChangesAsync();
-        }
+        return result;
     }
 }

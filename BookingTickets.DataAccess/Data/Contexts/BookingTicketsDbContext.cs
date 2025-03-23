@@ -1,4 +1,4 @@
-﻿using BookingTickets.Core.Entities;
+﻿using BookingTickets.Core.Entities.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,35 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogImage> BlogsImage { get; set; }
         public DbSet<BlogComment> BlogsComment { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<BaseAuditableEntity>();
+            foreach (var entire in entries)
+            {
+                if (entire.State == EntityState.Added)
+                {
+                    entire.Property(p => p.CreatedDate).CurrentValue = DateTime.Now;
+                }
+                if (entire.State == EntityState.Modified)
+                {
+                    entire.Property(p => p.UpdatedDate).CurrentValue = DateTime.Now;
+                }
+                if (entire.Property(p => p.IsDeleted).CurrentValue == true)
+                {
+                    entire.Property(p => p.DeletedDate).CurrentValue = DateTime.Now;
+                }
+                if (entire.State == EntityState.Deleted)
+                {
+                    entire.Property(p => p.DeletedDate).CurrentValue = DateTime.Now;
+                    entire.Property(p => p.IsDeleted).CurrentValue = true;
+                    entire.State = EntityState.Modified;
+                }
+            }
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
