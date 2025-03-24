@@ -92,16 +92,16 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ce5a9007-de25-4f73-9911-56f704a0ac40",
+                            Id = "6e07e1bb-3882-485d-841c-7459862a5d77",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d7a72649-7c06-479e-848c-0a1aeeec241d",
+                            ConcurrencyStamp = "6e6fefd1-3c5c-4e53-8684-c4754566ef5c",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMBO/dRKrQMIsw1zTWKlhsmPu+mlbWPO0xcTyIuoyTbem5SuWZCuUm03yqhPiiU0nw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPlPbzxiPgiJEb/l2ZNVwsMxLkddnV/6v+Qw2wR8R4W8RJtmXI6I9RDVVgRrqN2wVg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "82a8a9e3-2a8b-431e-a83b-ab7d158d3363",
+                            SecurityStamp = "782eaa75-e0f5-4a05-a560-9554090a8228",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
@@ -238,6 +238,104 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AgeRestriction")
+                        .HasColumnType("int");
+
+                    b.PrimitiveCollection<string>("Dates")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VenueId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VenueId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "az",
+                            Name = "Azərbaycan"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "tr",
+                            Name = "Türkçe"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "en",
+                            Name = "English"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "fr",
+                            Name = "Français"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Code = "de",
+                            Name = "Deutsch"
+                        });
+                });
+
             modelBuilder.Entity("BookingTickets.Core.Entities.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -365,6 +463,30 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.Venue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Venues");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -394,25 +516,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d6f88d06-eea4-4c52-a3f8-ad6b80fd164d",
+                            Id = "43df6d7d-5649-456c-ba8c-7b0b91b727e7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "57e116e4-0d33-4330-b1e0-a0742039140b",
+                            Id = "3cd7eb47-2781-4873-b00e-3349dc7e5c1f",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "b13d9921-7df4-4352-82a6-0c1dd0850d4d",
+                            Id = "db651470-6fe2-481c-b061-3d0a46143210",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "58e34d72-822d-4619-9a36-2e74993222a6",
+                            Id = "48e5847d-1459-4e09-90f6-bd28b3c593af",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -507,8 +629,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "ce5a9007-de25-4f73-9911-56f704a0ac40",
-                            RoleId = "57e116e4-0d33-4330-b1e0-a0742039140b"
+                            UserId = "6e07e1bb-3882-485d-841c-7459862a5d77",
+                            RoleId = "3cd7eb47-2781-4873-b00e-3349dc7e5c1f"
                         });
                 });
 
@@ -559,6 +681,24 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Blog");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Event", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.Venue", "Venue")
+                        .WithMany()
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Venue");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Language", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.Event", null)
+                        .WithMany("EventLanguages")
+                        .HasForeignKey("EventId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -617,6 +757,11 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.Navigation("BlogComments");
 
                     b.Navigation("BlogImages");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Event", b =>
+                {
+                    b.Navigation("EventLanguages");
                 });
 #pragma warning restore 612, 618
         }

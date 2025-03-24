@@ -1,5 +1,4 @@
-﻿using BookingTickets.Core.Entities;
-using BookingTickets.DataAccess.Data.Contexts;
+﻿using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.DataAccess.Repositories.Abstractions;
 using BookingTickets.DataAccess.Repositories.Implementations.Generic;
 

@@ -1,6 +1,4 @@
-﻿using BookingTickets.Core.Entities.Common;
-
-namespace BookingTickets.Core.Entities;
+﻿namespace BookingTickets.Core.Entities;
 
 public class Brands:BaseEntity
 {

@@ -9,7 +9,7 @@ namespace BookingTickets.DataAccess.Data.Contexts
     public class BookingTicketsDbContext : IdentityDbContext<AppUser>
     {
         public BookingTicketsDbContext(DbContextOptions options) : base(options) { }
-        public DbSet<Service>Services { get; set; }
+        public DbSet<Service> Services { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<SlidingText> SlidingTexts { get; set; }
@@ -20,6 +20,9 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<BlogComment> BlogsComment { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Venue> Venues { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
@@ -108,15 +111,23 @@ namespace BookingTickets.DataAccess.Data.Contexts
                     UserId = userId
                 }
             );
+
+            modelBuilder.Entity<Language>().HasData(
+            new Language { Id = 1, Name = "Azərbaycan", Code = "az" },
+            new Language { Id = 2, Name = "Türkçe", Code = "tr" },
+            new Language { Id = 3, Name = "English", Code = "en" },
+            new Language { Id = 4, Name = "Français", Code = "fr" },
+            new Language { Id = 5, Name = "Deutsch", Code = "de" }
+            );
             #endregion
-            
+
         }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(warnings =>
-                warnings.Ignore(RelationalEventId.PendingModelChangesWarning) 
+                warnings.Ignore(RelationalEventId.PendingModelChangesWarning)
             );
         }
 

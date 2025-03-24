@@ -1,0 +1,14 @@
+﻿@model VenueReturnDto
+<div class="container px-4">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border bg-light">Name: @Model.Name</div>
+            <div class="p-3 border bg-light">Address: @Model.Address</div>
+            <div class="p-3 border bg-light">Capacity: @Model.Capacity</div>
+        </div>
+        <div class="col">
+            <a class="btn btn-outline-primary" asp-action="index">Go back</a>
+        </div>
+    </div>
+</div>
+

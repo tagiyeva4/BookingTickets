@@ -1,5 +1,4 @@
-﻿using BookingTickets.Core.Entities.Common;
-using BookingTickets.Core.Enums;
+﻿using BookingTickets.Core.Enums;
 
 namespace BookingTickets.Core.Entities;
 

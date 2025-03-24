@@ -24,6 +24,8 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IBlogRepository, BlogRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IVenueRepository, VenueRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
     }
     //private static void _addIdentity(IServiceCollection services)
     //{

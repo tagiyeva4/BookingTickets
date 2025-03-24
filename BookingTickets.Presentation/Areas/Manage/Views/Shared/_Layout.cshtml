@@ -35,11 +35,11 @@
                             <span class="hide-menu">Home</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Sale" aria-expanded="false">
+                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Venue" aria-expanded="false">
                                 <span>
-                                    <i class="fa-brands fa-adversal"></i>
+                                    <i class="fa-solid fa-location-dot"></i>
                                 </span>
-                                <span>Sale</span>
+                                <span>Venue</span>
                             </a>
                             <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Dashboard" aria-expanded="false">
                                 <span>
@@ -214,7 +214,7 @@
                                             <i class="ti ti-list-check fs-6"></i>
                                             <p class="mb-0 fs-3">My Task</p>
                                         </a>
-                                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <a asp-area="manage" asp-action="LogOut" asp-controller="Account" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                     </div>
                                 </div>
                             </li>

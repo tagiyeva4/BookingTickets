@@ -1,0 +1,1 @@
+﻿global using BookingTickets.Core.Entities.Common;

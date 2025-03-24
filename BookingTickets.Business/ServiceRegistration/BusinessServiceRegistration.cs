@@ -14,6 +14,8 @@ public static class BusinessServiceRegistration
         services.AddAutoMapper(typeof(BlogAutoMapper));
         services.AddAutoMapper(typeof(TagAutoMapper));
         services.AddAutoMapper(typeof(CategoryAutoMapper));
+        services.AddAutoMapper(typeof(VenueAutoMapper));
+        services.AddAutoMapper(typeof(EventAutoMapper));
         AddServices(services);
         return services; 
     }
@@ -23,6 +25,8 @@ public static class BusinessServiceRegistration
         services.AddScoped<IBlogService, BlogService>();
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IVenueService, VenueService>();
+        services.AddScoped<IEventService, EventService>();
         services.AddScoped<LayoutServices>();
         services.AddScoped<EmailService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();

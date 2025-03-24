@@ -1,5 +1,6 @@
 ﻿using BookingTickets.Business.Dtos.CategoryDtos;
 using BookingTickets.Business.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers;
