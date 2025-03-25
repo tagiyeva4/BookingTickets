@@ -4,6 +4,7 @@ using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingTickets.DataAccess.Data.Migrations
 {
     [DbContext(typeof(BookingTicketsDbContext))]
-    partial class BookingTicketsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325081320_EventImageTable")]
+    partial class EventImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,16 +95,16 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4ced5150-4db6-4eb2-b627-f05a1c2d4841",
+                            Id = "444ea813-b3cc-4d7a-8795-2eed5c3a105d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ff22c1e-5469-4406-8414-d4eddc1e5e7c",
+                            ConcurrencyStamp = "8397cb6a-54e4-4d6f-8aab-8a5244528ced",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAECchsmnwtueY083T0kx6E7B7U28LQRJ09EYliMldjG0IvT3wQv1ckMBDgYKuT+yugQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJez5c3rUC9CMFVfdjFtJyjy6MXXB7XzClwrcKfLDHrGcV6Ko9hOcB5drIML/bwetQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2d265279-0391-4d46-81eb-cd963a60d016",
+                            SecurityStamp = "2580091e-d0de-4ed3-b8b2-040d1958003d",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
@@ -300,29 +303,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.ToTable("EventsImage");
                 });
 
-            modelBuilder.Entity("BookingTickets.Core.Entities.EventLanguage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("EventLanguage");
-                });
-
             modelBuilder.Entity("BookingTickets.Core.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -335,11 +315,16 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.ToTable("Languages");
 
@@ -556,25 +541,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8d492ffd-57f0-4863-8591-6762d690bf12",
+                            Id = "27daca8f-7710-4e1c-bd8d-738467eb141d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b4470974-0e2b-4773-9136-3ed2808e08f6",
+                            Id = "6a257e26-db6b-47d2-a526-28101808392c",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "ea458758-49d7-45fb-bde7-2e951a1c53b4",
+                            Id = "e4594b1c-3952-4dd8-8f30-024a8192b0d2",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "3f4ec701-3402-4de1-96b1-11756b07158c",
+                            Id = "8a727a7e-f658-48c1-90ad-19de6a6db18a",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -669,8 +654,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "4ced5150-4db6-4eb2-b627-f05a1c2d4841",
-                            RoleId = "b4470974-0e2b-4773-9136-3ed2808e08f6"
+                            UserId = "444ea813-b3cc-4d7a-8795-2eed5c3a105d",
+                            RoleId = "6a257e26-db6b-47d2-a526-28101808392c"
                         });
                 });
 
@@ -745,23 +730,11 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("BookingTickets.Core.Entities.EventLanguage", b =>
+            modelBuilder.Entity("BookingTickets.Core.Entities.Language", b =>
                 {
-                    b.HasOne("BookingTickets.Core.Entities.Event", "Event")
+                    b.HasOne("BookingTickets.Core.Entities.Event", null)
                         .WithMany("EventLanguages")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookingTickets.Core.Entities.Language", "Language")
-                        .WithMany("EventLanguages")
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Language");
+                        .HasForeignKey("EventId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -826,11 +799,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                 {
                     b.Navigation("EventImages");
 
-                    b.Navigation("EventLanguages");
-                });
-
-            modelBuilder.Entity("BookingTickets.Core.Entities.Language", b =>
-                {
                     b.Navigation("EventLanguages");
                 });
 #pragma warning restore 612, 618

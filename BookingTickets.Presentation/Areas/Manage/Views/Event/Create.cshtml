@@ -1,0 +1,66 @@
+﻿@model EventCreateDto
+@{
+    var languages = ViewBag.Languages;
+    var venues = ViewBag.Venues;
+}
+<div class="container">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" placeholder="Event" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dates"></label>
+                <input asp-for="Dates" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Dates"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgeRestriction"></label>
+                <input asp-for="AgeRestriction" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="AgeRestriction"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+            </div>
+            <div class="form-group">
+                <span>Select Venue Name</span>
+                <select class="form-select" asp-for="VenueId">
+                    <option disabled>Select Venue Name</option>
+                    @foreach (var venue in venues)
+                    {
+                        <option value="@venue.Id">@venue.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <span>Select Languages</span>
+                <select class="form-select" asp-for="EventLanguageIds">
+                    <option disabled>Select Languages</option>
+                    @foreach (var language in languages)
+                    {
+                        <option value="@language.Id">@language.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photos"></label>
+                <input asp-for="Photos" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Photos"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+@section scripts {
+    @await Html.PartialAsync("_ValidationPartial")
+}
+

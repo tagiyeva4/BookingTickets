@@ -1,4 +1,6 @@
-﻿namespace BookingTickets.Business.Dtos.EventDtos;
+﻿using BookingTickets.Core.Entities;
+
+namespace BookingTickets.Business.Dtos.EventDtos;
 
 public class EventReturnDto:IDto
 {
@@ -10,15 +12,16 @@ public class EventReturnDto:IDto
     public string PhoneNumber { get; set; } = null!;
     public List<LanguageDtoInEvent> EventLanguages { get; set; } = [];
     public bool IsAccess { get; set; }
-    public VenueDtoInEvent Venue { get; set; } = null!;
+    public Venue Venue { get; set; } = null!;
+    public List<string> EventImages { get; set; } = [];
 }
-public class VenueDtoInEvent
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Address { get; set; } = null!;
-    public int Capacity { get; set; }
-}
+//public class VenueDtoInEvent
+//{
+//    public int Id { get; set; }
+//    public string Name { get; set; } = null!;
+//    public string Address { get; set; } = null!;
+//    public int Capacity { get; set; }
+//}
 
 public class LanguageDtoInEvent
 {

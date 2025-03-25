@@ -7,8 +7,9 @@ public class Event : BaseEntity
     public List<DateTime> Dates { get; set; } = [];
     public int AgeRestriction { get; set; }
     public string PhoneNumber { get; set; } = null!;
-    public List<Language> EventLanguages { get; set; } = [];
-    public bool IsAccess {  get; set; }=false;
-    public int VenueId {  get; set; }
+    public ICollection<EventLanguage> EventLanguages { get; set; } = [];
+    public bool IsAccess { get; set; } = false;
+    public int VenueId { get; set; }
     public Venue Venue { get; set; }
+    public List<EventImage> EventImages { get; set; }
 }
