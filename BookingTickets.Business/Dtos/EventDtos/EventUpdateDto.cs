@@ -11,9 +11,12 @@ public class EventUpdateDto : IDto
     [DataType(DataType.Date)]
     public List<DateTime>? Dates { get; set; }
     public int? AgeRestriction { get; set; }
+    public int? MaxPrice { get; set; }
+    public int? MinPrice { get; set; }
     [DataType(DataType.PhoneNumber)]
     public string? PhoneNumber { get; set; }
-    public List<int>? EventLanguageIds { get; set; }
+    public List<int> EventLanguageIds { get; set; }
+    public List<int> EventPersonIds { get; set; }
     public bool? IsAccess { get; set; }
     public int? VenueId { get; set; }
     [Required(ErrorMessage = "Photos field cannot be empty..")]

@@ -2,6 +2,7 @@
 @{
     var languages = ViewBag.Languages;
     var venues = ViewBag.Venues;
+    var people = ViewBag.Persons;
 }
 <div class="container">
     <div class="row">
@@ -32,6 +33,16 @@
                 <span class="text-danger" asp-validation-for="PhoneNumber"></span>
             </div>
             <div class="form-group">
+                <label asp-for="MaxPrice"></label>
+                <input asp-for="MaxPrice" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="MaxPrice"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinPrice"></label>
+                <input asp-for="MinPrice" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="MinPrice"></span>
+            </div>
+            <div class="form-group">
                 <span>Select Venue Name</span>
                 <select class="form-select" asp-for="VenueId">
                     <option disabled>Select Venue Name</option>
@@ -48,6 +59,16 @@
                     @foreach (var language in languages)
                     {
                         <option value="@language.Id">@language.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <span>Select Speaker</span>
+                <select class="form-select" asp-for="EventPersonIds">
+                    <option disabled>Select Speaker</option>
+                    @foreach (var person in people)
+                    {
+                        <option value="@person.Id">@person.FullName</option>
                     }
                 </select>
             </div>

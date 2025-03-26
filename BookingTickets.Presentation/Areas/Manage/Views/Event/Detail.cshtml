@@ -4,11 +4,13 @@
         <div class="col">
             <div class="p-3 border bg-light">Name: @Model.Name</div>
             <div class="p-3 border bg-light">AgeRestriction: @Model.AgeRestriction</div>
+            <div class="p-3 border bg-light">PriceIntervale: @Model.MinPrice-@Model.MaxPrice</div>
             <div class="p-3 border bg-light">Description: @Model.Description</div>
             <div class="p-3 border bg-light">Access: @Model.IsAccess</div>
             <div class="p-3 border bg-light">PhoneNumber: @Model.PhoneNumber</div>
             <div class="p-3 border bg-light">Venue: @Model.Venue.Name</div>
-           @*  <div class="p-3 border bg-light">Languages: @(String.Join(" , ", Model.EventLanguages.Select(pt => pt.Name)))</div> *@
+            <div class="p-3 border bg-light">Languages: @(String.Join(" , ", Model.EventLanguages.Select(pt => pt.Name)))</div>
+            <div class="p-3 border bg-light">Speakers: @(String.Join(" , ", Model.EventPersons.Select(pt => pt.FullName)))</div>
             @foreach (var image in Model.EventImages)
             {
                 <div class="p-3 border bg-light">

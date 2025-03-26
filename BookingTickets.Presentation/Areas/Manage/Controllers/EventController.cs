@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookingTickets.Presentation.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "EventOrganizer")]
     public class EventController (IEventService eventService,BookingTicketsDbContext dbContext): Controller
     {
         public async Task<IActionResult> Index()
@@ -18,6 +18,7 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
         {
             ViewBag.Languages = dbContext.Languages.ToList();
             ViewBag.Venues = dbContext.Venues.ToList();
+            ViewBag.Persons = dbContext.People.ToList();
             return View();
         }
         [HttpPost]
@@ -26,6 +27,7 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
         {
             ViewBag.Languages=dbContext.Languages.ToList();
             ViewBag.Venues=dbContext.Venues.ToList();
+            ViewBag.Persons = dbContext.People.ToList();
             var result = await eventService.CreateAsync(dto, ModelState);
             if (result is false)
             {
@@ -42,6 +44,7 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
         {
             ViewBag.Languages = dbContext.Languages.ToList();
             ViewBag.Venues = dbContext.Venues.ToList();
+            ViewBag.Persons = dbContext.People.ToList();
             var result=await eventService .GetUpdatedDtoAsync(id);
             if (result is null)
             {
@@ -55,6 +58,7 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
         {
             ViewBag.Languages = dbContext.Languages.ToList();
             ViewBag.Venues = dbContext.Venues.ToList();
+            ViewBag.Persons = dbContext.People.ToList();
             var result=await eventService.UpdateAsync(dto,ModelState);
             if (result is false)
             {

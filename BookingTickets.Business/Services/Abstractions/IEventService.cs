@@ -6,4 +6,6 @@ namespace BookingTickets.Business.Services.Abstractions;
 public interface IEventService:IService<EventCreateDto,EventUpdateDto,EventReturnDto>
 {
     Task<bool> IsExistAsync(int id);
+
+
 }

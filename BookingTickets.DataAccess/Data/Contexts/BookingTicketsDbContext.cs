@@ -24,6 +24,8 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<Language> Languages { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventImage> EventsImage { get; set; }
+        public DbSet<Profession> Professions { get; set; }
+        public DbSet<Person> People { get; set; }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
@@ -120,6 +122,13 @@ namespace BookingTickets.DataAccess.Data.Contexts
             new Language { Id = 4, Name = "Français", Code = "fr" },
             new Language { Id = 5, Name = "Deutsch", Code = "de" }
             );
+
+            modelBuilder.Entity<Profession>().HasData(
+       new Profession { Id = 1, Name = "Singer" },
+       new Profession { Id = 2, Name = "Speaker" },
+       new Profession { Id = 3, Name = "Software Developer" },
+       new Profession { Id = 4, Name = "Lawyer" }
+   );
             #endregion
 
         }

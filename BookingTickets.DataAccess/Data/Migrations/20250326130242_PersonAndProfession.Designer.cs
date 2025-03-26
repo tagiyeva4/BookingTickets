@@ -4,6 +4,7 @@ using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingTickets.DataAccess.Data.Migrations
 {
     [DbContext(typeof(BookingTicketsDbContext))]
-    partial class BookingTicketsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326130242_PersonAndProfession")]
+    partial class PersonAndProfession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,16 +95,16 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c3031710-0dd5-4fca-b6e8-972381d3d24d",
+                            Id = "90c1e2f0-8cbd-4d19-85e4-80eddea74beb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e743d64f-d435-4147-b6b2-ad45ddb97812",
+                            ConcurrencyStamp = "59114cce-a611-43ff-8aab-9c5da42daaf1",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAECk3Ipi2t9U1qfh8kgWqIWIoroV6nQASYeKdiw74yCQYOCOzXdoNdFMyWiXszxP+9A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEImZj1FJTMVXkRpU4JLjnil7+pxntpLsFqAdTNyRDTkeneoVB+cyZU5U/YeLkNsp1w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "43ae7de0-7b00-446f-9ec5-84ddcfa3dff2",
+                            SecurityStamp = "9e460ee5-cbf8-405c-92b6-62d34618b0f6",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
@@ -442,28 +445,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Professions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Singer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Speaker"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Software Developer"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Lawyer"
-                        });
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Service", b =>
@@ -646,25 +627,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3007e2a7-0d62-4efc-b42e-70a240c13b6e",
+                            Id = "fc3d8ee9-53a4-452f-bd46-e545e4c66a63",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8296e782-f04c-427e-858a-7a0d5a0c3579",
+                            Id = "9f1f3a5a-b14b-43b6-8ffa-13169c2b2672",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "d37d3d5d-78b7-4419-b1d4-f666a5ee42ed",
+                            Id = "0e8abaf7-bfb4-4fcc-a6d5-34103e15f6a1",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "0376fdce-75fb-4571-98d9-c8476512a830",
+                            Id = "029b083d-23e9-46fc-a8e4-448cbcd313e9",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -759,8 +740,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "c3031710-0dd5-4fca-b6e8-972381d3d24d",
-                            RoleId = "8296e782-f04c-427e-858a-7a0d5a0c3579"
+                            UserId = "90c1e2f0-8cbd-4d19-85e4-80eddea74beb",
+                            RoleId = "9f1f3a5a-b14b-43b6-8ffa-13169c2b2672"
                         });
                 });
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookingTickets.Presentation.Models;
 using BookingTickets.Presentation.ViewModels;
 using BookingTickets.DataAccess.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingTickets.Presentation.Controllers;
 
@@ -23,6 +24,8 @@ public class HomeController : Controller
         homeVm.Sliders=_dbContext.Sliders.ToList();
         homeVm.SlidingTexts=_dbContext.SlidingTexts.ToList();
         homeVm.Brands=_dbContext.Brands.ToList();
+       homeVm.Blogs = _dbContext.Blogs.Take(3).Include(x => x.BlogImages).ToList();
+        homeVm.Events = _dbContext.Events.Include(x=>x.Venue).Include(x=>x.EventLanguages).ThenInclude(el=>el.Language).Include(x=>x.EventPersons).ThenInclude(xp=>xp.Person).Where(x=>x.IsAccess==true).ToList();
         return View(homeVm);
     }
 

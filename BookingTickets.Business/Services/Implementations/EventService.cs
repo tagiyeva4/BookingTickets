@@ -7,7 +7,6 @@ using BookingTickets.Core.Entities;
 using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.DataAccess.Repositories.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Reflection.Metadata;
 
 namespace BookingTickets.Business.Services.Implementations;
 
@@ -70,6 +69,7 @@ public class EventService : IEventService
             EventImage image = new() { ImagePath = imagePath, Event = @event };
             @event.EventImages.Add(image);
         }
+        @event.EventLanguages = [];
 
         foreach (var languageId in dto.EventLanguageIds)
         {
@@ -78,11 +78,21 @@ public class EventService : IEventService
                 ModelState.AddModelError("EventLanguageIds", "There is no language in this id...");
                 return false;
             }
-            @event.EventLanguages = [];
             EventLanguage eventLanguage = new() { LanguageId = languageId, Event = @event };
             @event.EventLanguages.Add(eventLanguage);
         }
 
+        @event.EventPersons = [];
+        foreach (var personId in dto.EventPersonIds)
+        {
+            if (!_dbContext.People.Any(x => x.Id == personId))
+            {
+                ModelState.AddModelError("EventPersonIds", "There is no language in this id...");
+                return false;
+            }
+            EventPeron eventPeron= new() { PersonId = personId, Event = @event };
+            @event.EventPersons.Add(eventPeron);
+        }
         await _repository.AddAsync(@event);
 
         return true;
@@ -90,7 +100,7 @@ public class EventService : IEventService
 
     public async Task DeleteAsync(int id)
     {
-        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "EventLanguages");
+        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "EventLanguages", "EventPersons");
 
         if (@event == null)
         {
@@ -102,7 +112,7 @@ public class EventService : IEventService
 
     public async Task<List<EventReturnDto>> GetAllAsync()
     {
-        var @events = await _repository.GetAllAsync("EventImages", "EventLanguages");
+        var @events = await _repository.GetAllAsync("EventImages", "EventLanguages.Language");
 
         var dtos = _mapper.Map<List<EventReturnDto>>(@events);
 
@@ -111,7 +121,7 @@ public class EventService : IEventService
 
     public async Task<EventReturnDto> GetAsync(int id)
     {
-        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "EventLanguages","Venue");
+        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue", "EventLanguages.Language", "EventPersons.Person");
 
         if (@event == null)
         {
@@ -125,7 +135,7 @@ public class EventService : IEventService
 
     public async Task<EventUpdateDto> GetUpdatedDtoAsync(int id)
     {
-        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "EventLanguages");
+        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue","EventLanguages.Language", "EventPersons.Person");
 
         if (@event == null)
         {
@@ -151,7 +161,7 @@ public class EventService : IEventService
             return false;
         }
 
-        var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id, "EventImages", "EventLanguages");
+        var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id, "EventImages", "Venue", "EventLanguages.Language","EventPersons.Person");
 
         if (existEvent == null)
         {

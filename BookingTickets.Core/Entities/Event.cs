@@ -11,5 +11,8 @@ public class Event : BaseEntity
     public bool IsAccess { get; set; } = false;
     public int VenueId { get; set; }
     public Venue Venue { get; set; }
-    public List<EventImage> EventImages { get; set; }
+    public List<EventImage> EventImages { get; set; } = [];
+    public ICollection<EventPeron> EventPersons { get; set; } = [];
+    public int MaxPrice { get; set; }
+    public int MinPrice { get; set; }
 }

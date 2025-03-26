@@ -14,5 +14,6 @@ public class BlogReturnDto:IDto
     public string Description { get; set; } = null!;
     public string SecondDescription { get; set; } = null!;
     public List<string> BlogImages { get; set; } = [];
+
     public List<BlogComment>? BlogComments { get; set; }
 }
