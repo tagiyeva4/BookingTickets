@@ -1,0 +1,34 @@
+﻿@using BookingTickets.Core.Entities
+@model List<Event>
+@foreach (var ev in Model)
+{
+    <div class="container px-4">
+        <div class="row gx-5">
+            <div class="col">
+                <div class="p-3 border bg-light">Name: @ev.Name</div>
+                <div class="p-3 border bg-light">AgeRestriction: @ev.AgeRestriction</div>
+                <div class="p-3 border bg-light">PriceIntervale: @ev.MinPrice-@ev.MaxPrice</div>
+                <div class="p-3 border bg-light">Description: @ev.Description</div>
+                <div class="p-3 border bg-light">PhoneNumber: @ev.PhoneNumber</div>
+                <div class="p-3 border bg-light">Venue: @ev.Venue.Name</div>
+                <div class="p-3 border bg-light">IsAccept: @ev.IsAccess</div>
+                <div class="p-3 border bg-light">Languages: @(String.Join(" , ", ev.EventLanguages.Select(pt => pt.Language.Name)))</div>
+                <div class="p-3 border bg-light">Speakers: @(String.Join(" , ", ev.EventPersons.Select(pt => pt.Person.FullName)))</div>
+                @foreach (var image in ev.EventImages)
+                {
+                    <div class="p-3 border bg-light">
+                        @image
+                    </div>
+                }
+            </div>
+
+            <form method="post" action="/Manage/Sale/Access">
+                <input type="hidden" name="eventId" value="@ev.Id">
+                <div class="col">
+                    <button class="btn btn-outline-success" type="submit" name="isAccess" value="true">Accept</button>
+                    <button class="btn btn-outline-danger" type="submit" name="isAccess" value="false">Reject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

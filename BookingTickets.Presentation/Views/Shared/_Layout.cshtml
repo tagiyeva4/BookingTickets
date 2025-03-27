@@ -418,13 +418,14 @@
         <div class="search-popup__overlay search-toggler"></div>
         <!-- /.search-popup__overlay -->
         <div class="search-popup__content">
-            <form action="#">
-                <label for="search" class="sr-only">search here</label><!-- /.sr-only -->
-                <input type="text" id="search" placeholder="Search Here..." />
-                <button type="submit" aria-label="search submit" class="thm-btn">
+            <form>
+                <input type="text" id="searchInput" placeholder="Search Here..." />
+                <button type="button" aria-label="search submit" class="thm-btn">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
+
+            <ul class="searchList list-group"></ul>
         </div>
         <!-- /.search-popup__content -->
     </div>
@@ -455,7 +456,21 @@
 
 
 
+    <script>
+            const input = document.querySelector("#searchInput");
 
+        input.addEventListener("keyup", function () {
+            console.log(input.value);
+
+            if (input.value) {
+                fetch("/home/search?search=" + input.value)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.querySelector(".searchList").innerHTML = data;
+                    });
+            }
+        });
+    </script>
 
     <!-- template js -->
     <script src="~/assets/js/eventflow.js"></script>
@@ -463,3 +478,4 @@
 </body>
 
 </html>
+

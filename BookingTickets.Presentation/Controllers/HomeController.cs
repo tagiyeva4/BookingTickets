@@ -1,9 +1,9 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.Presentation.Models;
 using BookingTickets.Presentation.ViewModels;
-using BookingTickets.DataAccess.Data.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BookingTickets.Presentation.Controllers;
 
@@ -16,6 +16,28 @@ public class HomeController : Controller
     {
         _logger = logger;
         _dbContext = dbContext;
+    }
+
+    public IActionResult Search(string search)
+    {
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var data = _dbContext.Events
+                .Include(x => x.Venue)
+                .Include(x => x.EventLanguages)
+                .ThenInclude(el => el.Language)
+                .Include(x => x.EventPersons)
+                .ThenInclude(xp => xp.Person)
+                .Where(x => x.IsAccess == true &&
+                           (x.Name.ToLower().Contains(search.ToLower()) ||
+                            x.Description.ToLower().Contains(search.ToLower())))
+                .ToList();
+            return PartialView("_SearchPartial", data);
+        }
+        else
+        {
+            return NotFound();
+        }
     }
 
     public IActionResult Index()

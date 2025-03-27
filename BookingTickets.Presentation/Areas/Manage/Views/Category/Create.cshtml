@@ -4,7 +4,7 @@
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <textarea asp-for="Name" class="ProductDetail"></textarea>
+                <textarea asp-for="@Model.Name" id="description0"></textarea>
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -12,8 +12,8 @@
     </div>
 </div>
 @section scripts {
-    @await Html.PartialAsync("_ValidationPartial")
 
+    @await Html.PartialAsync("_ValidationPartial")
     <script type="module">
         import {
             ClassicEditor,
@@ -25,7 +25,7 @@
         } from 'ckeditor5';
 
         ClassicEditor
-            .create(document.querySelector('.ProductDetail'), {
+            .create(document.querySelector('#description0'), {
                 plugins: [Essentials, Paragraph, Bold, Italic, Font],
                 toolbar: [
                     'undo', 'redo', '|', 'bold', 'italic', '|',
@@ -39,10 +39,5 @@
                 console.error(error);
             });
 
-
-
-
-
     </script>
-
 }

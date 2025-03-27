@@ -1,0 +1,14 @@
+﻿@model List<Event>
+@{
+    ViewData["Title"] = "_SearchPartial";
+}
+
+@foreach (var eventtt in Model)
+{
+    <li class="list-group-item">
+        <a asp-action="Detail" asp-controller="Event" asp-route-id="@eventtt.Id">
+            @eventtt.Name
+        </a>
+    </li>
+}
+
