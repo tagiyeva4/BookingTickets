@@ -6,4 +6,5 @@ public class Person:BaseEntity
     public int ProfessionId { get; set; }   
     public Profession Profession { get; set; }
     public ICollection<EventPeron> EventPersons { get; set; } = [];
+    public string ImageUrl { get; set; } = null!;
 }

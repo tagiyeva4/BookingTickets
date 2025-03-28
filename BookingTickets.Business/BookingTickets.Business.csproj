@@ -20,8 +20,4 @@
     <ProjectReference Include="..\BookingTickets.DataAccess\BookingTickets.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validators\" />
-  </ItemGroup>
-
 </Project>

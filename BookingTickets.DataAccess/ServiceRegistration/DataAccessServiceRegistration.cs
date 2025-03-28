@@ -26,6 +26,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IVenueRepository, VenueRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IPersonRepository, PersonRepository>();
     }
     //private static void _addIdentity(IServiceCollection services)
     //{

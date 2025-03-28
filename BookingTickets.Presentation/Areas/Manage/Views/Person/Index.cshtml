@@ -1,0 +1,33 @@
+﻿@model List<PersonReturnDto>
+@{
+    int count = 0;
+}
+<div class="container">
+    <div class="row">
+        <a asp-action="Create" class="btn btn-outline-success">Create</a>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Count</th>
+                    <th scope="col">FullName</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var person in Model)
+                {
+                    <tr>
+                        <td>@(++count)</td>
+                        <td>@Html.Raw(person.FullName)</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Update" asp-route-id="@person.Id">Edit</a>
+                            <a class="btn btn-primary" asp-action="detail" asp-route-id="@person.Id">Detail</a>
+                            <a class="btn btn-primary" asp-action="Delete" asp-route-id="@person.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

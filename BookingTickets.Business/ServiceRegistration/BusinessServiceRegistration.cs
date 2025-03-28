@@ -2,7 +2,11 @@
 using BookingTickets.Business.AutoMappers;
 using BookingTickets.Business.Services.Abstractions;
 using BookingTickets.Business.Services.Implementations;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using BookingTickets.Business.Dtos.EventDtos;
+using BookingTickets.Business.Validators.BlogValidators;
 
 namespace BookingTickets.Business.ServiceRegistration;
 
@@ -16,6 +20,10 @@ public static class BusinessServiceRegistration
         services.AddAutoMapper(typeof(CategoryAutoMapper));
         services.AddAutoMapper(typeof(VenueAutoMapper));
         services.AddAutoMapper(typeof(EventAutoMapper));
+        services.AddAutoMapper(typeof(EventScheduleAutoMapper));
+        services.AddAutoMapper(typeof(PersonAutoMapper));
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssemblyContaining(typeof(BlogCreateDtoValidator));
         AddServices(services);
         return services; 
     }
@@ -27,6 +35,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IVenueService, VenueService>();
         services.AddScoped<IEventService, EventService>();
+        services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<LayoutServices>();
         services.AddScoped<EmailService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();

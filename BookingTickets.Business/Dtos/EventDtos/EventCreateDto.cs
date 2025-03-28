@@ -9,9 +9,6 @@ public class EventCreateDto : IDto
     public string Name { get; set; } = null!;
     [Required(ErrorMessage = "Description field cannot be empty..")]
     public string Description { get; set; } = null!;
-    [Required(ErrorMessage = "Date field cannot be empty..")]
-    [DataType(DataType.Date)]
-    public List<DateTime> Dates { get; set; } = [];
     [Required(ErrorMessage = "AgeRestriction field cannot be empty..")]
     public int AgeRestriction { get; set; }
     [Required(ErrorMessage = "MaxPrice field cannot be empty..")]
@@ -23,12 +20,14 @@ public class EventCreateDto : IDto
     public string PhoneNumber { get; set; } = null!;
     [Required(ErrorMessage = "EventLanguageIds field cannot be empty..")]
     public List<int> EventLanguageIds { get; set; } = [];
-    [Required(ErrorMessage = "EventLanguageIds field cannot be empty..")]
+    [Required(ErrorMessage = "EventPersonIds field cannot be empty..")]
     public List<int> EventPersonIds { get; set; } = [];
     public bool IsAccess { get; set; } = false;
     [Required(ErrorMessage = "VenueId field cannot be empty..")]
     public int VenueId { get; set; }
     [Required(ErrorMessage = "Photos field cannot be empty..")]
     public List<IFormFile> Photos { get; set; } = [];
+    [Required(ErrorMessage = "TotalTickets field cannot be empty..")]
+    public int TotalTickets { get; set; }
 
 }

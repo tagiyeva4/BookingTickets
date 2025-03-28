@@ -17,6 +17,7 @@ public class EventReturnDto:IDto
     public bool IsAccess { get; set; }
     public Venue Venue { get; set; } = null!;
     public List<string> EventImages { get; set; } = [];
+    public int TotalTickets { get; set; }
 }
 //public class VenueDtoInEvent
 //{

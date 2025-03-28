@@ -1,0 +1,509 @@
+﻿@model Event
+<!--Event Details Start-->
+<section class="event-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="event-details__left">
+                    <div class="event-details__img">
+                        <img src=@Model.EventImages.FirstOrDefault().ImagePath alt="">
+                    </div>
+                    <div class="event-details__main-tab-box tabs-box">
+                        <ul class="tab-buttons clearfix list-unstyled">
+                            <li data-tab="#year-1" class="tab-btn active-btn">
+                               @*  <p>@Model.Dates.FirstOrDefault().ToString("yyyy")</p> *@
+                            </li>
+                           @*  <li data-tab="#year-2" class="tab-btn">
+                                <p>2018</p>
+                            </li>
+                            <li data-tab="#year-3" class="tab-btn">
+                                <p>2020</p>
+                            </li>
+                            <li data-tab="#year-4" class="tab-btn">
+                                <p>2022</p>
+                            </li>
+                            <li data-tab="#year-5" class="tab-btn">
+                                <p>2024</p>
+                            </li> *@
+                        </ul>
+                        <div class="tabs-content">
+                            <!--tab-->
+                            <div class="tab active-tab" id="year-1">
+                                <div class="event-details__tab-content-box">
+                                    <ul class="event-details__meta list-unstyled">
+                                        <li>
+                                            <p>
+                                                <span class="icon-clock"></span>
+                                               @*  @Model.Dates.FirstOrDefault().ToString("dd MMMM yyyy") *@
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p><span class="icon-pin"></span>@Model.Venue.Name</p>
+                                        </li>
+                                    </ul>
+                                    <h3 class="event-details__title-1">@Model.Name</h3>
+                                    
+                                    <div class="event-details__img-box">
+                                        <div class="row">
+                                            @foreach(var image in Model.EventImages)
+                                            {
+                                                <div class="col-xl-6">
+                                                    <div class="event-details__img-box-img">
+                                                        <img src=@image.ImagePath
+                                                             alt="">
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="event-details__points-box">
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Creating Memories, One Event at a Time</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Celebrate in Style, Celebrate with Class</p>
+                                            </li>
+                                        </ul>
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Where Events Come to Life</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Making Your Event Dreams Come True</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <h3 class="event-details__text-3">
+                                        @Model.Description
+                                    </h3>
+                                    
+                                </div>
+                            </div>
+                            <!--tab-->
+                            <!--tab-->
+                           @*  <div class="tab" id="year-2">
+                                <div class="event-details__tab-content-box">
+                                    <ul class="event-details__meta list-unstyled">
+                                        <li>
+                                            <p>
+                                                <span class="icon-clock"></span>Mirpur 01 Road N 12 Dhaka
+                                                Bangladesh
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p><span class="icon-pin"></span>10 Am To 10 Pm 20 April 2024</p>
+                                        </li>
+                                    </ul>
+                                    <h3 class="event-details__title-1">Ui/Ux designer Meet Up 2018</h3>
+                                    <p class="event-details__text-1">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                    <p class="event-details__text-2">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <div class="event-details__img-box">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-1.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-2.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="event-details__points-box">
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Creating Memories, One Event at a Time</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Celebrate in Style, Celebrate with Class</p>
+                                            </li>
+                                        </ul>
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Where Events Come to Life</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Making Your Event Dreams Come True</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p class="event-details__text-3">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <p class="event-details__text-4">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                </div>
+                            </div>
+                            <!--tab-->
+                            <!--tab-->
+                            <div class="tab" id="year-3">
+                                <div class="event-details__tab-content-box">
+                                    <ul class="event-details__meta list-unstyled">
+                                        <li>
+                                            <p>
+                                                <span class="icon-clock"></span>Mirpur 01 Road N 12 Dhaka
+                                                Bangladesh
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p><span class="icon-pin"></span>10 Am To 10 Pm 20 April 2024</p>
+                                        </li>
+                                    </ul>
+                                    <h3 class="event-details__title-1">Ui/Ux designer Meet Up 2020</h3>
+                                    <p class="event-details__text-1">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                    <p class="event-details__text-2">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <div class="event-details__img-box">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-1.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-2.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="event-details__points-box">
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Creating Memories, One Event at a Time</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Celebrate in Style, Celebrate with Class</p>
+                                            </li>
+                                        </ul>
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Where Events Come to Life</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Making Your Event Dreams Come True</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p class="event-details__text-3">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <p class="event-details__text-4">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                </div>
+                            </div>
+                            <!--tab-->
+                            <!--tab-->
+                            <div class="tab" id="year-4">
+                                <div class="event-details__tab-content-box">
+                                    <ul class="event-details__meta list-unstyled">
+                                        <li>
+                                            <p>
+                                                <span class="icon-clock"></span>Mirpur 01 Road N 12 Dhaka
+                                                Bangladesh
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p><span class="icon-pin"></span>10 Am To 10 Pm 20 April 2024</p>
+                                        </li>
+                                    </ul>
+                                    <h3 class="event-details__title-1">Ui/Ux designer Meet Up 2022</h3>
+                                    <p class="event-details__text-1">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                    <p class="event-details__text-2">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <div class="event-details__img-box">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-1.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-2.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="event-details__points-box">
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Creating Memories, One Event at a Time</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Celebrate in Style, Celebrate with Class</p>
+                                            </li>
+                                        </ul>
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Where Events Come to Life</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Making Your Event Dreams Come True</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p class="event-details__text-3">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <p class="event-details__text-4">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                </div>
+                            </div>
+                            <!--tab-->
+                            <!--tab-->
+                            <div class="tab" id="year-5">
+                                <div class="event-details__tab-content-box">
+                                    <ul class="event-details__meta list-unstyled">
+                                        <li>
+                                            <p>
+                                                <span class="icon-clock"></span>Mirpur 01 Road N 12 Dhaka
+                                                Bangladesh
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p><span class="icon-pin"></span>10 Am To 10 Pm 20 April 2024</p>
+                                        </li>
+                                    </ul>
+                                    <h3 class="event-details__title-1">Ui/Ux designer Meet Up 2024</h3>
+                                    <p class="event-details__text-1">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                    <p class="event-details__text-2">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <div class="event-details__img-box">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-1.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="event-details__img-box-img">
+                                                    <img src="assets/images/resources/event-details-img-box-img-2.jpg"
+                                                         alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="event-details__points-box">
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Creating Memories, One Event at a Time</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Celebrate in Style, Celebrate with Class</p>
+                                            </li>
+                                        </ul>
+                                        <ul class="event-details__points list-unstyled">
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Where Events Come to Life</p>
+                                            </li>
+                                            <li>
+                                                <div class="icon">
+                                                    <span class="icon-double-angle"></span>
+                                                </div>
+                                                <p>Making Your Event Dreams Come True</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p class="event-details__text-3">
+                                        Real estate is a lucrative industry that
+                                        involves the buying selling and renting properties It encompasses
+                                        residential commercial and industrial designsin properties. Real estate
+                                        agents play a crucial
+                                    </p>
+                                    <p class="event-details__text-4">
+                                        Events are special occasions where people
+                                        gather together to celebrate an Events are special occasions where
+                                        people gather together to eommemorate vents are special occasions where
+                                        people gather
+                                    </p>
+                                </div>
+                            </div>
+                            <!--tab--> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="event-details__right">
+                    <div class="event-details__speakers">
+                        <h3 class="event-details__speakers-title">Speakers</h3>
+                        <p class="event-details__speakers-sub-title">@(Model.EventPersons.Count)</p>
+                        <p class="event-details__speakers-text">
+                            Speaker – A person who delivers speeches, presentations, or <br />
+                            motivational talks to inform, inspire, or persuade an audience.
+                            Singer – A performer who uses their voice to create music, <br /> 
+                            either solo or with a band, expressing emotions through melody and lyrics.
+                        </p>
+                    </div>
+                    <div class="event-details__ticket">
+                        <h4>
+                            Price :( @Model.MinPrice - @Model.MaxPrice )₼
+                        </h4>
+                        <h4>
+                            AgeRestriction : +@Model.AgeRestriction
+                        </h4>
+                        <h4>
+                            Languages : @(String.Join(" , ", Model.EventLanguages.Select(pt => pt.Language.Name)))
+                        </h4>
+                    </div>
+                    <div class="event-details__ticket-two">
+                        <h3 class="event-details__ticket-two-title">Don’t have a ticket?</h3>
+                        <p class="event-details__ticket-two-text">
+                            Exciting Events Await! 🎉<br><br>
+                            Join us for unforgettable events filled with entertainment, inspiration, and exclusive experiences!<br>
+                            Whether it's concerts, conferences, or special gatherings, secure your spot now and be part of something amazing.<br>
+                            Don’t miss out—book your tickets today! 🎟️✨
+                        </p>
+                        <div class="event-details__ticket-two-btn-box">
+                            <a href="#" class="event-details__ticket-two-btn thm-btn">
+                                Buy Ticket<span class="icon-arrow-right"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="event-details__follow-us">
+                        <h3 class="event-details__follow-us-title">Follow Us</h3>
+                        <div class="event-details__follow-us-social">
+                            <a href="#"><span class="icon-instagram"></span></a>
+                            <a href="#"><span class="icon-facebook"></span></a>
+                            <a href="#"><span class="icon-fi"></span></a>
+                            <a href="#"><span class="icon-linkedin-in"></span></a>
+                        </div>
+                    </div>
+                    <div class="event-details__location">
+                        <h3 class="event-details__location-title">Location</h3>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4562.753041141002!2d-118.80123790098536!3d34.152323469614075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e82469c2162619%3A0xba03efb7998eef6d!2sCostco+Wholesale!5e0!3m2!1sbn!2sbd!4v1562518641290!5m2!1sbn!2sbd"
+                                class="google-map__one" allowfullscreen></iframe>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Event Details End-->

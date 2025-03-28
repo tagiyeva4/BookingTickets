@@ -1,0 +1,15 @@
+﻿@model PersonReturnDto
+<div class="container px-4">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border bg-light">FullName: @Model.FullName</div>
+            <div class="p-3 border bg-light">Profession: @Model.Profession.Name</div>
+            <div class="p-3 border bg-light">
+                <img src=@Model.ImageUrl width="150" height="150" alt="sliderimage" />
+            </div>
+        </div>
+        <div class="col">
+            <a class="btn btn-outline-primary" asp-action="index">Go back</a>
+        </div>
+    </div>
+</div>

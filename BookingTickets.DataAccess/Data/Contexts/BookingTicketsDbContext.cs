@@ -26,6 +26,7 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<EventImage> EventsImage { get; set; }
         public DbSet<Profession> Professions { get; set; }
         public DbSet<Person> People { get; set; }
+        public DbSet<EventsSchedule> EventsSchedules { get; set; }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {

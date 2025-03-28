@@ -597,9 +597,9 @@
                                                 @eventtt.Name
                                             </a>
                                         </h3>
-                                        <p class="schedule-one__text">
+                                       @*  <p class="schedule-one__text">
                                             @eventtt.Description
-                                        </p>
+                                        </p> *@
                                     </div>
                                     <div class="schedule-one__img">
                                         <img src=@eventtt.EventImages.FirstOrDefault() alt="">
@@ -611,7 +611,7 @@
                                                     <span class="icon-clock"></span>
                                                 </div>
                                                 <div class="text">
-                                                    <p>@eventtt.Dates.FirstOrDefault().ToString("hh tt") <br> @eventtt.Dates.FirstOrDefault().ToString("dd MMMM yyyy")</p>
+                                                    @* <p>@eventtt.Dates.FirstOrDefault().ToString("hh tt") <br> @eventtt.Dates.FirstOrDefault().ToString("dd MMMM yyyy")</p> *@
                                                 </div>
                                             </li>
                                             <li>
