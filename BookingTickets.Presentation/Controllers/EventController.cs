@@ -1,4 +1,5 @@
-﻿using BookingTickets.DataAccess.Data.Contexts;
+﻿using BookingTickets.Core.Entities;
+using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,5 +41,25 @@ namespace BookingTickets.Presentation.Controllers
             }
                 return View(existEvent);
         }
+        [HttpGet("GetVenueLocation")]
+        public IActionResult GetVenueLocation()
+        {
+            var venue = new Venue
+            {
+                Name = "Nümunə Konsert Zalı",
+                Address = "Bakı, Fəvvarələr Meydanı",
+                Latitude = 40.4093, // Bakı şəhərinin enliyi
+                Longitude = 49.8671 // Bakı şəhərinin uzunluğu
+            };
+
+            return Ok(new
+            {
+                venue.Name,
+                venue.Address,
+                venue.Latitude,
+                venue.Longitude
+            });
+        }
+
     }
 }

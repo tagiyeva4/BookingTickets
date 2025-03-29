@@ -8,6 +8,9 @@ public class VenueCreateDto:IDto
     public string Name { get; set; } = null!;
     [Required(ErrorMessage = "Address field cannot be empty..")]
     public string Address { get; set; } = null!;
-    [Required(ErrorMessage = "Capacity field cannot be empty..")]
-    public int Capacity { get; set; }
+    [Required(ErrorMessage = "Latitude field cannot be empty..")]
+    public double Latitude { get; set; }
+    [Required(ErrorMessage = "Longitude field cannot be empty..")]
+    public double Longitude { get; set; }
+
 }

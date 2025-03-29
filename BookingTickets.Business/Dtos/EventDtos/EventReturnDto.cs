@@ -14,6 +14,7 @@ public class EventReturnDto:IDto
     public string PhoneNumber { get; set; } = null!;
     public List<LanguageDtoInEvent> EventLanguages { get; set; } = [];
     public List<PersonDtoInEvent> EventPersons { get; set; } = [];
+    public List<ScheduleDtoInEvent> EventSchedules { get; set; } = [];
     public bool IsAccess { get; set; }
     public Venue Venue { get; set; } = null!;
     public List<string> EventImages { get; set; } = [];
@@ -26,6 +27,13 @@ public class EventReturnDto:IDto
 //    public string Address { get; set; } = null!;
 //    public int Capacity { get; set; }
 //}
+public class ScheduleDtoInEvent
+{
+    public int Id { get; set; }
+    public DateTime Date { get; set; }
+    public TimeSpan StartTime { get; set; }
+    public TimeSpan EndTime { get; set; }
+}
 public class PersonDtoInEvent
 {
     public int Id { get; set; }

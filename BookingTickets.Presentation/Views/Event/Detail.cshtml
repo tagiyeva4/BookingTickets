@@ -6,14 +6,14 @@
             <div class="col-xl-8 col-lg-7">
                 <div class="event-details__left">
                     <div class="event-details__img">
-                        <img src=@Model.EventImages.FirstOrDefault().ImagePath alt="">
+                        <img src=@Model.EventImages.FirstOrDefault() alt="">
                     </div>
                     <div class="event-details__main-tab-box tabs-box">
                         <ul class="tab-buttons clearfix list-unstyled">
                             <li data-tab="#year-1" class="tab-btn active-btn">
-                               @*  <p>@Model.Dates.FirstOrDefault().ToString("yyyy")</p> *@
+                                @*  <p>@Model.Dates.FirstOrDefault().ToString("yyyy")</p> *@
                             </li>
-                           @*  <li data-tab="#year-2" class="tab-btn">
+                            @*  <li data-tab="#year-2" class="tab-btn">
                                 <p>2018</p>
                             </li>
                             <li data-tab="#year-3" class="tab-btn">
@@ -34,7 +34,7 @@
                                         <li>
                                             <p>
                                                 <span class="icon-clock"></span>
-                                               @*  @Model.Dates.FirstOrDefault().ToString("dd MMMM yyyy") *@
+                                                @*  @Model.Dates.FirstOrDefault().ToString("dd MMMM yyyy") *@
                                             </p>
                                         </li>
                                         <li>
@@ -42,10 +42,10 @@
                                         </li>
                                     </ul>
                                     <h3 class="event-details__title-1">@Model.Name</h3>
-                                    
+
                                     <div class="event-details__img-box">
                                         <div class="row">
-                                            @foreach(var image in Model.EventImages)
+                                            @foreach (var image in Model.EventImages)
                                             {
                                                 <div class="col-xl-6">
                                                     <div class="event-details__img-box-img">
@@ -89,12 +89,12 @@
                                     <h3 class="event-details__text-3">
                                         @Model.Description
                                     </h3>
-                                    
+
                                 </div>
                             </div>
                             <!--tab-->
                             <!--tab-->
-                           @*  <div class="tab" id="year-2">
+                            @*  <div class="tab" id="year-2">
                                 <div class="event-details__tab-content-box">
                                     <ul class="event-details__meta list-unstyled">
                                         <li>
@@ -457,7 +457,7 @@
                         <p class="event-details__speakers-text">
                             Speaker – A person who delivers speeches, presentations, or <br />
                             motivational talks to inform, inspire, or persuade an audience.
-                            Singer – A performer who uses their voice to create music, <br /> 
+                            Singer – A performer who uses their voice to create music, <br />
                             either solo or with a band, expressing emotions through melody and lyrics.
                         </p>
                     </div>
@@ -486,6 +486,21 @@
                             </a>
                         </div>
                     </div>
+                    <div class="event-details__location">
+                        @*
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4562.753041141002!2d-118.80123790098536!3d34.152323469614075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e82469c2162619%3A0xba03efb7998eef6d!2sCostco+Wholesale!5e0!3m2!1sbn!2sbd!4v1562518641290!5m2!1sbn!2sbd"
+                                class="google-map__one" allowfullscreen></iframe> *@
+                        <h3 class="event-details__location-title">@Model.Venue.Name</h3>
+                        <div class="container mt-5">
+                            @* <div class="card shadow-lg">
+                                <div class="card-header text-center bg-primary text-white">
+
+                                </div> *@
+                            <div class="card-body">
+                                <div id="map" style="height: 400px; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="event-details__follow-us">
                         <h3 class="event-details__follow-us-title">Follow Us</h3>
                         <div class="event-details__follow-us-social">
@@ -495,15 +510,30 @@
                             <a href="#"><span class="icon-linkedin-in"></span></a>
                         </div>
                     </div>
-                    <div class="event-details__location">
-                        <h3 class="event-details__location-title">Location</h3>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4562.753041141002!2d-118.80123790098536!3d34.152323469614075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e82469c2162619%3A0xba03efb7998eef6d!2sCostco+Wholesale!5e0!3m2!1sbn!2sbd!4v1562518641290!5m2!1sbn!2sbd"
-                                class="google-map__one" allowfullscreen></iframe>
-
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 <!--Event Details End-->
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var latitude = @Model.Venue.Latitude;
+            var longitude = @Model.Venue.Longitude;
+
+            var map = L.map('map').setView([latitude, longitude], 12); // Venue koordinatları
+
+            // Xəritə stilləri (Dark Mode)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
+            }).addTo(map);
+
+            // Marker əlavə edirik
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(`<b>@Model.Venue.Name</b><br>@Model.Venue.Address`)
+                .openPopup();
+        });
+    </script>
+}

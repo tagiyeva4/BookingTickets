@@ -15,6 +15,7 @@ public class EventUpdateDto : IDto
     [DataType(DataType.PhoneNumber)]
     public string? PhoneNumber { get; set; }
     public List<int> EventLanguageIds { get; set; } = [];
+    public List<int> EventScheduleIds { get; set; } = [];
     public List<int> EventPersonIds { get; set; } = [];
     public bool? IsAccess { get; set; }
     public int? VenueId { get; set; }

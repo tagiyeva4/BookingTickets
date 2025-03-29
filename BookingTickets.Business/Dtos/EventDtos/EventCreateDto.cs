@@ -20,6 +20,8 @@ public class EventCreateDto : IDto
     public string PhoneNumber { get; set; } = null!;
     [Required(ErrorMessage = "EventLanguageIds field cannot be empty..")]
     public List<int> EventLanguageIds { get; set; } = [];
+    [Required(ErrorMessage = "EventScheduleIds field cannot be empty..")]
+    public List<int> EventScheduleIds { get; set; } = [];
     [Required(ErrorMessage = "EventPersonIds field cannot be empty..")]
     public List<int> EventPersonIds { get; set; } = [];
     public bool IsAccess { get; set; } = false;
