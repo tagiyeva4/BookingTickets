@@ -14,7 +14,7 @@ public class EventReturnDto:IDto
     public string PhoneNumber { get; set; } = null!;
     public List<LanguageDtoInEvent> EventLanguages { get; set; } = [];
     public List<PersonDtoInEvent> EventPersons { get; set; } = [];
-    public List<ScheduleDtoInEvent> EventSchedules { get; set; } = [];
+    //public List<ScheduleDtoInEvent> Schedules { get; set; } = [];
     public bool IsAccess { get; set; }
     public Venue Venue { get; set; } = null!;
     public List<string> EventImages { get; set; } = [];

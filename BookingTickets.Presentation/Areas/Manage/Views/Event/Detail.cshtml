@@ -11,6 +11,8 @@
             <div class="p-3 border bg-light">Venue: @Model.Venue.Name</div>
             <div class="p-3 border bg-light">Languages: @(String.Join(" , ", Model.EventLanguages.Select(pt => pt.Name)))</div>
             <div class="p-3 border bg-light">Speakers: @(String.Join(" , ", Model.EventPersons.Select(pt => pt.FullName)))</div>
+          @*   <div class="p-3 border bg-light">Schedules: @(String.Join(" , ", Model.Schedules.Select(pt => pt.Date)))</div> *@
+
             @foreach (var image in Model.EventImages)
             {
                 <div class="p-3 border bg-light">

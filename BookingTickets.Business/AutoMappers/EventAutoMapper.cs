@@ -12,7 +12,6 @@ public class EventAutoMapper:Profile
         CreateMap<Event,EventCreateDto>()
             .ForMember(x=>x.EventLanguageIds,x=>x.MapFrom(x=>x.EventLanguages.Select(x=>x.LanguageId)))
             .ForMember(x => x.EventPersonIds, x => x.MapFrom(x => x.EventPersons.Select(x => x.PersonId)))
-            .ForMember(x => x.EventScheduleIds, x => x.MapFrom(x => x.EventsSchedules.Select(x => x.ScheduleId)))
             .ReverseMap();
 
         CreateMap<Event, EventUpdateDto>()
@@ -35,13 +34,13 @@ public class EventAutoMapper:Profile
 
         CreateMap<Event, EventReturnDto>()
             .ForMember(x=>x.EventLanguages,x=>x.MapFrom(x=>x.EventLanguages.Select(x=>x.Language)))
-            .ForMember(x => x.EventPersons, x => x.MapFrom(x => x.EventPersons.Select(x => x.Person)))
-            .ForMember(x=>x.EventSchedules,x=>x.MapFrom(x=>x.EventsSchedules.Select(x=>x.Schedule)));
+            .ForMember(x => x.EventPersons, x => x.MapFrom(x => x.EventPersons.Select(x => x.Person)));
        
  // CreateMap<Venue, VenueDtoInEvent>().ReverseMap();
 
         CreateMap<Person, PersonDtoInEvent>().ReverseMap();
         CreateMap<Language, LanguageDtoInEvent>().ReverseMap();
         CreateMap<Schedule, ScheduleDtoInEvent>().ReverseMap();
+        CreateMap<Schedule,ScheduleDto>().ReverseMap();
     }
 }

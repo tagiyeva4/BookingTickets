@@ -32,7 +32,7 @@ public class AccountController : Controller
         var user = await _userManager.FindByNameAsync(adminLoginVm.UserName);
         if (user == null || (!await _userManager.IsInRoleAsync(user, "Admin") && !await _userManager.IsInRoleAsync(user, "EventOrganizer")))
         {
-            ModelState.AddModelError("", "UserName or Password is incorret...");
+            ModelState.AddModelError("", "UserName or Password is incorrect...");
             return View();
         }
         var result = await _userManager.CheckPasswordAsync(user, adminLoginVm.Password);

@@ -23,4 +23,5 @@ public class EventUpdateDto : IDto
     public List<IFormFile> Photos { get; set; } = [];
     public List<string>? EventImages { get; set; } = [];
     public int? TotalTickets { get; set; }
+    public List<ScheduleDtoInEvent> Schedules { get; set; } = [];
 }

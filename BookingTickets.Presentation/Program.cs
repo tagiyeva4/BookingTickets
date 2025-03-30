@@ -13,7 +13,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddBusinessServices();  
 builder.Services.AddDataAccessServices(config);
 
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -40,7 +39,24 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
 })
 .AddEntityFrameworkStores<BookingTicketsDbContext>()
 .AddDefaultTokenProviders();
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.Events.OnRedirectToLogin = opt.Events.OnRedirectToAccessDenied = context =>
+    {
+        var uri = new Uri(context.RedirectUri);
+        if (context.Request.Path.Value.ToLower().StartsWith("/manage"))
+        {
 
+            context.Response.Redirect("/manage/account/login" + uri.Query);
+        }
+        else
+        {
+            context.Response.Redirect("/account/login" + uri.Query);
+        }
+
+        return Task.CompletedTask;
+    };
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

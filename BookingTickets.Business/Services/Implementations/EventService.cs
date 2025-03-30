@@ -7,6 +7,7 @@ using BookingTickets.Core.Entities;
 using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.DataAccess.Repositories.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingTickets.Business.Services.Implementations;
 
@@ -93,6 +94,26 @@ public class EventService : IEventService
             EventPeron eventPeron= new() { PersonId = personId, Event = @event };
             @event.EventPersons.Add(eventPeron);
         }
+
+        foreach (var scheduleDto in dto.Schedules)
+        {
+            var schedule = new Schedule
+            {
+                Date = scheduleDto.Date,
+                StartTime = scheduleDto.StartTime,
+                EndTime = scheduleDto.EndTime
+            };
+
+            _dbContext.Schedules.Add(schedule);
+            await _dbContext.SaveChangesAsync();
+
+            @event.EventsSchedules.Add(new EventsSchedule
+            {
+                Event = @event,
+                Schedule = schedule
+            });
+        }
+
         await _repository.AddAsync(@event);
 
         return true;
@@ -195,6 +216,8 @@ public class EventService : IEventService
 
         existEvent = _mapper.Map(dto, existEvent);
 
+
+
         //remove deletedImages
         var imagesToRemove = existEvent.EventImages?.ToList() ?? new List<EventImage>();
 
@@ -213,6 +236,47 @@ public class EventService : IEventService
                 existEvent.EventImages.Add(eventImage);
             }
         }
+
+
+        
+        //var existingSchedules =existEvent.EventsSchedules.ToList();
+
+        //foreach (var scheduleDto in dto.Schedules)
+        //{
+        //    var existingSchedule = existingSchedules.FirstOrDefault(s => s.ScheduleId == scheduleDto.Id);
+
+        //    if (existingSchedule != null)
+        //    {
+        //        if (existingSchedule.Schedule.Date == scheduleDto.Date &&
+        //            existingSchedule.Schedule.StartTime == scheduleDto.StartTime &&
+        //            existingSchedule.Schedule.EndTime == scheduleDto.EndTime)
+        //        {
+        //            continue;
+        //        }
+
+        //        existingSchedule.Schedule.Date = scheduleDto.Date;
+        //        existingSchedule.Schedule.StartTime = scheduleDto.StartTime;
+        //        existingSchedule.Schedule.EndTime = scheduleDto.EndTime;
+        //    }
+        //    else
+        //    {
+        //        var newSchedule = new Schedule
+        //        {
+        //            Date = scheduleDto.Date,
+        //            StartTime = scheduleDto.StartTime,
+        //            EndTime = scheduleDto.EndTime
+        //        };
+        //        _dbContext.Schedules.Add(newSchedule);
+        //        await _dbContext.SaveChangesAsync(); 
+
+        //        existEvent.EventsSchedules.Add(new EventsSchedule
+        //        {
+        //            EventId = existEvent.Id,
+        //            ScheduleId = newSchedule.Id
+        //        });
+        //    }
+        //}
+
 
         await _repository.UpdateAsync(existEvent);
 

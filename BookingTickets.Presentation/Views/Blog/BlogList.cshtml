@@ -1,4 +1,8 @@
 ﻿@model List<Blog>
+@{
+    var categories= ViewBag.Categories;
+    var tags=ViewBag.Tags ;
+}
 
 <!--Blog Page Start-->
 <section class="blog-list">
@@ -18,8 +22,8 @@
                                 <div class="blog-list__date">
                                     <p>
                                         @(blog.CreatedDate.HasValue
-                                            ? blog.CreatedDate.Value.ToString("dd MMMM")
-                                            : "No date available")
+                                                ? blog.CreatedDate.Value.ToString("dd MMMM")
+                                                : "No date available")
                                     </p>
                                 </div>
                             </div>
@@ -34,7 +38,7 @@
                                 </ul>
                                 <h3 class="blog-list__title">
                                     <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id">
-                                       @blog.Title
+                                        @blog.Title
                                     </a>
                                 </h3>
                                 <div class="blog-list__btn-box">
@@ -45,7 +49,7 @@
                             </div>
                         </div>
                         <!--BLog Page Single End-->
-                        
+
                     }
                     <div class="blog-list__pagination">
                         <ul class="pg-pagination list-unstyled">
@@ -65,44 +69,25 @@
                 <div class="sidebar">
                     <div class="sidebar__single sidebar__search">
                         <h3 class="sidebar__title">Search</h3>
-                        <form action="#" class="sidebar__search-form">
-                            <input type="search" placeholder="Search....">
-                            <button type="submit"><i class="icon-loupe"></i></button>
+                        <form>
+                            <input type="text" id="searchInput" placeholder="Search....">
+                            <button type="button"><i class="icon-loupe"></i></button>
                         </form>
+                        <ul class="searchList list-group"></ul>
                     </div>
                     <div class="sidebar__single sidebar__all-category">
-                        <h3 class="sidebar__title">Catagory</h3>
+                        <h3 class="sidebar__title">Category</h3>
                         <ul class="sidebar__all-category-list list-unstyled">
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Event Prodigy
-                                    <span>(02)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Stellar Events
-                                    Co<span>(04)</span>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Elite Event
-                                    Management<span>(01)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Infinite
-                                    Occasions<span>(06)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Dream Event
-                                    Planners<span>(03)</span>
-                                </a>
-                            </li>
+                            @foreach(var cat in categories)
+                            {
+                                <li class="active">
+                                    <a href="blog-details.html">
+                                        <i class="icon-double-angle"></i>
+                                        @Html.Raw(cat.Name)
+                                        <span>(01)</span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <div class="sidebar__single sidebar__post">
@@ -152,12 +137,10 @@
                     <div class="sidebar__single sidebar__tags">
                         <h3 class="sidebar__title">Tags</h3>
                         <div class="sidebar__tags-list">
-                            <a href="#">All Project</a>
-                            <a href="#">Prodigy</a>
-                            <a href="#">Stellar Events</a>
-                            <a href="#">Occasions</a>
-                            <a href="#">Spectacular</a>
-                            <a href="#">Moments</a>
+                            @foreach (var tag in tags)
+                            {
+                                <a href="blog-details.html">@Html.Raw(tag.Name)</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -166,3 +149,20 @@
     </div>
 </section>
 <!--Blog Page End-->
+@section scripts {
+    <script>
+            const input = document.querySelector("#searchInput");
+
+        input.addEventListener("keyup", function () {
+            console.log(input.value);
+
+            if (input.value) {
+                fetch("/home/search?search=" + input.value)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.querySelector(".searchList").innerHTML = data;
+                    });
+            }
+        });
+    </script>
+}

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingTickets.Presentation.Controllers
 {
-    [Authorize(Roles = "Member")]
     public class ServiceController(BookingTicketsDbContext dbContext) : Controller
     {
         public IActionResult Index()

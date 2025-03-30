@@ -9,48 +9,43 @@
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="Name" class="form-control">
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description"></label>
-                <input asp-for="Description" class="form-control" placeholder="Event" aria-describedby="emailHelp">
+                <input asp-for="Description" class="form-control">
                 <span class="text-danger" asp-validation-for="Description"></span>
             </div>
-           @*  <div class="form-group">
-                <label asp-for="Dates"></label>
-                <input asp-for="Dates" class="form-control" aria-describedby="emailHelp">
-                <span class="text-danger" asp-validation-for="Dates"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="AgeRestriction"></label>
-                <input asp-for="AgeRestriction" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="AgeRestriction" class="form-control">
                 <span class="text-danger" asp-validation-for="AgeRestriction"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="PhoneNumber" class="form-control">
                 <span class="text-danger" asp-validation-for="PhoneNumber"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TotalTickets"></label>
-                <input asp-for="TotalTickets" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="TotalTickets" class="form-control">
                 <span class="text-danger" asp-validation-for="TotalTickets"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxPrice"></label>
-                <input asp-for="MaxPrice" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="MaxPrice" class="form-control">
                 <span class="text-danger" asp-validation-for="MaxPrice"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MinPrice"></label>
-                <input asp-for="MinPrice" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="MinPrice" class="form-control">
                 <span class="text-danger" asp-validation-for="MinPrice"></span>
             </div>
             <div class="form-group">
-                <span>Select Venue Name</span>
+                <label>Select Venue</label>
                 <select class="form-select" asp-for="VenueId">
-                    <option disabled>Select Venue Name</option>
+                    <option disabled selected>Select Venue</option>
                     @foreach (var venue in venues)
                     {
                         <option value="@venue.Id">@venue.Name</option>
@@ -58,9 +53,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <span>Select Languages</span>
-                <select class="form-select" asp-for="EventLanguageIds">
-                    <option disabled>Select Languages</option>
+                <label>Select Languages</label>
+                <select multiple class="form-select" asp-for="EventLanguageIds">
                     @foreach (var language in languages)
                     {
                         <option value="@language.Id">@language.Name</option>
@@ -68,9 +62,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <span>Select Speaker</span>
-                <select class="form-select" asp-for="EventPersonIds">
-                    <option disabled>Select Speaker</option>
+                <label>Select Speakers</label>
+                <select multiple class="form-select" asp-for="EventPersonIds">
                     @foreach (var person in people)
                     {
                         <option value="@person.Id">@person.FullName</option>
@@ -79,14 +72,62 @@
             </div>
             <div class="form-group">
                 <label asp-for="Photos"></label>
-                <input asp-for="Photos" class="form-control" aria-describedby="emailHelp">
+                <input asp-for="Photos" type="file" class="form-control" multiple>
                 <span class="text-danger" asp-validation-for="Photos"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <!-- Dinamik Schedule Əlavə Sahəsi -->
+            <div class="form-group">
+                <label>Schedules</label>
+                <div id="schedule-container">
+                    <!-- Burada dinamik input sahələri əlavə olunacaq -->
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" id="add-schedule">+ Add Schedule</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
         </form>
     </div>
 </div>
+
 @section scripts {
     @await Html.PartialAsync("_ValidationPartial")
-}
 
+    <script>
+        let scheduleIndex = 0;
+
+        document.getElementById("add-schedule").addEventListener("click", function () {
+            const container = document.getElementById("schedule-container");
+            const scheduleDiv = document.createElement("div");
+            scheduleDiv.classList.add("schedule-item", "mb-3");
+
+            scheduleDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Date</label>
+                        <input type="date" name="Schedules[${scheduleIndex}].Date" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Start Time</label>
+                        <input type="time" name="Schedules[${scheduleIndex}].StartTime" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label>End Time</label>
+                        <input type="time" name="Schedules[${scheduleIndex}].EndTime" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger mt-4 remove-schedule">X</button>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(scheduleDiv);
+            scheduleIndex++;
+
+            // Remove button event
+            scheduleDiv.querySelector(".remove-schedule").addEventListener("click", function () {
+                scheduleDiv.remove();
+            });
+        });
+    </script>
+}

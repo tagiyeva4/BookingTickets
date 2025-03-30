@@ -107,6 +107,8 @@ namespace BookingTickets.Presentation.Controllers
         }
         public IActionResult BlogList()
         {
+            ViewBag.Categories = _dbContext.Categories.ToList();    
+            ViewBag.Tags = _dbContext.Tags.ToList();
             var blogs = _dbContext.Blogs.Include(b => b.BlogImages).ToList();
             return View(blogs);
         }

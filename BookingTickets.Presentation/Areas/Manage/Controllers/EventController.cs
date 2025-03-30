@@ -45,6 +45,7 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
             ViewBag.Languages = dbContext.Languages.ToList();
             ViewBag.Venues = dbContext.Venues.ToList();
             ViewBag.Persons = dbContext.People.ToList();
+            ViewBag.Schedules = dbContext.Schedules.ToList();
             var result=await eventService .GetUpdatedDtoAsync(id);
             if (result is null)
             {
