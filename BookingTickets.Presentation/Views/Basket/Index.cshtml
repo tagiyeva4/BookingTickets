@@ -1,0 +1,212 @@
+﻿@using BookingTickets.Core.ViewModels
+@model List<BasketItemVm>
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area bg-img" data-bg="assets/img/banner/breadcrumb-banner.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap text-center">
+                        <nav aria-label="breadcrumb">
+                            <h1 class="breadcrumb-title">Cart</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" >Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- cart main wrapper start -->
+    <div class="cart-main-wrapper section-padding">
+        <div class="container">
+            <div class="section-bg-color">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Cart Table Area -->
+                        <div class="cart-table table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="pro-title">Event</th>
+                                        <th class="pro-price">Price</th>
+                                        <th class="pro-quantity">Tickets</th>
+                                        <th class="pro-subtotal">Total</th>
+                                        <th class="pro-remove">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="pro-title">
+                                                <a asp-action="Detail" asp-controller="Event" asp-route-id="@item.Id">@item.Name</a>
+                                            </td>
+                                            <td class="pro-price"><span>$@(item.Price)</span></td>
+                                            <td class="pro-quantity">
+                                                <div class="pro-qty">
+                                                    <input type="text" value="@item.Count" />
+                                                </div>
+                                            </td>
+                                            <td class="pro-subtotal"><span>$@(item.Price * item.Count)</span></td>
+                                            <td class="pro-remove">
+                                                <a asp-action="RemoveToBasketAsync" asp-controller="Basket" asp-route-id="@item.Id" class="product-item-remove">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Cart Update Option -->
+                        <div class="cart-update-option d-block d-md-flex justify-content-between">
+                            <div class="apply-coupon-wrapper">
+                                <!-- Coupon code form can be added here -->
+                            </div>
+                            <div class="cart-update">
+                                <a href="#" class="btn btn-primary">Update Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 ml-auto">
+                        <!-- Cart Calculation Area -->
+                        <div class="cart-calculator-wrapper">
+                            <div class="cart-calculate-items">
+                                <h3>Cart Totals</h3>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <td>Sub Total</td>
+                                            <td>$@Model.Sum(p => p.Count * p.Price)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shipping</td>
+                                            <td>$00</td>
+                                        </tr>
+                                        <tr class="total">
+                                            <td>Total</td>
+                                            <td class="total-amount">$@Model.Sum(p => p.Count * p.Price)</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <a asp-action="CheckOut" asp-controller="Order" class="btn btn-checkout">Proceed Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cart main wrapper end -->
+</main>
+<!-- main wrapper end -->
+
+<script>
+    document.querySelectorAll(".product-item-remove").forEach(link => {
+        link.addEventListener("click", async function (e) {
+            e.preventDefault();
+            let productId = this.getAttribute("data-id");
+
+            let response = await fetch(`/Basket/RemoveToBasket/${productId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            let result = await response.json();
+
+            if (response.ok && result.success) {
+                this.closest(".basket-item").remove();
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Template uyğun rənglər */
+    .breadcrumb-area {
+        background: #f8f9fa;
+    }
+    .breadcrumb-title {
+        font-size: 36px;
+        font-weight: bold;
+        color: #222;
+    }
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+    .pro-thumbnail img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+    .pro-title a {
+        font-size: 18px;
+        color: #444;
+        font-weight: 600;
+    }
+    .pro-price span {
+        font-size: 16px;
+        color: #333;
+    }
+    .pro-quantity input {
+        width: 50px;
+        padding: 5px;
+        font-size: 14px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .pro-remove a {
+        color: #dc3545;
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+    .pro-remove a:hover {
+        color: #a71d2a;
+    }
+    .cart-calculator-wrapper {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .cart-calculator-wrapper h3 {
+        font-size: 24px;
+        color: #222;
+    }
+    .cart-calculator-wrapper .btn-checkout {
+        background-color: #ff6600;
+        color: white;
+        padding: 12px 30px;
+        font-size: 16px;
+        border-radius: 5px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        transition: background 0.3s;
+    }
+    .cart-calculator-wrapper .btn-checkout:hover {
+        background-color: #e65c00;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>

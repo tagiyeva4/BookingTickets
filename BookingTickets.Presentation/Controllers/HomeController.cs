@@ -47,7 +47,7 @@ public class HomeController : Controller
         homeVm.SlidingTexts=_dbContext.SlidingTexts.ToList();
         homeVm.Brands=_dbContext.Brands.ToList();
        homeVm.Blogs = _dbContext.Blogs.Take(3).Include(x => x.BlogImages).ToList();
-        homeVm.Events = _dbContext.Events.Include(x=>x.Venue).Include(x=>x.EventLanguages).ThenInclude(el=>el.Language).Include(x=>x.EventPersons).ThenInclude(xp=>xp.Person).Where(x=>x.IsAccess==true).ToList();
+        homeVm.Events = _dbContext.Events.Include(x=>x.Venue).Include(x=>x.EventLanguages).ThenInclude(el=>el.Language).Include(x=>x.EventPersons).ThenInclude(xp=>xp.Person).Include(e=>e.EventsSchedules).ThenInclude(es=>es.Schedule).Where(x=>x.IsAccess==true).ToList();
         return View(homeVm);
     }
 

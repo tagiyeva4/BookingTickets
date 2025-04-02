@@ -92,19 +92,57 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9636705a-ca59-4ded-806f-08f0e75f6820",
+                            Id = "4b0b1f15-3e5b-42b8-8330-3622fea94b50",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "da132ec8-9105-44e0-97da-2447a53a11f6",
+                            ConcurrencyStamp = "9069af65-b837-48c0-8a29-ebe9d7b06a53",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFldaXLcejQdKKCuzBWiucY5X8yGqKBV7WL1wjEUu1HLJE3g0mghl0gDDYkH6qPHKA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPyrFF0q/iNdobq+/z9Q/Hv6B1Kh01AtK7RacBH/XofkoolOXuPO8tH6kcSr36evQw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "53c0128a-3616-472b-839f-bc4eb479dfb8",
+                            SecurityStamp = "bfb34c05-e97d-409b-b171-aa864893fa81",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.BasketItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Blog", b =>
@@ -427,6 +465,75 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PromoCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("BookingTickets.Core.Entities.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -650,17 +757,15 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PurchaseDate")
+                    b.Property<DateTime?>("PurchaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("QRCodePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -735,25 +840,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "db32338b-d27e-48f8-aaa0-fa630024c782",
+                            Id = "4bc11d2a-e261-4b2d-8e88-bc821375aa77",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "56d8859f-ffde-40cd-97a1-7655b74575c9",
+                            Id = "cc344681-975d-450a-9903-650db1171ff0",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "2dd6915f-53d4-4b90-81d6-e5bd6e048900",
+                            Id = "5135111e-92bb-4d9d-9235-82939c7c6a57",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "ea3ddfbe-286a-494d-8e74-2018ca3bc12e",
+                            Id = "61e05029-a1a1-4c18-a70e-780798dd730e",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -848,8 +953,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "9636705a-ca59-4ded-806f-08f0e75f6820",
-                            RoleId = "56d8859f-ffde-40cd-97a1-7655b74575c9"
+                            UserId = "4b0b1f15-3e5b-42b8-8330-3622fea94b50",
+                            RoleId = "cc344681-975d-450a-9903-650db1171ff0"
                         });
                 });
 
@@ -870,6 +975,23 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.BasketItem", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.AppUser", "AppUser")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("BookingTickets.Core.Entities.Ticket", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.BlogComment", b =>
@@ -981,6 +1103,34 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.Navigation("Schedule");
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.Order", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.OrderItem", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingTickets.Core.Entities.Ticket", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Ticket");
+                });
+
             modelBuilder.Entity("BookingTickets.Core.Entities.Person", b =>
                 {
                     b.HasOne("BookingTickets.Core.Entities.Profession", "Profession")
@@ -996,12 +1146,10 @@ namespace BookingTickets.DataAccess.Data.Migrations
                 {
                     b.HasOne("BookingTickets.Core.Entities.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("BookingTickets.Core.Entities.Event", "Event")
-                        .WithMany()
+                        .WithMany("Tickets")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1062,6 +1210,11 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BookingTickets.Core.Entities.AppUser", b =>
+                {
+                    b.Navigation("BasketItems");
+                });
+
             modelBuilder.Entity("BookingTickets.Core.Entities.Blog", b =>
                 {
                     b.Navigation("BlogComments");
@@ -1078,11 +1231,18 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.Navigation("EventPersons");
 
                     b.Navigation("EventsSchedules");
+
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Language", b =>
                 {
                     b.Navigation("EventLanguages");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Person", b =>

@@ -2,6 +2,7 @@
 {
     public enum TicketStatus
     {
+        Available,
         Purchased,
         Validated
     }

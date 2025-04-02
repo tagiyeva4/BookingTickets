@@ -29,6 +29,9 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<EventsSchedule> EventsSchedules { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries<BaseAuditableEntity>();

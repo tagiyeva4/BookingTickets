@@ -7,6 +7,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using BookingTickets.Business.Dtos.EventDtos;
 using BookingTickets.Business.Validators.BlogValidators;
+using BookingTickets.Business.Services;
 
 namespace BookingTickets.Business.ServiceRegistration;
 
@@ -38,6 +39,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<LayoutServices>();
         services.AddScoped<EmailService>();
+        services.AddScoped<QrCodeService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
     }
  }

@@ -1,10 +1,13 @@
 ﻿using BookingTickets.Core.Entities;
+using iText.Bouncycastleconnector;
 using iText.IO.Image;
 using iText.Kernel.Pdf;
 using Microsoft.AspNetCore.Hosting;
 using QRCoder;
 using Document = iText.Layout.Document;
 using Paragraph = iText.Layout.Element.Paragraph;
+
+
 
 namespace BookingTickets.Business.Services
 {
@@ -60,6 +63,7 @@ namespace BookingTickets.Business.Services
         //}
         public string GenerateTicketPDF(Ticket ticket)
         {
+
             // Unikal token yarat
             ticket.ValidationToken = Guid.NewGuid().ToString();
             string validationUrl = $"https://mysite.com/validate/{ticket.ValidationToken}";
@@ -74,12 +78,20 @@ namespace BookingTickets.Business.Services
             string qrFolderPath = Path.Combine(_env.WebRootPath, "qrcodes");
             string pdfFolderPath = Path.Combine(_env.WebRootPath, "tickets");
 
-            Directory.CreateDirectory(qrFolderPath);
-            Directory.CreateDirectory(pdfFolderPath);
+            // Əgər qovluq yoxdursa, yarat
+            if (!Directory.Exists(qrFolderPath))
+            {
+                Directory.CreateDirectory(qrFolderPath);
+            }
+            if (!Directory.Exists(pdfFolderPath))
+            {
+                Directory.CreateDirectory(pdfFolderPath);
+            }
 
             // QR kod faylını yadda saxla
-            ticket.QRCodePath = $"/qrcodes/ticket_{ticket.Id}.png";
-            File.WriteAllBytes(Path.Combine(_env.WebRootPath, ticket.QRCodePath), qrCodeBytes);
+            ticket.QRCodePath = Path.Combine("qrcodes", $"ticket_{ticket.Id}.png");
+            var qrPath = Path.Combine(_env.WebRootPath, ticket.QRCodePath);
+            File.WriteAllBytes(qrPath, qrCodeBytes);
 
             // PDF faylını yadda saxla
             string pdfPath = Path.Combine(pdfFolderPath, $"ticket_{ticket.Id}.pdf");

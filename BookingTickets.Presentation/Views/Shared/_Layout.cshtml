@@ -71,7 +71,7 @@
                             <div class="logo">
                                 <a asp-action="Index" asp-controller="Home"><img src="~/assets/images/resources/@settings["Logo"]" alt="" /></a>
                             </div>
-                             <div class="minicart-content-box">
+                            <div class="minicart-content-box">
                                 <partial name="_BasketPartial" model="@basketItems"></partial>
                             </div>
                             @*  <div class="content-box">
@@ -198,7 +198,9 @@
                         </div>
                         <div class="main-menu__right">
                             <div class="main-menu__cart-search-nav-sidebar-icon-and-btn-box">
-                                <a href="#" class="main-menu__cart  icon-cart"></a>
+                                <a href="#" class="main-menu__cart  icon-cart">
+                                    <span class="badge basketCountarea"> 0</span>
+                                </a>
                                 <a href="#" class="main-menu__search search-toggler">
                                     <span class="icon-loupe"></span>
                                 </a>
@@ -459,7 +461,17 @@
     <script src="~/assets/vendors/sidebar-content/jquery-sidebar-content.js"></script>
 
 
-
+    <script>
+        $(".addBasket").click(function (ev) {
+            ev.preventDefault();
+            let url = $(this).attr("href");
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    $(".minicart-content-box").html(data);
+                })
+        });
+    </script>
     <script>
             const input = document.querySelector("#searchInput");
 

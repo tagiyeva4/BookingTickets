@@ -9,7 +9,7 @@
                 <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInLeft" data-wow-delay="100ms">
                     <div class="blog-one__single">
                         <div class="blog-one__img">
-                            <img src="@blog.BlogImages.FirstOrDefault()" alt="">
+                            <img src="@blog.BlogImages.FirstOrDefault().ImagePath" alt="">
                             <div class="blog-one__hover">
                                 <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id">
                                     <div class="blog-one__hover-icon-1">

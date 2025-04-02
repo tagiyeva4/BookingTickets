@@ -12,11 +12,7 @@
             @foreach (var product in Model)
             {
                 <li class="minicart-item">
-                    <div class="minicart-thumb">
-                        <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id">
-                            <img src="~/assets/img/product/@product.MainImage" alt="product" />
-                        </a>
-                    </div>
+                    
                     <div class="minicart-content">
                         <h3 class="product-name">
                             <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id">@product.Name</a>
@@ -64,7 +60,7 @@
     <a asp-action="CheckOut" asp-controller="Order"><i class="fa fa-share"></i> checkout</a>
 </div>
 
-<script>
+@* <script>
         document.querySelector(".basketCountarea").innerHTML=@Model.Count
 
        document.querySelectorAll(".product-item-remove").forEach(link => {
@@ -89,3 +85,4 @@
 
 
 </script>
+ *@

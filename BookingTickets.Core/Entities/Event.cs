@@ -24,5 +24,5 @@ public class Event : BaseEntity
     public int MinPrice { get; set; }
     public int TotalTickets { get; set; }
     public ICollection<EventsSchedule> EventsSchedules { get; set; } = [];
-   
+    public List<Ticket> Tickets { get; set; } = [];
 }
