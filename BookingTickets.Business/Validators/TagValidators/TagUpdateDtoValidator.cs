@@ -8,6 +8,6 @@ public class TagUpdateDtoValidator: AbstractValidator<TagUpdateDto>
     public TagUpdateDtoValidator()
     {
         RuleFor(x => x.Id).NotEmpty().WithMessage("Id cannot be empty..");
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Tag name cannot be empty..");
+        RuleFor(x => x.Name).NotEqual("<p><br></p>").WithMessage("Tag name cannot be empty..");
     }
 }

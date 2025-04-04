@@ -4,45 +4,34 @@
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control ProductDetail" aria-describedby="emailHelp">
+
+                <!-- Hidden input field to store Quill editor content -->
+                <input type="hidden" id="Name" name="Name" />
+
+                <!-- Quill container with initial value from Model.Name -->
+                <div id="description0">@Html.Raw(Model.Name)</div>
+
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
+
 @section scripts {
     @await Html.PartialAsync("_ValidationPartial")
 
-    <script type="module">
-        import {
-            ClassicEditor,
-            Essentials,
-            Paragraph,
-            Bold,
-            Italic,
-            Font
-        } from 'ckeditor5';
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
-        ClassicEditor
-            .create(document.querySelector('.ProductDetail'), {
-                plugins: [Essentials, Paragraph, Bold, Italic, Font],
-                toolbar: [
-                    'undo', 'redo', '|', 'bold', 'italic', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-                ]
-            })
-            .then(editor => {
-                window.editor = editor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    <script>
+        const quill = new Quill('#description0', {
+            theme: 'snow'
+        });
 
-
-
-
-
+        // On form submit, push Quill's HTML into the hidden input
+        document.querySelector('form').addEventListener('submit', function () {
+            document.querySelector('#Name').value = quill.root.innerHTML;
+        });
     </script>
-
 }

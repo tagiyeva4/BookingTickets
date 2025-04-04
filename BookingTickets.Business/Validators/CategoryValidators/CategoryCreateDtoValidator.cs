@@ -7,6 +7,6 @@ public class CategoryCreateDtoValidator : AbstractValidator<CategoryCreateDto>
 {
     public CategoryCreateDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.Name).NotEqual("<p><br></p>").WithMessage("Name is required");
     }
 }

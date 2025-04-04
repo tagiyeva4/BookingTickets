@@ -7,6 +7,6 @@ public class TagCreateDtoValidator:AbstractValidator<TagCreateDto>
 {
     public TagCreateDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Tag name cannot be empty..");
+        RuleFor(x => x.Name).NotEqual("<p><br></p>").WithMessage("Tag name cannot be empty..");
     }
 }

@@ -40,25 +40,52 @@
                 <input asp-for="PhoneNumber" class="form-control" aria-describedby="emailHelp">
                 <span class="text-danger" asp-validation-for="PhoneNumber"></span>
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label>Event Schedules</label>
                 <div id="schedule-container">
-                    @for (int i = 0; i < Model.Schedules.Count; i++)
+                    @for (int i = 0; i < Model.EventSchedules.Count; i++)
                     {
+
                         <div class="schedule-item">
-                            <input type="hidden" asp-for="Schedules[i].Id" />
+                            <input type="hidden" asp-for="EventSchedules[i].Id" />
                             <label>Date</label>
-                            <input type="date" asp-for="Schedules[i].Date" class="form-control" />
+                            <input type="date" asp-for="EventSchedules[i].Date" class="form-control" />
                             <label>Start Time</label>
-                            <input type="time" asp-for="Schedules[i].StartTime" class="form-control" />
+                            <input type="time" asp-for="EventSchedules[i].StartTime" class="form-control" />
                             <label>End Time</label>
-                            <input type="time" asp-for="Schedules[i].EndTime" class="form-control" />
+                            <input type="time" asp-for="EventSchedules[i].EndTime" class="form-control" />
                             <button type="button" class="btn btn-danger remove-schedule">Remove</button>
                         </div>
                     }
                 </div>
                 <button type="button" class="btn btn-success" id="add-schedule">Add Schedule</button>
+            </div> *@
+            <div class="form-group">
+                <label>Schedules</label>
+                <div id="schedule-container">
+                    @for (int i = 0; i < Model.EventSchedules.Count; i++)
+                    {
+                        <div class="schedule-item">
+                            <input type="hidden" asp-for="EventSchedules[i].Id" />
+                            <label>Date</label>
+                            <input type="date" asp-for="EventSchedules[i].Date" class="form-control"
+                                   value="@Model.EventSchedules[i].Date.ToString("yyyy-MM-dd")" />
+
+                            <label>Start Time</label>
+                            <input type="time" asp-for="EventSchedules[i].StartTime" class="form-control"
+                                   value="@Model.EventSchedules[i].StartTime.ToString(@"hh\:mm")" />
+
+                            <label>End Time</label>
+                            <input type="time" asp-for="EventSchedules[i].EndTime" class="form-control"
+                                   value="@Model.EventSchedules[i].EndTime.ToString(@"hh\:mm")" />
+
+                            <button type="button" class="btn btn-danger remove-schedule">Remove</button>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-success mt-2" id="add-schedule">+ Add Schedule</button>
             </div>
+
 
             <div class="form-group">
                 <select asp-for="EventLanguageIds">
@@ -111,7 +138,7 @@
 </div>
 @section scripts {
     @await Html.PartialAsync("_ValidationPartial")
-
+@* 
     <script>
         document.getElementById("add-schedule").addEventListener("click", function () {
             let container = document.getElementById("schedule-container");
@@ -138,8 +165,39 @@
                 event.target.parentElement.remove();
             }
         });
-    </script>
+    </script> *@
 
+
+    <script>
+        document.getElementById("add-schedule").addEventListener("click", function () {
+            let container = document.getElementById("schedule-container");
+            let index = container.getElementsByClassName("schedule-item").length;
+
+            let today = new Date().toISOString().split("T")[0];
+            let currentTime = new Date().toISOString().slice(11, 16);
+
+            let html = `<div class="schedule-item">
+                <input type="hidden" name="EventSchedules[${index}].Id" value="0" />
+                <label>Date</label>
+                <input type="date" name="EventSchedules[${index}].Date" class="form-control" required value="${today}" />
+                <label>Start Time</label>
+                <input type="time" name="EventSchedules[${index}].StartTime" class="form-control" required value="${currentTime}" />
+                <label>End Time</label>
+                <input type="time" name="EventSchedules[${index}].EndTime" class="form-control" required value="${currentTime}" />
+                <button type="button" class="btn btn-danger remove-schedule">Remove</button>
+            </div>`;
+
+            let div = document.createElement("div");
+            div.innerHTML = html;
+            container.appendChild(div);
+        });
+
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-schedule")) {
+                event.target.parentElement.remove();
+            }
+        });
+    </script>
 
 }
 

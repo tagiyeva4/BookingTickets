@@ -18,57 +18,92 @@ namespace BookingTickets.Presentation.Controllers
                 .Include(u=>u.BasketItems)
                 .ThenInclude(b => b.Ticket)
                 .FirstOrDefault(u => u.UserName == User.Identity.Name);
+
             CheckOutVm checkOutVm = new CheckOutVm();
+
             checkOutVm.CheckoutItemVms = user.BasketItems.Select(b => new CheckoutItemVm
             {
                 EventName = b.Ticket.Event.Name,
-                TotalItemPrice = b.Ticket.Event.MinPrice,
-                Count=b.Count
+                TotalItemPrice = b.Ticket.Event.MinPrice
             }).ToList();
 
             return View(checkOutVm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "member")]
+        [Authorize(Roles = "Member")]
         public IActionResult CheckOut(OrderVm orderVm)
         {
             var user=userManager.Users
                 .Include(u => u.BasketItems)
                 .ThenInclude(b => b.Ticket)
                 .FirstOrDefault(u => u.UserName == User.Identity.Name);
+
             if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
+
             if(!ModelState.IsValid)
             {
                 CheckOutVm checkOutVm = new CheckOutVm();
                 checkOutVm.CheckoutItemVms = user.BasketItems.Select(b => new CheckoutItemVm
                 {
                     EventName = b.Ticket.Event.Name,
-                    TotalItemPrice = b.Ticket.Event.MinPrice,
-                    Count = b.Count
+                    TotalItemPrice = b.Ticket.Event.MinPrice
                 }).ToList();
+
                 checkOutVm.OrderVm = orderVm;
+
                return View(checkOutVm);
             }
+
             Order order = new Order();
+
             order.AppUserId = user.Id;
+
             order.PhoneNumber = orderVm.PhoneNumber;
+
             order.OrderStatus = OrderStatus.Pending;
-            order.TotalPrice =user.BasketItems.Sum(c => c.Ticket.Event.MaxPrice * c.Count);
+
             order.OrderItems = user.BasketItems.Select(b => new OrderItem
             {
                 TicketId = b.TicketId,
-                Count = b.Count
             }).ToList();
+
             dbContext.Orders.Add(order);
+
             dbContext.BasketItems.RemoveRange(user.BasketItems);
+
             dbContext.SaveChanges();
+
             HttpContext.Response.Cookies.Delete("basket");
+
             return RedirectToAction("Index", "Basket");
 
         }
+        [Authorize(Roles = "Member")]
+        public IActionResult Cancel(int orderId)
+        {
+            var order=dbContext.Orders
+                .Where(o => o.AppUserId == userManager.GetUserId(User))
+                .FirstOrDefault(o => o.Id == orderId);
+            order.OrderStatus = OrderStatus.Cancelled;
+            dbContext.SaveChanges();
+            return RedirectToAction("Index", "Basket");
+        }
+        //[Authorize(Roles = "Member")]
+        //public IActionResult GetOrderItems(int orderId)
+        //{
+        //    var order = dbContext.Orders
+        //        .Where(o => o.AppUserId == userManager.GetUserId(User))
+        //        .Include(o => o.OrderItems)
+        //        .ThenInclude(oi => oi.Ticket)
+        //        .ThenInclude(t => t.Event)
+        //        .FirstOrDefault(o => o.Id == orderId);
+
+        //    return PartialView("_OrderItemsPartial", order);
+
+        //}
     }
 }

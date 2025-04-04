@@ -17,13 +17,10 @@ public class EventAutoMapper:Profile
         CreateMap<Event, EventUpdateDto>()
              .ForMember(x => x.EventLanguageIds, x => x.MapFrom(x => x.EventLanguages.Select(x => x.LanguageId)))
               .ForMember(x => x.EventPersonIds, x => x.MapFrom(x => x.EventPersons.Select(x => x.PersonId)))
-                .ForMember(x => x.EventScheduleIds, x => x.MapFrom(x => x.EventsSchedules.Select(x => x.ScheduleId)))
           .ForMember(dest => dest.EventImages, opt => opt.MapFrom(src => src.EventImages.Select(img => img.ImagePath)))
           .ReverseMap() // EventUpdateDto -> Event mapping
           .ForMember(dest => dest.EventLanguages, opt => opt.MapFrom(src =>
               src.EventLanguageIds.Select(id => new EventLanguage { LanguageId = id }).ToList()))
-           .ForMember(dest => dest.EventsSchedules, opt => opt.MapFrom(src =>
-              src.EventScheduleIds.Select(id => new EventsSchedule { ScheduleId = id }).ToList()))
           .ForMember(dest => dest.EventPersons, opt => opt.MapFrom(src =>
               src.EventPersonIds.Select(id => new EventPeron { PersonId = id }).ToList())) // Manuel doldurulacaq
           .ForMember(dest => dest.EventImages, opt => opt.MapFrom(src => src.EventImages != null

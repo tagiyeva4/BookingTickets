@@ -1,7 +1,6 @@
 ﻿using BookingTickets.Business.Dtos.VenueDtos;
 using BookingTickets.Business.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers;
 

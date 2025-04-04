@@ -156,7 +156,7 @@ public class EventService : IEventService
 
     public async Task<EventUpdateDto> GetUpdatedDtoAsync(int id)
     {
-        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue","EventLanguages.Language", "EventPersons.Person");
+        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue","EventLanguages.Language", "EventPersons.Person", "EventsSchedules.Schedule");
 
         if (@event == null)
         {
@@ -182,7 +182,7 @@ public class EventService : IEventService
             return false;
         }
 
-        var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id, "EventImages", "Venue", "EventLanguages.Language","EventPersons.Person");
+        var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id, "EventImages", "Venue", "EventLanguages.Language","EventPersons.Person","EventsSchedules.Schedule");
 
         if (existEvent == null)
         {
@@ -214,9 +214,40 @@ public class EventService : IEventService
             }
         }
 
+        var existingScheduleIds = existEvent.EventsSchedules.Select(es => es.ScheduleId).ToList();
+
         existEvent = _mapper.Map(dto, existEvent);
 
+        // Handle schedules
+        // Get updated schedule IDs
+        var updatedScheduleIds = dto.EventSchedules.Where(s => s.Id != 0).Select(s => s.Id).ToList();
 
+        // Find schedules to remove (those in existing but not in updated)
+        var schedulesToRemoveIds = existingScheduleIds.Except(updatedScheduleIds).ToList();
+
+        // Remove event-schedule relationships for removed schedules
+        foreach (var scheduleId in schedulesToRemoveIds)
+        {
+            var eventSchedule = existEvent.EventsSchedules.FirstOrDefault(es => es.ScheduleId == scheduleId);
+            if (eventSchedule != null)
+            {
+                existEvent.EventsSchedules.Remove(eventSchedule);
+            }
+        }
+
+        // Process existing schedules that need updates
+        foreach (var scheduleDto in dto.EventSchedules.Where(s => s.Id != 0))
+        {
+            // Find the schedule in the event
+            var eventSchedule = existEvent.EventsSchedules.FirstOrDefault(es => es.ScheduleId == scheduleDto.Id);
+            if (eventSchedule != null && eventSchedule.Schedule != null)
+            {
+                // Update the schedule
+                eventSchedule.Schedule.Date = scheduleDto.Date;
+                eventSchedule.Schedule.StartTime = scheduleDto.StartTime;
+                eventSchedule.Schedule.EndTime = scheduleDto.EndTime;
+            }
+        }
 
         //remove deletedImages
         var imagesToRemove = existEvent.EventImages?.ToList() ?? new List<EventImage>();

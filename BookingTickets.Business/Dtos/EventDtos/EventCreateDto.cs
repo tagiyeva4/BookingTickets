@@ -29,6 +29,7 @@ public class EventCreateDto : IDto
     public List<IFormFile> Photos { get; set; } = [];
     [Required(ErrorMessage = "TotalTickets field cannot be empty..")]
     public int TotalTickets { get; set; }
+    [Required(ErrorMessage = "Schedules field cannot be empty..")]
     public List<ScheduleDto> Schedules { get; set; } = [];
 
 }

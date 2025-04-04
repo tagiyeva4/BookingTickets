@@ -6,6 +6,7 @@ public class CategoryUpdateDtoValidator: AbstractValidator<CategoryUpdateDto>
 {
     public CategoryUpdateDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Category name cannot be empty..");
+        RuleFor(x => x.Id).NotEmpty().WithMessage("Id cannot be empty..");
+        RuleFor(x => x.Name).NotEqual("<p><br></p>").WithMessage("Category name cannot be empty..");
     }
 }

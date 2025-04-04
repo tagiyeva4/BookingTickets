@@ -6,10 +6,73 @@
             <div class="p-3 border bg-light">Address: @Model.Address</div>
             <div class="p-3 border bg-light">Longitude: @Model.Longitude</div>
             <div class="p-3 border bg-light">Latitude: @Model.Latitude</div>
+
+            <div class="col-md-6">
+                <h5>Oturacaq Ön Baxışı</h5>
+                <div class="bg-light p-3 rounded border">
+                    <div class="text-center bg-dark text-white py-2 mb-3">SƏHNƏ</div>
+                    <div id="seats-container"></div>
+                </div>
+            </div>
+
         </div>
         <div class="col">
             <a class="btn btn-outline-primary" asp-action="index">Go back</a>
         </div>
     </div>
 </div>
+@section scripts{
+    <script>
+        const venueSeats = @Html.Raw(Json.Serialize(Model.Seats));
+        console.log("Seats:", venueSeats);
+        function renderSeatLayout(seats) {
+            const container = document.getElementById("seats-container");
+            container.innerHTML = "";
+
+            if (!seats || seats.length === 0) {
+                container.innerHTML = "<p>No seats available.</p>";
+                return;
+            }
+
+            // Rowlara görə qrupla
+            const grouped = {};
+            seats.forEach(seat => {
+                if (!grouped[seat.rowName]) grouped[seat.rowName] = [];
+                grouped[seat.rowName].push(seat);
+            });
+
+            const sortedRows = Object.keys(grouped).sort(); // sıra adlarına görə sırala (A, B, C və s.)
+
+            sortedRows.forEach(rowName => {
+                const rowDiv = document.createElement("div");
+                rowDiv.className = "d-flex justify-content-center align-items-center mb-2";
+
+                const rowLabel = document.createElement("div");
+                rowLabel.className = "mr-2 font-weight-bold";
+                rowLabel.style.width = "30px";
+                rowLabel.innerText = rowName;
+                rowDiv.appendChild(rowLabel);
+
+                const seatsInRow = grouped[rowName].sort((a, b) => a.seatNumber - b.seatNumber);
+                seatsInRow.forEach(seat => {
+                    const seatDiv = document.createElement("div");
+                    seatDiv.className = "border border-secondary rounded m-1 d-flex justify-content-center align-items-center";
+                    seatDiv.style.width = "30px";
+                    seatDiv.style.height = "30px";
+                    seatDiv.style.fontSize = "12px";
+                    seatDiv.title = `Seat: ${seat.seatLabel}`;
+                    seatDiv.innerText = seat.seatNumber;
+                    rowDiv.appendChild(seatDiv);
+                });
+
+                container.appendChild(rowDiv);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            renderSeatLayout(venueSeats);
+        });
+    </script>
+
+}
 
