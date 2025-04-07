@@ -100,4 +100,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
         return result;
     }
+    
+
+    public async Task DeleteAllAsync<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
+    {
+        var entities = await _dbContext.Set<TEntity>().Where(expression).ToListAsync();
+        if (entities.Any())
+        {
+            _dbContext.Set<TEntity>().RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
 }

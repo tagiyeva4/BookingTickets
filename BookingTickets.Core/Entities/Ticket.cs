@@ -1,4 +1,5 @@
 ﻿using BookingTickets.Core.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingTickets.Core.Entities;
 
@@ -6,14 +7,24 @@ public class Ticket : BaseEntity
 {
     public int EventId { get; set; }
     public Event Event { get; set; }
-    public string? AppUserId { get; set; } // Bilet əvvəlcə istifadəçiyə bağlı olmur
+
+    public string? AppUserId { get; set; } 
     public AppUser? AppUser { get; set; }
 
-    public DateTime? PurchaseDate { get; set; } // 🔹 `null` ola bilər, əgər alınmayıbsa
-    public TicketStatus Status { get; set; } = TicketStatus.Available; // 🔹 Default olaraq "Available"
+    public int VenueSeatId { get; set; } 
+    public VenueSeat VenueSeat { get; set; }
 
-    public string? QRCodePath { get; set; } // 🔹 Default olaraq null ola bilər
-    public string ValidationToken { get; set; } = Guid.NewGuid().ToString(); // 🔐 Default token
+    public DateTime? PurchaseDate { get; set; } 
 
+    public TicketStatus Status { get; set; }
+
+    public string? QRCodePath { get; set; } 
+
+    public string ValidationToken { get; set; } = Guid.NewGuid().ToString(); 
+
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Price { get; set; }
+    public DateTime ReservedAt { get; set; } = DateTime.Now;
+    public DateTime ExpiresAt { get; set; } = DateTime.Now.AddMinutes(15);
 }
 

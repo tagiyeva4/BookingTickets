@@ -1,4 +1,7 @@
-﻿namespace BookingTickets.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BookingTickets.Core.Entities
 {
     public class VenueSeat : BaseEntity
     {
@@ -8,6 +11,8 @@
         public string? SeatLabel { get; set; } // A1, B2, C3 və ya 1-1, 2-5
         public int VenueId { get; set; }
         public Venue Venue { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }
     }
 
 }

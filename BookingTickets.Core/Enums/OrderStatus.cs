@@ -3,7 +3,8 @@
 public enum OrderStatus
 {
     Pending,
-    Accepted,
-    Rejected,
-    Cancelled,
+    Completed ,
+    Failed,        
+    Cancelled 
+
 }

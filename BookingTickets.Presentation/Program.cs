@@ -1,9 +1,11 @@
 using BookingTickets.Business.ServiceRegistration;
 using BookingTickets.Core.Entities;
+using BookingTickets.DataAccess;
 using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.DataAccess.ServiceRegistration;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -12,7 +14,7 @@ var config = builder.Configuration;
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddBusinessServices();  
 builder.Services.AddDataAccessServices(config);
-
+builder.Services.Configure<StripeSettings>(config.GetSection("Stripe"));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -76,6 +78,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+StripeConfiguration.ApiKey = app.Configuration["Stripe:SecretKey"];
 
 app.MapStaticAssets();
 

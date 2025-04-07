@@ -15,4 +15,7 @@ public interface IRepository<TEntity> where TEntity : class
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
    Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
     Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate);
+
+    Task DeleteAllAsync<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class;
+
 }

@@ -62,6 +62,16 @@ public class EventService : IEventService
 
         var @event = _mapper.Map<Event>(dto);
 
+        @event.Venue = await _dbContext.Venues
+       .Include(v => v.Seats)
+    .FirstOrDefaultAsync(v => v.Id == dto.VenueId);
+
+        if (@event.Venue == null || @event.Venue.Seats == null || !@event.Venue.Seats.Any())
+        {
+            ModelState.AddModelError("VenueId", "Venue or its seats not found.");
+            return false;
+        }
+
         @event.EventImages = [];
 
         foreach (var file in dto.Photos)
@@ -113,6 +123,8 @@ public class EventService : IEventService
                 Schedule = schedule
             });
         }
+
+     CalculateService.CalculateSeatPricesForEvent(@event);
 
         await _repository.AddAsync(@event);
 
@@ -182,7 +194,11 @@ public class EventService : IEventService
             return false;
         }
 
-        var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id, "EventImages", "Venue", "EventLanguages.Language","EventPersons.Person","EventsSchedules.Schedule");
+        var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id,
+            "EventImages", "Venue",
+            "EventLanguages.Language",
+            "EventPersons.Person",
+            "EventsSchedules.Schedule");
 
         if (existEvent == null)
         {
@@ -193,124 +209,115 @@ public class EventService : IEventService
 
         if (isExist)
         {
-            throw new CustomException("400", "Event already exist");
+            throw new CustomException(400, "Event already exists");
         }
 
+        // 🔹 Validation for new uploaded images
         if (dto.Photos != null)
         {
-            foreach (var formFile in dto.Photos)
+            foreach (var photo in dto.Photos)
             {
-                if (formFile.CheckSize(5 * 1024 * 1024))
+                if (photo.CheckSize(5 * 1024 * 1024))
                 {
-                    ModelState.AddModelError("Photos", "The size of the image should not exceed 2 MB.");
+                    ModelState.AddModelError("Photos", "Image size max 5MB olmalıdır.");
                     return false;
                 }
-
-                if (formFile.CheckType(["image/"]))
+                if (photo.CheckType(["image/"]))
                 {
-                    ModelState.AddModelError("Photos", "Enter only the image format.");
+                    ModelState.AddModelError("Photos", "Yalnız şəkil formatı daxil edin.");
                     return false;
                 }
             }
         }
 
-        var existingScheduleIds = existEvent.EventsSchedules.Select(es => es.ScheduleId).ToList();
-
+        // 🔹 Map basic properties (Name, Description, VenueId və s.)
         existEvent = _mapper.Map(dto, existEvent);
 
-        // Handle schedules
-        // Get updated schedule IDs
+        // 🔹 Update EventLanguages if they are selected
+        if (dto.SelectedLanguageIds.Any())
+        {
+            existEvent.EventLanguages.Clear();
+            foreach (var langId in dto.SelectedLanguageIds)
+            {
+                existEvent.EventLanguages.Add(new EventLanguage { LanguageId = langId });
+            }
+        }
+
+        // 🔹 Update EventPersons if they are selected
+        if (dto.SelectedPersonIds.Any())
+        {
+            existEvent.EventPersons.Clear();
+            foreach (var personId in dto.SelectedPersonIds)
+            {
+                existEvent.EventPersons.Add(new EventPeron { PersonId = personId });
+            }
+        }
+
+        // 🔹 Handle Schedules
+        var existingScheduleIds = existEvent.EventsSchedules.Select(es => es.ScheduleId).ToList();
         var updatedScheduleIds = dto.EventSchedules.Where(s => s.Id != 0).Select(s => s.Id).ToList();
+        var scheduleIdsToRemove = existingScheduleIds.Except(updatedScheduleIds).ToList();
 
-        // Find schedules to remove (those in existing but not in updated)
-        var schedulesToRemoveIds = existingScheduleIds.Except(updatedScheduleIds).ToList();
-
-        // Remove event-schedule relationships for removed schedules
-        foreach (var scheduleId in schedulesToRemoveIds)
+        // Remove deleted schedules
+        foreach (var scheduleId in scheduleIdsToRemove)
         {
             var eventSchedule = existEvent.EventsSchedules.FirstOrDefault(es => es.ScheduleId == scheduleId);
             if (eventSchedule != null)
-            {
                 existEvent.EventsSchedules.Remove(eventSchedule);
-            }
         }
 
-        // Process existing schedules that need updates
-        foreach (var scheduleDto in dto.EventSchedules.Where(s => s.Id != 0))
+        // Update existing schedules that have been modified
+        foreach (var schDto in dto.EventSchedules.Where(s => s.Id != 0))
         {
-            // Find the schedule in the event
-            var eventSchedule = existEvent.EventsSchedules.FirstOrDefault(es => es.ScheduleId == scheduleDto.Id);
+            var eventSchedule = existEvent.EventsSchedules.FirstOrDefault(es => es.ScheduleId == schDto.Id);
             if (eventSchedule != null && eventSchedule.Schedule != null)
             {
-                // Update the schedule
-                eventSchedule.Schedule.Date = scheduleDto.Date;
-                eventSchedule.Schedule.StartTime = scheduleDto.StartTime;
-                eventSchedule.Schedule.EndTime = scheduleDto.EndTime;
+                eventSchedule.Schedule.Date = schDto.Date;
+                eventSchedule.Schedule.StartTime = schDto.StartTime;
+                eventSchedule.Schedule.EndTime = schDto.EndTime;
             }
         }
 
-        //remove deletedImages
-        var imagesToRemove = existEvent.EventImages?.ToList() ?? new List<EventImage>();
+        // Add new schedules
+        foreach (var schDto in dto.EventSchedules.Where(s => s.Id == 0))
+        {
+            var newSchedule = new Schedule
+            {
+                Date = schDto.Date,
+                StartTime = schDto.StartTime,
+                EndTime = schDto.EndTime
+            };
 
+            await _dbContext.Schedules.AddAsync(newSchedule);
+            await _dbContext.SaveChangesAsync(); // Id-lə əlavə etmək üçün
+
+            existEvent.EventsSchedules.Add(new EventsSchedule
+            {
+                ScheduleId = newSchedule.Id,
+                EventId = existEvent.Id
+            });
+        }
+
+        // 🔹 Remove old images
+        var imagesToRemove = existEvent.EventImages?.ToList() ?? new List<EventImage>();
         foreach (var image in imagesToRemove)
         {
             existEvent.EventImages.Remove(image);
             await _cloudinaryService.FileDeleteAsync(image.ImagePath);
         }
-        //add newImages
+
+        // 🔹 Add new images
         if (dto.Photos != null && dto.Photos.Any())
         {
-            foreach (var newImage in dto.Photos)
+            foreach (var photo in dto.Photos)
             {
-                string newImagePath = await _cloudinaryService.FileCreateAsync(newImage);
-                EventImage eventImage = new() { ImagePath = newImagePath };
-                existEvent.EventImages.Add(eventImage);
+                string path = await _cloudinaryService.FileCreateAsync(photo);
+                existEvent.EventImages.Add(new EventImage { ImagePath = path });
             }
         }
 
-
-        
-        //var existingSchedules =existEvent.EventsSchedules.ToList();
-
-        //foreach (var scheduleDto in dto.Schedules)
-        //{
-        //    var existingSchedule = existingSchedules.FirstOrDefault(s => s.ScheduleId == scheduleDto.Id);
-
-        //    if (existingSchedule != null)
-        //    {
-        //        if (existingSchedule.Schedule.Date == scheduleDto.Date &&
-        //            existingSchedule.Schedule.StartTime == scheduleDto.StartTime &&
-        //            existingSchedule.Schedule.EndTime == scheduleDto.EndTime)
-        //        {
-        //            continue;
-        //        }
-
-        //        existingSchedule.Schedule.Date = scheduleDto.Date;
-        //        existingSchedule.Schedule.StartTime = scheduleDto.StartTime;
-        //        existingSchedule.Schedule.EndTime = scheduleDto.EndTime;
-        //    }
-        //    else
-        //    {
-        //        var newSchedule = new Schedule
-        //        {
-        //            Date = scheduleDto.Date,
-        //            StartTime = scheduleDto.StartTime,
-        //            EndTime = scheduleDto.EndTime
-        //        };
-        //        _dbContext.Schedules.Add(newSchedule);
-        //        await _dbContext.SaveChangesAsync(); 
-
-        //        existEvent.EventsSchedules.Add(new EventsSchedule
-        //        {
-        //            EventId = existEvent.Id,
-        //            ScheduleId = newSchedule.Id
-        //        });
-        //    }
-        //}
-
-
         await _repository.UpdateAsync(existEvent);
-
         return true;
     }
+
 }

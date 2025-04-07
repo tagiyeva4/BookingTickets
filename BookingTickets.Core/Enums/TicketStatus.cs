@@ -2,8 +2,9 @@
 {
     public enum TicketStatus
     {
-        Available,
-        Purchased,
-        Validated
+        Reserved = 0,
+        Purchased = 1,
+        Cancelled = 2,
+        Expired = 3
     }
 }

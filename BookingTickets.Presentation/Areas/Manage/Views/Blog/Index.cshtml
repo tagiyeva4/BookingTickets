@@ -26,7 +26,7 @@
                         <td>
                             <a class="btn btn-primary" asp-action="Update" asp-route-id="@blog.Id">Edit</a>
                             <a class="btn btn-primary" asp-action="detail" asp-route-id="@blog.Id">Detail</a>
-                            <a class="btn btn-primary" asp-action="Delete" asp-route-id="@blog.Id">Delete</a>
+                            <a class="btn btn-primary" href="javascript:void(0);" onclick="confirmDelete(@blog.Id)">Delete</a>
                         </td>
                     </tr>
                 }
@@ -34,3 +34,27 @@
         </table>
     </div>
 </div>
+@section scripts {
+    <script>
+                function confirmDelete(id) {
+            // SweetAlert ilə təsdiq pəncərəsi
+            Swal.fire({
+               title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Təsdiq edildikdən sonra delete əməliyyatı həyata keçirilir
+                    window.location.href = '/Manage/Blog/Delete/' + id; // Delete URL-ini dəyişdirin
+                } else {
+                    // Əgər istifadəçi ləğv edərsə, heç nə edilməz
+                    console.log('Silinmə əməliyyatı ləğv edildi.');
+                }
+            });
+        }
+
+    </script>
+}

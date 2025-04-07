@@ -4,4 +4,5 @@ namespace BookingTickets.DataAccess.Repositories.Abstractions;
 
 public interface IVenueRepository:IRepository<Venue>
 {
+   
 }

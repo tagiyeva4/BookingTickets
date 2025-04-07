@@ -61,6 +61,12 @@ namespace BookingTickets.DataAccess.Data.Contexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Ticket>()
+                   .HasOne(t => t.VenueSeat)
+                   .WithMany()
+                   .HasForeignKey(t => t.VenueSeatId)
+                   .OnDelete(DeleteBehavior.Restrict); // burası vacibdir!
+
             base.OnModelCreating(modelBuilder);
 
             #region seedData

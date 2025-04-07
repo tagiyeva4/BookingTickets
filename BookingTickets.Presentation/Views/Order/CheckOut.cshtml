@@ -1,0 +1,14 @@
+﻿@using BookingTickets.DataAccess
+@using Microsoft.Extensions.Options
+@inject IOptions<StripeSettings> Stripe
+
+<script src="//checkout.stripe.com/v2/checkout.js"
+        class="stripe-button"
+        data-key="@Stripe.Value.PublishableKey"
+        data-amount="@ViewBag. Total"
+        data-name="[Deveducate]"
+        data-locale="en"
+        data-discription="Sample charge"
+        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+        data-zip-code="true">
+</script>

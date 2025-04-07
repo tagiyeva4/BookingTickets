@@ -1,6 +1,187 @@
 ﻿@model VenueUpdateDto
 
 @{
+    ViewData["Title"] = "Məkanı Redaktə Et";
+}
+
+<div class="container">
+    <h2 class="my-4">@ViewData["Title"]</h2>
+
+    <div class="row">
+        <!-- Form hissəsi -->
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label">Venue Name (Məkan adı)</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Address" class="form-label">Address (Ünvan)</label>
+                    <input asp-for="Address" class="form-control" id="address" />
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+
+                <button type="button" class="btn btn-success mb-3" onclick="getCoordinates()">Get Coordinates (Koordinatları Tap)</button>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Latitude">Latitude (Enlik)</label>
+                    <input asp-for="Latitude" class="form-control" id="latitude" />
+                    <span class="text-danger" asp-validation-for="Latitude"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Longitude">Longitude (Uzunluq)</label>
+                    <input asp-for="Longitude" class="form-control" id="longitude" />
+                    <span class="text-danger" asp-validation-for="Longitude"></span>
+                </div>
+
+                <hr />
+                <h5>Oturacaq Parametrləri</h5>
+                <div class="alert alert-warning">
+                    <strong>Diqqət!</strong> Oturacaq parametrlərini dəyişmək bütün mövcud oturacaqları yenidən yaradacaq və əvvəlki məlumatlar silinəcək.
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="NumberOfRows">Number Of Rows (Sıra sayı)</label>
+                    <input asp-for="NumberOfRows" class="form-control" min="1" max="100" />
+                    <span class="text-danger" asp-validation-for="NumberOfRows"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SeatsPerRow">Seats Per Row (Hər sırada oturacaq sayı)</label>
+                    <input asp-for="SeatsPerRow" class="form-control" min="1" max="100" />
+                    <span class="text-danger" asp-validation-for="SeatsPerRow"></span>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="RowNamingStyle">RowNamingStyle (Sıra adlandırma stili)</label>
+                    <select asp-for="RowNamingStyle" class="form-control" id="RowNamingStyle">
+                        <option value="0">Rəqəmlə (1,2,3...)</option>
+                        <option value="1">Hərf ilə (A,B,C...)</option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Oturacaq preview hissəsi -->
+        <div class="col-md-6">
+            <h5>Oturacaq Ön Baxışı</h5>
+            <div class="bg-light p-3 rounded border">
+                <div class="text-center bg-dark text-white py-2 mb-3">Stage (Səhnə)</div>
+                <div id="seats-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationPartial")
+    <script>
+        function getCoordinates() {
+            var address = document.getElementById("address").value;
+            var url = `https://photon.komoot.io/api/?q=${encodeURIComponent(address + ', Baku, Azerbaijan')}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features.length > 0) {
+                        document.getElementById("latitude").value = data.features[0].geometry.coordinates[1];
+                        document.getElementById("longitude").value = data.features[0].geometry.coordinates[0];
+                    } else {
+                        alert("Koordinatlar tapılmadı.");
+                    }
+                })
+                .catch(error => console.error("Xəta:", error));
+        }
+
+        function updateSeatingPreview() {
+            const rows = parseInt(document.getElementById("NumberOfRows").value) || 0;
+            const seatsPerRow = parseInt(document.getElementById("SeatsPerRow").value) || 0;
+            const namingStyle = document.getElementById("RowNamingStyle").value;
+
+            const container = document.getElementById("seats-container");
+            container.innerHTML = "";
+
+            if (rows <= 0 || seatsPerRow <= 0) return;
+
+            const capacityDiv = document.createElement("div");
+            capacityDiv.className = "text-center mb-2";
+            capacityDiv.innerHTML = `<strong>Ümumi tutum:</strong> ${rows * seatsPerRow} oturacaq`;
+            container.appendChild(capacityDiv);
+
+            for (let i = 1; i <= Math.min(rows, 15); i++) {
+                const rowDiv = document.createElement("div");
+                rowDiv.className = "d-flex justify-content-center mb-2";
+
+                const rowLabel = document.createElement("div");
+                rowLabel.className = "mr-2 d-flex align-items-center font-weight-bold";
+                rowLabel.style.width = "30px";
+                rowLabel.style.marginRight = "10px";
+                rowLabel.innerText = (namingStyle === "0") ? i.toString() : String.fromCharCode(64 + i);
+                rowDiv.appendChild(rowLabel);
+
+                const displaySeats = Math.min(seatsPerRow, 25);
+                for (let j = 1; j <= displaySeats; j++) {
+                    const seat = document.createElement("div");
+                    seat.className = "border border-primary rounded m-1 d-flex justify-content-center align-items-center";
+                    seat.style.width = "30px";
+                    seat.style.height = "30px";
+                    seat.style.fontSize = "12px";
+                    seat.innerText = j.toString();
+                    rowDiv.appendChild(seat);
+                }
+
+                if (seatsPerRow > displaySeats) {
+                    const moreSeats = document.createElement("div");
+                    moreSeats.className = "d-flex align-items-center ml-2";
+                    moreSeats.innerText = "...";
+                    rowDiv.appendChild(moreSeats);
+                }
+
+                container.appendChild(rowDiv);
+            }
+
+            if (rows > 15) {
+                const moreRows = document.createElement("div");
+                moreRows.className = "text-center mt-2";
+                moreRows.innerText = `...və daha ${rows - 15} sıra`;
+                container.appendChild(moreRows);
+            }
+        }
+
+        document.getElementById("NumberOfRows").addEventListener("input", updateSeatingPreview);
+        document.getElementById("SeatsPerRow").addEventListener("input", updateSeatingPreview);
+        document.getElementById("RowNamingStyle").addEventListener("change", updateSeatingPreview);
+        document.addEventListener("DOMContentLoaded", updateSeatingPreview);
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model VenueUpdateDto
+
+@{
     ViewData["Title"] = "Məkana düzəliş et";
 }
 
@@ -171,7 +352,7 @@
 }
 
 
-
+ *@
 @* @model VenueUpdateDto
 
 

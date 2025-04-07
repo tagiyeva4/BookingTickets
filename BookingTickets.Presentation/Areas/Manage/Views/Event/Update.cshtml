@@ -1,4 +1,155 @@
-﻿@using BookingTickets.Core.Entities
+﻿@model EventUpdateDto
+
+
+<h2>Update Event</h2>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AgeRestriction"></label>
+        <input asp-for="AgeRestriction" class="form-control" aria-describedby="emailHelp">
+        <span class="text-danger" asp-validation-for="AgeRestriction"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MaxPrice"></label>
+        <input asp-for="MaxPrice" class="form-control" aria-describedby="emailHelp">
+        <span class="text-danger" asp-validation-for="MaxPrice"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MinPrice"></label>
+        <input asp-for="MinPrice" class="form-control" aria-describedby="emailHelp">
+        <span class="text-danger" asp-validation-for="MinPrice"></span>
+    </div>
+
+    <div>
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+
+    <div>
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+    </div>
+
+    <div>
+        <label asp-for="VenueId"></label>
+        <select asp-for="VenueId" asp-items="ViewBag.Venues" class="form-control"></select>
+    </div>
+
+    <div>
+        <label>Languages</label>
+        <select asp-for="SelectedLanguageIds" asp-items="ViewBag.Languages" class="form-control" multiple></select>
+    </div>
+
+    <div>
+        <label>People</label>
+        <select asp-for="SelectedPersonIds" asp-items="ViewBag.Persons" class="form-control" multiple></select>
+    </div>
+
+    <div>
+        <label>Images</label>
+        <div id="existing-images">
+            @foreach (var img in Model.ExistingImages)
+            {
+                <div class="img-box">
+                    <img src="@img.ImagePath" width="200" />
+                    <input type="hidden" name="DeletedImageIds" value="@img.Id" />
+                    <button type="button" class="btn btn-danger btn-sm remove-image">Sil</button>
+                </div>
+            }
+        </div>
+        <input type="file" name="Photos" multiple class="form-control" />
+    </div>
+
+    <hr />
+
+    <h4>Schedule-lar</h4>
+    <div id="schedule-list">
+        @for (int i = 0; i < Model.EventSchedules.Count; i++)
+        {
+            <div class="schedule-group">
+                <input type="hidden" name="EventSchedules[@i].Id" value="@Model.EventSchedules[i].Id" />
+                <input type="date" name="EventSchedules[@i].Date" value="@Model.EventSchedules[i].Date.ToString("yyyy-MM-dd")" />
+                <input type="time" name="EventSchedules[@i].StartTime" value="@Model.EventSchedules[i].StartTime" />
+                <input type="time" name="EventSchedules[@i].EndTime" value="@Model.EventSchedules[i].EndTime" />
+                <button type="button" class="btn btn-danger remove-schedule">Sil</button>
+            </div>
+        }
+    </div>
+
+    <button type="button" id="add-schedule" class="btn btn-secondary">Add new schedules</button>
+
+    <br /><br />
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+
+@section Scripts {
+    <script>
+        let scheduleIndex = @Model.EventSchedules.Count;
+
+        document.getElementById('add-schedule').addEventListener('click', function () {
+            const container = document.createElement('div');
+            container.classList.add('schedule-group');
+
+            container.innerHTML = `
+                <input type="hidden" name="EventSchedules[${scheduleIndex}].Id" value="0" />
+                <input type="date" name="EventSchedules[${scheduleIndex}].Date" required />
+                <input type="time" name="EventSchedules[${scheduleIndex}].StartTime" required />
+                <input type="time" name="EventSchedules[${scheduleIndex}].EndTime" required />
+                <button type="button" class="btn btn-danger remove-schedule">Sil</button>
+            `;
+
+            document.getElementById('schedule-list').appendChild(container);
+            scheduleIndex++;
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-schedule')) {
+                e.target.parentElement.remove();
+            }
+
+            if (e.target.classList.contains('remove-image')) {
+                e.target.parentElement.remove();
+            }
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @using BookingTickets.Core.Entities
 @model EventUpdateDto
 @{
     var eventlanguages = ViewBag.Languages;
@@ -39,7 +190,7 @@
                 <label asp-for="PhoneNumber"></label>
                 <input asp-for="PhoneNumber" class="form-control" aria-describedby="emailHelp">
                 <span class="text-danger" asp-validation-for="PhoneNumber"></span>
-            </div>
+            </div> *@
             @* <div class="form-group">
                 <label>Event Schedules</label>
                 <div id="schedule-container">
@@ -60,7 +211,7 @@
                 </div>
                 <button type="button" class="btn btn-success" id="add-schedule">Add Schedule</button>
             </div> *@
-            <div class="form-group">
+           @*  <div class="form-group">
                 <label>Schedules</label>
                 <div id="schedule-container">
                     @for (int i = 0; i < Model.EventSchedules.Count; i++)
@@ -135,69 +286,5 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-</div>
-@section scripts {
-    @await Html.PartialAsync("_ValidationPartial")
-@* 
-    <script>
-        document.getElementById("add-schedule").addEventListener("click", function () {
-            let container = document.getElementById("schedule-container");
-            let index = container.getElementsByClassName("schedule-item").length;
-
-            let html = `<div class="schedule-item">
-                <input type="hidden" name="Schedules[${index}].Id" value="" />
-                <label>Date</label>
-                <input type="date" name="Schedules[${index}].Date" class="form-control" required />
-                <label>Start Time</label>
-                <input type="time" name="Schedules[${index}].StartTime" class="form-control" required />
-                <label>End Time</label>
-                <input type="time" name="Schedules[${index}].EndTime" class="form-control" required />
-                <button type="button" class="btn btn-danger remove-schedule">Remove</button>
-            </div>`;
-
-            let div = document.createElement("div");
-            div.innerHTML = html;
-            container.appendChild(div);
-        });
-
-        document.addEventListener("click", function (event) {
-            if (event.target.classList.contains("remove-schedule")) {
-                event.target.parentElement.remove();
-            }
-        });
-    </script> *@
-
-
-    <script>
-        document.getElementById("add-schedule").addEventListener("click", function () {
-            let container = document.getElementById("schedule-container");
-            let index = container.getElementsByClassName("schedule-item").length;
-
-            let today = new Date().toISOString().split("T")[0];
-            let currentTime = new Date().toISOString().slice(11, 16);
-
-            let html = `<div class="schedule-item">
-                <input type="hidden" name="EventSchedules[${index}].Id" value="0" />
-                <label>Date</label>
-                <input type="date" name="EventSchedules[${index}].Date" class="form-control" required value="${today}" />
-                <label>Start Time</label>
-                <input type="time" name="EventSchedules[${index}].StartTime" class="form-control" required value="${currentTime}" />
-                <label>End Time</label>
-                <input type="time" name="EventSchedules[${index}].EndTime" class="form-control" required value="${currentTime}" />
-                <button type="button" class="btn btn-danger remove-schedule">Remove</button>
-            </div>`;
-
-            let div = document.createElement("div");
-            div.innerHTML = html;
-            container.appendChild(div);
-        });
-
-        document.addEventListener("click", function (event) {
-            if (event.target.classList.contains("remove-schedule")) {
-                event.target.parentElement.remove();
-            }
-        });
-    </script>
-
-}
+</div> *@
 

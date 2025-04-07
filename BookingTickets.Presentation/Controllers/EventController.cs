@@ -28,6 +28,7 @@ namespace BookingTickets.Presentation.Controllers
             }
             var existEvent =dbContext.Events
                 .Include(e=>e.Venue)
+                .ThenInclude(v => v.Seats)
                 .Include(e=>e.EventImages)
                 .Include(e=>e.EventPersons)
                 .ThenInclude(ep=>ep.Person)

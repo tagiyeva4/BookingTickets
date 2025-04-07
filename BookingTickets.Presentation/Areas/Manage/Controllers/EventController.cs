@@ -1,7 +1,9 @@
 ﻿using BookingTickets.Business.Dtos.EventDtos;
 using BookingTickets.Business.Services.Abstractions;
+using BookingTickets.Business.Services.Implementations;
 using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers
 {
@@ -40,33 +42,39 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
             await eventService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-        public async Task<ActionResult> Update(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
         {
-            ViewBag.Languages = dbContext.Languages.ToList();
-            ViewBag.Venues = dbContext.Venues.ToList();
-            ViewBag.Persons = dbContext.People.ToList();
-            ViewBag.Schedules = dbContext.Schedules.ToList();
-            var result=await eventService .GetUpdatedDtoAsync(id);
-            if (result is null)
-            {
-                return NotFound();
-            }
-            return View(result);
+            var dto = await eventService.GetUpdatedDtoAsync(id);
+
+            // ViewBag-ə məlumatları əlavə etmək
+            ViewBag.Venues = new SelectList(dbContext.Venues, "Id", "Name");
+            ViewBag.Languages = new MultiSelectList(dbContext.Languages, "Id", "Name");
+            ViewBag.Persons = new MultiSelectList(dbContext.People, "Id", "FullName");
+
+            return View(dto);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(EventUpdateDto dto)
         {
-            ViewBag.Languages = dbContext.Languages.ToList();
-            ViewBag.Venues = dbContext.Venues.ToList();
-            ViewBag.Persons = dbContext.People.ToList();
-            var result=await eventService.UpdateAsync(dto,ModelState);
-            if (result is false)
+            bool result = await eventService.UpdateAsync(dto, ModelState);
+
+            if (!result)
             {
+                ViewBag.Venues = new SelectList(dbContext.Venues, "Id", "Name");
+                ViewBag.Languages = new MultiSelectList(dbContext.Languages, "Id", "Name");
+                ViewBag.Persons = new MultiSelectList(dbContext.People, "Id", "FullName");
+
                 return View(dto);
             }
+
             return RedirectToAction(nameof(Index));
         }
+
+        
         public async Task<IActionResult> Detail(int id)
         {
             if (id == null)
