@@ -34,6 +34,8 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
     <!--Toastr-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -77,7 +79,8 @@
                                 <a asp-action="Index" asp-controller="Home"><img src="~/assets/images/resources/@settings["Logo"]" alt="" /></a>
                             </div>
                             <div class="minicart-content-box">
-                                <partial name="_BasketPartial" model="@basketItems"></partial>
+                               @*  <partial name="_BasketPartial" model="@basketItems"></partial> *@
+                                @await Component.InvokeAsync("Basket")
                             </div>
                             @*  <div class="content-box">
                                 <h4>About Us</h4>
@@ -203,8 +206,8 @@
                         </div>
                         <div class="main-menu__right">
                             <div class="main-menu__cart-search-nav-sidebar-icon-and-btn-box">
-                                <a href="#" class="main-menu__cart  icon-cart">
-                                    <span class="badge basketCountarea"> 0</span>
+                                <a href="#" class="main-menu__cart icon-cart">
+                                    <span class="badge basketCountarea">0</span>
                                 </a>
                                 <a href="#" class="main-menu__search search-toggler">
                                     <span class="icon-loupe"></span>
@@ -465,7 +468,17 @@
     <script src="~/assets/vendors/marque/marquee.min.js"></script>
     <script src="~/assets/vendors/sidebar-content/jquery-sidebar-content.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const countElement = document.getElementById("basket-count-data");
+            const badge = document.querySelector(".basketCountarea");
 
+            if (countElement && badge) {
+                const count = countElement.getAttribute("data-count");
+                badge.innerText = count;
+            }
+        });
+    </script>
     <script>
         $(".addBasket").click(function (ev) {
             ev.preventDefault();

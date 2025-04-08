@@ -6,5 +6,6 @@ namespace BookingTickets.Core.ViewModels
     {
         [DataType(DataType.PhoneNumber)]
         public string? PhoneNumber { get; set; }
+        public string? PromoCode { get; set; }
     }
 }

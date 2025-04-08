@@ -1,14 +1,135 @@
-﻿@using BookingTickets.DataAccess
-@using Microsoft.Extensions.Options
-@inject IOptions<StripeSettings> Stripe
+﻿@using BookingTickets.Core.ViewModels
 
-<script src="//checkout.stripe.com/v2/checkout.js"
-        class="stripe-button"
-        data-key="@Stripe.Value.PublishableKey"
-        data-amount="@ViewBag. Total"
-        data-name="[Deveducate]"
-        data-locale="en"
-        data-discription="Sample charge"
-        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-        data-zip-code="true">
-</script>
+@model CheckOutVm
+<style>
+    .checkout-area {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+        .checkout-area .card {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .checkout-area .card-header {
+            background-color: transparent;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .checkout-area .form-label {
+            color: #dddddd;
+        }
+
+        .checkout-area .form-control {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #fff;
+        }
+
+            .checkout-area .form-control::placeholder {
+                color: #aaa;
+            }
+
+        .checkout-area .table th,
+        .checkout-area .table td {
+            color: #fff;
+        }
+
+        .checkout-area .table thead {
+            border-bottom: 1px solid #333;
+        }
+
+        .checkout-area .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            .checkout-area .btn-success:hover {
+                background-color: #218838;
+            }
+</style>
+<section class="checkout-area py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark">Checkout</h2>
+            <p class="text-muted">Please review your order and complete the payment</p>
+        </div>
+
+        <form asp-action="CreateCheckoutSession" method="post">
+            <div class="row">
+                <!-- Order Summary -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card shadow rounded-4 border-0">
+                        <div class="card-header bg-white border-bottom-0">
+                            <h5 class="mb-0">Your Selected Tickets</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless align-middle mb-0">
+                                <thead class="text-muted">
+                                    <tr>
+                                        <th>Event</th>
+                                        <th class="text-end">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.CheckoutItemVms.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@Model.CheckoutItemVms[i].EventName</td>
+                                            <td class="text-end">@Model.CheckoutItemVms[i].TotalItemPrice ₼</td>
+                                        </tr>
+
+                                        @Html.HiddenFor(m => m.CheckoutItemVms[i].TicketId)
+                                        @Html.HiddenFor(m => m.CheckoutItemVms[i].EventName)
+                                        @Html.HiddenFor(m => m.CheckoutItemVms[i].TotalItemPrice)
+                                    }
+                                </tbody>
+                            </table>
+
+                            <hr class="mt-4" />
+                            <div class="text-end fw-bold fs-5">
+                                Total: @Model.CheckoutItemVms.Sum(x => x.TotalItemPrice) ₼
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info + Payment -->
+                <div class="col-lg-4">
+                    <div class="card shadow rounded-4 border-0">
+                        <div class="card-header bg-white border-bottom-0">
+                            <h5 class="mb-0">Contact Info</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label asp-for="OrderVm.PhoneNumber" class="form-label">Phone Number</label>
+                                <input asp-for="OrderVm.PhoneNumber" class="form-control" placeholder="+994 XX XXX XX XX" />
+                                <span asp-validation-for="OrderVm.PhoneNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="OrderVm.PromoCode" class="form-label">Promo Code</label>
+                                <input asp-for="OrderVm.PromoCode" class="form-control" />
+                                <span asp-validation-for="OrderVm.PromoCode" class="text-danger small"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                                <i class="bi bi-credit-card me-2"></i> Pay with Stripe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+

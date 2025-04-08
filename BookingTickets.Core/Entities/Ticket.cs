@@ -26,5 +26,7 @@ public class Ticket : BaseEntity
     public decimal Price { get; set; }
     public DateTime ReservedAt { get; set; } = DateTime.Now;
     public DateTime ExpiresAt { get; set; } = DateTime.Now.AddMinutes(15);
+    public int? OrderId { get; set; }
+    public Order? Order { get; set; }
 }
 

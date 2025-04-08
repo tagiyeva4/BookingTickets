@@ -30,7 +30,7 @@ public static class CalculateService
                 decimal priceStep = priceRange / (rowCount - 1);
                 decimal discount = (seat.RowNumber - 1) * priceStep;
 
-                seat.Price = Math.Round(@event.MaxPrice - discount, 0); // 💥 Tam ədəd oldu
+                seat.Price = Math.Round(@event.MaxPrice - discount, 0); 
             }
         }
     }

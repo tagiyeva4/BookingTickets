@@ -13,5 +13,17 @@ namespace BookingTickets.Core.Entities
         public decimal TotalPrice { get; set; }
         public OrderStatus OrderStatus { get; set; }=OrderStatus.Pending;
         public List<OrderItem> OrderItems { get; set; } = [];
+
+        // Stripe tərəfindən yaradılan sessiya ID-si, ödənişin statusunu izləmək üçün istifadə olunur
+        public string? StripeSessionId { get; set; }
+
+        // Stripe tərəfindən yaradılan ödəniş əməliyyatının unikal ID-si
+        public string? StripePaymentIntentId { get; set; }
+
+        // Ödənişin tamamlandığı zaman
+        public DateTime? PaidAt { get; set; }
+
+        // İstifadəçi və ya admin tərəfindən sifarişə əlavə qeyd
+        public string? Note { get; set; }
     }
 }

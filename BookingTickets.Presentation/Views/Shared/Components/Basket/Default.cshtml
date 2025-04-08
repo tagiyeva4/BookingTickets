@@ -1,0 +1,34 @@
+﻿@using BookingTickets.Core.ViewModels
+@model List<BasketItemVm>
+
+@if (!Model.Any())
+{
+    <div class="p-3 text-muted">Səbət boşdur.</div>
+}
+else
+{
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>@item.EventName</strong><br />
+                    <small>@item.SeatLocation</small>
+                </div>
+                <span>@item.Price ₼</span>
+            </li>
+        }
+    </ul>
+    <div class="d-flex gap-2 minicart-button">
+        <a asp-action="Index" asp-controller="Basket" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1">
+            <i class="fa fa-shopping-cart"></i>
+            <span>View Cart</span>
+        </a>
+
+        <a asp-action="Checkout" asp-controller="Order" class="btn btn-success btn-sm d-flex align-items-center gap-1">
+            <i class="fa fa-credit-card"></i>
+            <span>Checkout</span>
+        </a>
+    </div>
+    <span id="basket-count-data" data-count="@Model.Count"></span>
+}
