@@ -54,7 +54,7 @@
                                         @Html.Raw(slider.Description)
                                     </p>
                                     <div class="main-slider__btn-box">
-                                        <a href="contact.html" class="main-slider__btn thm-btn">
+                                        <a asp-action="Index" asp-controller="Event" class="main-slider__btn thm-btn">
                                             @slider.ButtonText
                                             <span class="icon-arrow-right"></span>
                                         </a>
@@ -84,7 +84,7 @@
             <h2 class="section-title__title">Why should you joint <br> our event</h2>
         </div>
         <div class="row">
-            @await Component.InvokeAsync("Services")
+            @await Component.InvokeAsync("Services",new { take = 3 })
         </div>
     </div>
 </section>

@@ -9,7 +9,8 @@ public class BasketItemVm
 
     public string? EventName { get; set; }
     public string? SeatLocation { get; set; }
-    public string? QRCodePath { get; set; } 
+    public string? QRCodePath { get; set; }
+    public DateTime ExpireAt { get; set; } = DateTime.UtcNow.AddMinutes(15);
 }
 
 

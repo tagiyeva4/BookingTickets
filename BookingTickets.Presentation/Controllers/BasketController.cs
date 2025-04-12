@@ -1,5 +1,4 @@
-﻿using BookingTickets.Business.Services;
-using BookingTickets.Core.Entities;
+﻿using BookingTickets.Core.Entities;
 using BookingTickets.Core.Enums;
 using BookingTickets.Core.ViewModels;
 using BookingTickets.DataAccess.Data.Contexts;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace BookingTickets.Presentation.Controllers
 {
@@ -15,18 +13,50 @@ namespace BookingTickets.Presentation.Controllers
     {
         public IActionResult Index()
         {
-            var basket = HttpContext.Request.Cookies["basket"];
-            List<BasketItemVm> basketItemVms ;
-            if (basket != null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var basketTickets = dbContext.Tickets
+                .Include(x => x.Event)
+                .Include(x => x.VenueSeat)
+                .Where(x => x.AppUserId == userId && x.Status == TicketStatus.Reserved)
+                .ToList();
+
+            // Vaxtı keçmiş biletləri sil
+            var now = DateTime.Now;
+            var expiredTickets = basketTickets.Where(t => t.ExpiresAt <= now).ToList();
+
+            if (expiredTickets.Any())
             {
-                basketItemVms = Newtonsoft.Json.JsonConvert.DeserializeObject<List<BasketItemVm>>(basket);
+                dbContext.Tickets.RemoveRange(expiredTickets);
+                dbContext.SaveChanges();
+                basketTickets = basketTickets.Except(expiredTickets).ToList();
             }
-            else
+
+            var basketItems = basketTickets.Select(t => new BasketItemVm
             {
-                basketItemVms = new List<BasketItemVm>();
-            }
-            ViewBag.Tickets= dbContext.Tickets.Include(x => x.Event).ToList();
-            return View(basketItemVms);
+                Id = t.Id,
+                Name = t.Event.Name,
+                EventName = t.Event.Name,
+                Price = t.Price,
+                Count = 1,
+                ExpireAt = t.ExpiresAt,
+                SeatLocation ="Seat Number" + " " + t.VenueSeat.SeatNumber+" "+"Row Name" + " " + t.VenueSeat.RowName,
+            }).ToList();
+
+            return View(basketItems);
+        
+            //var basket = HttpContext.Request.Cookies["basket"];
+            //List<BasketItemVm> basketItemVms ;
+            //if (basket != null)
+            //{
+            //    basketItemVms = Newtonsoft.Json.JsonConvert.DeserializeObject<List<BasketItemVm>>(basket);
+            //}
+            //else
+            //{
+            //    basketItemVms = new List<BasketItemVm>();
+            //}
+            //ViewBag.Tickets= dbContext.Tickets.Include(x => x.Event).ToList();
+            //return View(basketItemVms);
         }
         [HttpGet]
         public IActionResult ReserveTicket() => View();
@@ -83,10 +113,24 @@ namespace BookingTickets.Presentation.Controllers
           return RedirectToAction("Detail", "Event", new { id = eventId });
         }
 
-       
+        [HttpGet]
+        public IActionResult Remove(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var ticket = dbContext.Tickets.FirstOrDefault(t => t.Id == id && t.AppUserId == userId && t.Status == TicketStatus.Reserved);
 
-        
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Tickets.Remove(ticket);
+            dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

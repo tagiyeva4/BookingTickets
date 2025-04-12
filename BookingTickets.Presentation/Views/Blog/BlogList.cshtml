@@ -3,7 +3,21 @@
     var categories= ViewBag.Categories;
     var tags=ViewBag.Tags ;
 }
+<style>
+    .image-container {
+        width: 100%;
+        max-width: 770px; 
+        overflow: hidden; /* Şəklin containerdən çıxmasını maneə törədir */
+    }
 
+    .responsive-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover; 
+        border-radius: 10px;
+        display: block;
+    }
+</style>
 <!--Blog Page Start-->
 <section class="blog-list">
     <div class="container">
@@ -16,24 +30,17 @@
                         <!--BLog Page Single Start-->
                         <div class="blog-list__single">
                             <div class="blog-list__img-box">
-                                <div class="blog-list__img">
-                                    <img src=@blog.BlogImages.FirstOrDefault().ImagePath alt="">
-                                </div>
-                                <div class="blog-list__date">
-                                    <p>
-                                        @(blog.CreatedDate.HasValue
-                                                ? blog.CreatedDate.Value.ToString("dd MMMM,yy")
-                                                : "No date available")
-                                    </p>
+                                <div class="image-container">
+                                    <img src="@blog.BlogImages.FirstOrDefault()?.ImagePath" alt="blog" class="responsive-img" />
                                 </div>
                             </div>
                             <div class="blog-list__content">
                                 <ul class="blog-list__meta list-unstyled">
                                     <li>
-                                        <a href="#"><span class="icon-user"></span>By admin</a>
+                                        <a><span class="icon-user"></span>By admin</a>
                                     </li>
                                     <li>
-                                        <a href="#"><span class="icon-calendar"></span>October 19, 2022</a>
+                                        <a><span class="icon-calendar"></span>@blog.CreatedDate?.ToString("MMMM dd, yyyy")</a>
                                     </li>
                                 </ul>
                                 <h3 class="blog-list__title">
@@ -51,18 +58,6 @@
                         <!--BLog Page Single End-->
 
                     }
-                    <div class="blog-list__pagination">
-                        <ul class="pg-pagination list-unstyled">
-                            <li class="count"><a asp-action="Detail" asp-controller="Blog" asp-route-id="7">01</a></li>
-                            <li class="count"><a asp-action="Detail" asp-controller="Blog" asp-route-id="8">02</a></li>
-                            <li class="count"><a asp-action="Detail" asp-controller="Blog" asp-route-id="9">03</a></li>
-                            @* <li class="next">
-                                <a href="blog-details.html" aria-label="Next">
-                                    <i class="icon-double-angle"></i>
-                                </a>
-                            </li> *@
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-xl-4 col-lg-5">
@@ -80,7 +75,7 @@
                         <ul class="sidebar__all-category-list list-unstyled">
                             @foreach(var cat in categories)
                             {
-                                <li class="active">
+                                <li @* class="active" *@>
                                     <a href="blog-details.html">
                                         <i class="icon-double-angle"></i>
                                         @Html.Raw(cat.Name)

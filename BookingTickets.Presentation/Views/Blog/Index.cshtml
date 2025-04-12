@@ -1,4 +1,22 @@
 ﻿@model List<Blog> 
+<style>
+    .blog-one__img {
+        width: 100%;
+        height: 250px; /* İstəyə görə artır/azalt */
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+    }
+
+        .blog-one__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 15px;
+        }
+
+</style>
 <!--Blog Page Start-->
 <section class="blog-page">
     <div class="container">
@@ -8,7 +26,7 @@
                 <!--Blog One Single Start-->
                 <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInLeft" data-wow-delay="100ms">
                     <div class="blog-one__single">
-                        <div class="blog-one__img">
+                       @*  <div class="blog-one__img">
                             <img src="@blog.BlogImages.FirstOrDefault().ImagePath" alt="">
                             <div class="blog-one__hover">
                                 <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id">
@@ -17,7 +35,22 @@
                                     </div>
                                 </a>
                             </div>
+                        </div> *@
+                        <div class="blog-one__img">
+                            <img src="@blog.BlogImages.FirstOrDefault()?.ImagePath"
+                                 alt="blog image"
+                                 class="img-fluid w-100 h-100"
+                                 style="object-fit: cover; border-radius: 15px;" />
+
+                            <div class="blog-one__hover">
+                                <a asp-action="Detail" asp-controller="Blog" asp-route-id="@blog.Id">
+                                    <div class="blog-one__hover-icon-1">
+                                        <span class="blog-one__hover-icon-2"></span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
+
                         <div class="blog-one__content">
                             <ul class="blog-one__meta list-unstyled">
                                 <li>

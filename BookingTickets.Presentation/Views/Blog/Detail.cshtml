@@ -11,11 +11,11 @@
             <div class="col-xl-8 col-lg-7">
                 <div class="blog-details__left">
                     <div class="blog-details__img-1">
-                        <img src=@Model.Blog.BlogImages.FirstOrDefault().ImagePath alt="">
+                        <img src=@Model.Blog.BlogImages.FirstOrDefault()?.ImagePath alt="">
                         <div class="blog-details__date">
                             <p>
                                 @(Model.Blog.CreatedDate.HasValue
-                                        ? Model.Blog.CreatedDate.Value.ToString("MMMM dd")
+                                    ? Model.Blog.CreatedDate.Value.ToString("dd.MM.yyyy")
                                         : "No date available")
                             </p>
                         </div>
@@ -25,12 +25,6 @@
                         <p class="blog-details__text-1">
                             @Model.Blog.Description
                         </p>
-                        @* <p class="blog-details__text-2">
-                            Real estate is a lucrative industry that involves the
-                            buying, selling, and wasi renting properties. It encom residential, commercial, and
-                            industrial properties is here Real estate is a lucrative industry that involves the
-                            buying, selling, and wasi renting properties. It encompasses residential, commercial
-                        </p> *@
                         <div class="blog-details__quote-box">
                             <div class="blog-details__quote-icon">
                                 <span class="icon-quote"></span>
@@ -114,7 +108,7 @@
                                 <span>Keyword:</span>
                                 <div class="blog-details__keyword">
                                     <a asp-action="Index" asp-controller="Blog">See All Blogs</a>
-                                    <a asp-action="Index" asp-controller="Blog">Event Management</a>
+                                    <a asp-action="Index" asp-controller="Event">Event Management</a>
                                 </div>
                             </div>
                             <div class="blog-details__social">
@@ -126,15 +120,15 @@
                         <div class="blog-details__comment-box">
                             @if (Model.Blog.BlogComments.Count > 0)
                             {
-                                <h3 class="blog-details__comment-title">@Model.Blog.BlogComments.Count</h3>
-                                <p class="blog-details__comment-date">@Model.Blog.BlogComments.FirstOrDefault().DateTime.ToString("MMMM dd, yyyy")</p>
-                                <h4 class="blog-details__comment-client-name">@Model.Blog.BlogComments.FirstOrDefault().AppUser.FullName</h4>
+                                <h3 class="blog-details__comment-title">Comments count: @Model.Blog.BlogComments.Count</h3>
+                                <p class="blog-details__comment-date">@Model.Blog.BlogComments.FirstOrDefault()?.DateTime.ToString("MMMM dd, yyyy")</p>
+                                <h4 class="blog-details__comment-client-name">@Model.Blog.BlogComments.FirstOrDefault()?.AppUser.FullName</h4>
                                 <p class="blog-details__comment-text">
-                                    @Model.Blog.BlogComments.FirstOrDefault().Message
+                                    @Model.Blog.BlogComments.FirstOrDefault()?.Message
                                 </p>
-                                <div class="blog-details__comment-btn-box">
+                               @*  <div class="blog-details__comment-btn-box">
                                     <a href="#" class="blog-details__comment-btn thm-btn">Reply</a>
-                                </div>
+                                </div> *@
                             }
                             else
                             {
@@ -147,7 +141,7 @@
                         <div class="comment-one">
                             <h3 class="comment-one__title">Leave a comment</h3>
                             <p class="comment-one__text">
-                                **Share your thoughts and join the discussion! Leave a comment below to engage with our community.**
+                                **Share your thoughts and join the discussion! Leave a comment below to engage with our community**
                             </p>
                             <form class=" comment-one__form" asp-action="AddComment" asp-controller="Blog" asp-route-BlogId="@Model.Blog.Id" method="post">
                                 <div class="row">
@@ -174,10 +168,11 @@
                 <div class="sidebar">
                     <div class="sidebar__single sidebar__search">
                         <h3 class="sidebar__title">Search</h3>
-                        <form action="#" class="sidebar__search-form">
-                            <input type="search" placeholder="Search....">
-                            <button type="submit"><i class="icon-loupe"></i></button>
+                        <form>
+                            <input type="text" id="searchInput" placeholder="Search....">
+                            <button type="button"><i class="icon-loupe"></i></button>
                         </form>
+                        <ul class="searchList list-group"></ul>
                     </div>
                     <div class="sidebar__single sidebar__all-category">
                         <h3 class="sidebar__title">Category</h3>
@@ -187,61 +182,10 @@
                             {
                                 <li>
                                     <a href="blog-details.html">
-                                        <i class="icon-double-angle"></i>@category.Name<span>(03)</span>
+                                        <i class="icon-double-angle"></i>@Html.Raw(category.Name)<span>(03)</span>
                                     </a>
                                 </li>
                             }
-
-                            @*  <li class="active">
-                                <a href="blog-details.html">
-                                    <i class="icon-double-angle"></i>Elite Event
-                                    Management<span>(01)</span>
-                                </a>
-                            </li> *@
-                        </ul>
-                    </div>
-                    <div class="sidebar__single sidebar__post">
-                        <h3 class="sidebar__title">Recent Post</h3>
-                        <ul class="sidebar__post-list list-unstyled">
-                            <li>
-                                <div class="sidebar__post-content">
-                                    <p class="sidebar__post-date">
-                                        <span class="icon-calendar"></span>Jan 10,2024
-                                    </p>
-                                    <h3>
-                                        <a href="blog-details.html">
-                                            Unforgettable Mome Celebrate Unforgettable
-                                            Events
-                                        </a>
-                                    </h3>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="sidebar__post-content">
-                                    <p class="sidebar__post-date">
-                                        <span class="icon-calendar"></span>Jun 20,2024
-                                    </p>
-                                    <h3>
-                                        <a href="blog-details.html">
-                                            Aliquam an eros justo, posuere lobortis,
-                                            viverra laoreet
-                                        </a>
-                                    </h3>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="sidebar__post-content">
-                                    <p class="sidebar__post-date">
-                                        <span class="icon-calendar"></span>Jan 15,2024
-                                    </p>
-                                    <h3>
-                                        <a href="blog-details.html">
-                                            Aliquam eros justo, posuere loborti viverra
-                                            laoreet
-                                        </a>
-                                    </h3>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                     <div class="sidebar__single sidebar__tags">
@@ -250,7 +194,7 @@
                             <a href="#">All Project</a>
                             @foreach (var tag in Model.Tags)
                             {
-                                <a href="#">@tag.Name</a>
+                                <a href="#">@Html.Raw(tag.Name)</a>
                             }
                         </div>
                     </div>
@@ -260,3 +204,20 @@
     </div>
 </section>
 <!--Blog Details End-->
+@section scripts {
+    <script>
+            const input = document.querySelector("#searchInput");
+
+        input.addEventListener("keyup", function () {
+            console.log(input.value);
+
+            if (input.value) {
+                fetch("/home/search?search=" + input.value)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.querySelector(".searchList").innerHTML = data;
+                    });
+            }
+        });
+    </script>
+}

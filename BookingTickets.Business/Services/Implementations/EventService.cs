@@ -32,7 +32,14 @@ public class EventService : IEventService
             return false;
         }
 
-        if(!_dbContext.Venues.Any(x => x.Id == dto.VenueId))
+
+        if (dto.Schedules.Count == 0)
+        {
+            ModelState.AddModelError("Schedules", "Schedules field cannot be empty..");
+            return false;
+        }
+
+        if (!_dbContext.Venues.Any(x => x.Id == dto.VenueId))
         {
             ModelState.AddModelError("VenueId", "There is no venue in this id...");
             return false;
@@ -84,7 +91,7 @@ public class EventService : IEventService
 
         foreach (var languageId in dto.EventLanguageIds)
         {
-            if(!_dbContext.Languages.Any(x => x.Id == languageId))
+            if (!_dbContext.Languages.Any(x => x.Id == languageId))
             {
                 ModelState.AddModelError("EventLanguageIds", "There is no language in this id...");
                 return false;
@@ -101,7 +108,7 @@ public class EventService : IEventService
                 ModelState.AddModelError("EventPersonIds", "There is no language in this id...");
                 return false;
             }
-            EventPeron eventPeron= new() { PersonId = personId, Event = @event };
+            EventPeron eventPeron = new() { PersonId = personId, Event = @event };
             @event.EventPersons.Add(eventPeron);
         }
 
@@ -124,7 +131,7 @@ public class EventService : IEventService
             });
         }
 
-     CalculateService.CalculateSeatPricesForEvent(@event);
+        CalculateService.CalculateSeatPricesForEvent(@event);
 
         await _repository.AddAsync(@event);
 
@@ -168,7 +175,7 @@ public class EventService : IEventService
 
     public async Task<EventUpdateDto> GetUpdatedDtoAsync(int id)
     {
-        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue","EventLanguages.Language", "EventPersons.Person", "EventsSchedules.Schedule");
+        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue", "EventLanguages.Language", "EventPersons.Person", "EventsSchedules.Schedule");
 
         if (@event == null)
         {
@@ -231,7 +238,6 @@ public class EventService : IEventService
         }
 
         // 🔹 Map basic properties (Name, Description, VenueId və s.)
-        existEvent = _mapper.Map(dto, existEvent);
 
         // 🔹 Update EventLanguages if they are selected
         if (dto.SelectedLanguageIds.Any())
@@ -275,6 +281,7 @@ public class EventService : IEventService
                 eventSchedule.Schedule.Date = schDto.Date;
                 eventSchedule.Schedule.StartTime = schDto.StartTime;
                 eventSchedule.Schedule.EndTime = schDto.EndTime;
+                _dbContext.Schedules.Update(eventSchedule.Schedule);
             }
         }
 
@@ -315,6 +322,9 @@ public class EventService : IEventService
                 existEvent.EventImages.Add(new EventImage { ImagePath = path });
             }
         }
+
+        existEvent = _mapper.Map(dto, existEvent);
+
 
         await _repository.UpdateAsync(existEvent);
         return true;

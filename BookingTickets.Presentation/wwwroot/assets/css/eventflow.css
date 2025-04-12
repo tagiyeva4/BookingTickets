@@ -7287,18 +7287,18 @@ ul {
 }
 
 .blog-details__date {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 86px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, #B20D5D 0%, #4A0AB4 100%);
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(90deg, #B20D5D 0%, #4A0AB4 100%); 
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px; 
+    padding: 2px 6px; 
+    border-radius: 10px 0 10px 0;
+    line-height: 1.2;
 }
+
 
 .blog-details__date p {
   font-size: 15px;

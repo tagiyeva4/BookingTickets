@@ -99,6 +99,7 @@ namespace BookingTickets.Presentation.Controllers
             var blogVm = getBlogDetailVm(comment.BlogId, user.Id);
 
             blogVm.BlogComment = comment;
+            blogVm.BlogComment.DateTime = DateTime.Now;
 
             comment.AppUserId = user.Id;
 

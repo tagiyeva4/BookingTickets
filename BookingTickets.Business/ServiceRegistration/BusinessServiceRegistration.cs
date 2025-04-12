@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BookingTickets.Business.Dtos.EventDtos;
 using BookingTickets.Business.Validators.BlogValidators;
 using BookingTickets.Business.Services;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace BookingTickets.Business.ServiceRegistration;
 
@@ -16,13 +17,17 @@ public static class BusinessServiceRegistration
     public static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(SliderAutoMapper));
-        services.AddAutoMapper(typeof(BlogAutoMapper));
-        services.AddAutoMapper(typeof(TagAutoMapper));
-        services.AddAutoMapper(typeof(CategoryAutoMapper));
-        services.AddAutoMapper(typeof(VenueAutoMapper));
-        services.AddAutoMapper(typeof(EventAutoMapper));
-        services.AddAutoMapper(typeof(EventScheduleAutoMapper));
-        services.AddAutoMapper(typeof(PersonAutoMapper));
+     
+
+
+
+
+
+        services.AddHttpClient();
+
+        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        services.AddHttpContextAccessor();
+
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining(typeof(BlogCreateDtoValidator));
         AddServices(services);
@@ -38,6 +43,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<IEventService, EventService>();
         services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<IBasketService, BasketService>();
+        services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<LayoutServices>();
         services.AddScoped<EmailService>();
         services.AddScoped<QrCodeService>();

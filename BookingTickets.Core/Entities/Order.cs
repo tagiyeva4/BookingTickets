@@ -5,8 +5,8 @@ namespace BookingTickets.Core.Entities
 {
     public class Order:BaseAuditableEntity
     {
-        public string? AppUserId { get; set; }
-        public AppUser? AppUser { get; set; }
+        public string? AppUserId { get; set; } = null!;
+        public AppUser? AppUser { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string? PromoCode { get; set; }
         [Column(TypeName = "decimal(18,2)")]
@@ -25,5 +25,7 @@ namespace BookingTickets.Core.Entities
 
         // İstifadəçi və ya admin tərəfindən sifarişə əlavə qeyd
         public string? Note { get; set; }
+        public bool IsPaid { get; set; } = false;
+
     }
 }
