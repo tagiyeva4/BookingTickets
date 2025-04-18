@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace BookingTickets.Presentation.Controllers
 {
-    public class BasketController(BookingTicketsDbContext dbContext,UserManager<AppUser> userManager) : Controller
+    public class BasketController(BookingTicketsDbContext dbContext, UserManager<AppUser> userManager) : Controller
     {
         public IActionResult Index()
         {
@@ -40,11 +40,11 @@ namespace BookingTickets.Presentation.Controllers
                 Price = t.Price,
                 Count = 1,
                 ExpireAt = t.ExpiresAt,
-                SeatLocation ="Seat Number" + " " + t.VenueSeat.SeatNumber+" "+"Row Name" + " " + t.VenueSeat.RowName,
+                SeatLocation = "Seat Number" + " " + t.VenueSeat.SeatNumber + " " + "Row Name" + " " + t.VenueSeat.RowName,
             }).ToList();
 
             return View(basketItems);
-        
+
             //var basket = HttpContext.Request.Cookies["basket"];
             //List<BasketItemVm> basketItemVms ;
             //if (basket != null)
@@ -63,8 +63,9 @@ namespace BookingTickets.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ReserveTicket(int eventId, int seatId)
+        public IActionResult ReserveTicket(int eventId, int seatId, int scheduleId)
         {
+            Console.WriteLine("Gələn ScheduleId: " + scheduleId);
             var seat = dbContext.VenueSeats.FirstOrDefault(s => s.Id == seatId);
             if (seat == null)
             {
@@ -76,6 +77,8 @@ namespace BookingTickets.Presentation.Controllers
                 .Include(e => e.Tickets)
                 .Include(e => e.Venue)
                 .ThenInclude(v => v.Seats)
+                .Include(e => e.EventsSchedules)
+                .ThenInclude(es => es.Schedule)
                 .FirstOrDefault(e => e.Id == eventId);
 
             if (@event == null)
@@ -85,8 +88,12 @@ namespace BookingTickets.Presentation.Controllers
             }
 
             var isTaken = dbContext.Tickets.Any(t =>
-                t.VenueSeatId == seatId &&
-                (t.Status == TicketStatus.Purchased || (t.Status == TicketStatus.Reserved && t.ExpiresAt > DateTime.Now)));
+           t.VenueSeatId == seatId &&
+           t.ScheduleId == scheduleId && // Eyni tarixdə tutulan yer olmasın
+           (t.Status == TicketStatus.Purchased || 
+           (t.Status == TicketStatus.Reserved && 
+           t.ExpiresAt > DateTime.Now)));
+
 
             if (isTaken)
             {
@@ -98,6 +105,7 @@ namespace BookingTickets.Presentation.Controllers
             {
                 EventId = eventId,
                 VenueSeatId = seatId,
+                ScheduleId = scheduleId,
                 Status = TicketStatus.Reserved,
                 Price = seat.Price,
                 ReservedAt = DateTime.Now,
@@ -110,7 +118,7 @@ namespace BookingTickets.Presentation.Controllers
             dbContext.SaveChanges();
 
             TempData["Success"] = "Ticket added to basket.";
-          return RedirectToAction("Detail", "Event", new { id = eventId });
+            return RedirectToAction("Detail", "Event", new { id = eventId });
         }
 
         [HttpGet]

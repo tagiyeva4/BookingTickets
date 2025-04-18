@@ -1,4 +1,5 @@
 ﻿using BookingTickets.Core.Entities;
+using BookingTickets.Core.Enums;
 using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace BookingTickets.Presentation.Controllers
             var existEvent =dbContext.Events
                 .Include(e=>e.Venue)
                 .ThenInclude(v => v.Seats)
+                .Include(e => e.EventsSchedules)
+                .ThenInclude(es => es.Schedule)
                 .Include(e=>e.EventImages)
                 .Include(e=>e.EventPersons)
                 .ThenInclude(ep=>ep.Person)
@@ -60,6 +63,20 @@ namespace BookingTickets.Presentation.Controllers
                 venue.Latitude,
                 venue.Longitude
             });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReservedSeats(int eventId, int scheduleId)
+        {
+            var reservedSeatIds = await dbContext.Tickets
+                .Where(t => t.EventId == eventId &&
+                            t.ScheduleId == scheduleId &&
+                            t.Status != TicketStatus.Cancelled &&
+                            t.ExpiresAt > DateTime.Now)
+                .Select(t => t.VenueSeatId)
+                .ToListAsync();
+
+            return Json(reservedSeatIds);
         }
 
     }

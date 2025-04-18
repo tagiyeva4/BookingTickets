@@ -1,12 +1,14 @@
 ﻿using BookingTickets.Business.Dtos.VenueDtos;
 using BookingTickets.Business.Services.Abstractions;
+using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers;
 
 [Area("Manage")]
 //[Authorize(Roles = "Admin")]
-public class VenueController(IVenueService venueService) : Controller
+public class VenueController(IVenueService venueService,BookingTicketsDbContext dbContext) : Controller
 {
     public async Task<IActionResult> Index()
     {
@@ -66,4 +68,21 @@ public class VenueController(IVenueService venueService) : Controller
         }
         return View(result);
     }
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetSeatsByVenueId(int venueId)
+    {
+        var seats = await dbContext.VenueSeats
+            .Where(x => x.VenueId == venueId)
+            .Select(x => new
+            {
+                id = x.Id,
+                seatLabel = x.SeatLabel
+            })
+            .ToListAsync();
+
+        return Json(seats);
+    }
+
 }

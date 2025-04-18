@@ -28,5 +28,7 @@ public class Ticket : BaseEntity
     public DateTime ExpiresAt { get; set; } = DateTime.Now.AddMinutes(15);
     public int? OrderId { get; set; }
     public Order? Order { get; set; }
+    public int ScheduleId { get; set; }
+    public Schedule Schedule { get; set; } = null!;
 }
 

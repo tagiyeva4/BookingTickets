@@ -234,6 +234,24 @@
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="eventId" value="@Model.Id" />
                                         <input type="hidden" name="seatId" id="selectedSeatId" />
+                                        <input type="hidden" name="scheduleId" id="selectedScheduleId" />
+                                        <div class="form-group text-center">
+                                            <label for="scheduleSelect" class="fw-bold mb-2">Tədbir Tarixini Seçin</label>
+                                            <select id="scheduleSelect" name="scheduleId" class="form-control test1234 w-50  mb-4" required>
+                                                <option value="">-- Tarixi seçin --</option>
+                                                @foreach (var schedule in Model.EventsSchedules)
+                                                {
+                                                    var start = schedule.Schedule.Date.Add(schedule.Schedule.StartTime);
+                                                    var end = schedule.Schedule.Date.Add(schedule.Schedule.EndTime);
+
+                                                    <option value="@schedule.Schedule.Id">
+                                                        @($"{start:dd MMM yyyy HH:mm} - {end:HH:mm}")
+                                                    </option>
+                                                }
+
+                                            </select>
+                                        </div>
+                                       
                                         <div class="seat-map">
                                             <div class="stage">Səhnə</div>
                                             <div class="seat-grid">
@@ -411,6 +429,45 @@
         {
             <text>toastr.error("@TempData["Error"]");</text>
         }
+    </script>
+
+    <script>
+        console.log('salam')
+
+const selectItem=document.querySelector('.test1234');  console.log(selectItem);       selectItem.addEventListener("input", function (e) {
+            const scheduleId = e.target.value;
+            const eventId = '@Model.Id';
+
+
+            console.log(scheduleId)
+            document.getElementById("selectedScheduleId").value = scheduleId;
+            console.log("ScheduleId:", scheduleId);
+            if (!scheduleId) return;
+
+            fetch(`${host}/Event/GetReservedSeats?eventId=${eventId}&scheduleId=${scheduleId}`)
+                .then(response => response.json())
+                .then(reservedSeats => {
+                    document.querySelectorAll(".seat").forEach(seat => {
+                        const seatId = parseInt(seat.getAttribute("data-seat-id"));
+
+                        if (reservedSeats.includes(seatId)) {
+                            seat.classList.remove("available");
+                            seat.classList.remove("selected");
+                            seat.classList.add("unavailable");
+                            seat.style.pointerEvents = "none";
+                        } else {
+                            seat.classList.remove("unavailable");
+                            seat.classList.add("available");
+                            seat.style.pointerEvents = "auto";
+                        }
+                    });
+
+                    // Sifarişi təmizləyək (əgər başqa tarix seçilirsə)
+                    document.getElementById('selectedSeatId').value = '';
+                    document.getElementById('submitBtn').disabled = true;
+                    document.getElementById('seatInfo').style.display = 'none';
+                });
+        });
     </script>
 
 }

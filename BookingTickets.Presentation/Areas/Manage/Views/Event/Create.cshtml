@@ -75,6 +75,198 @@
                 <input asp-for="Photos" type="file" class="form-control" multiple>
                 <span class="text-danger" asp-validation-for="Photos"></span>
             </div>
+            <div class="form-group form-check mt-3">
+                <input type="checkbox" class="form-check-input" asp-for="IsManualPricing" id="IsManualPricingCheckbox" />
+                <label class="form-check-label" for="IsManualPricingCheckbox">I want to manually enter seat prices</label>
+            </div>
+            <div id="manualPriceSection" style="display:none;">
+                <label>Enter Prices For Each Seat</label>
+                <div id="seatPricesContainer" class="row"></div>
+            </div>
+            <div class="form-group">
+                <label>Schedules</label>
+                <div id="schedule-container"></div>
+                <button type="button" class="btn btn-secondary mt-2" id="add-schedule">+ Add Schedule</button>
+                <span asp-validation-for="Schedules" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+    </div>
+</div>
+@section scripts {
+    @await Html.PartialAsync("_ValidationPartial")
+    <script>
+        function loadSeatPrices() {
+            const venueId = document.querySelector("select[name='VenueId']").value;
+            const container = document.getElementById("seatPricesContainer");
+            container.innerHTML = "";
+            if (!venueId) return;
+            fetch(`/Manage/Venue/GetSeatsByVenueId?venueId=${venueId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = '';
+                    data.forEach((seat, index) => {
+                        html += `
+                            <div class="col-md-3 mb-2">
+                                <label>${seat.seatLabel}</label>
+                                <input type="hidden" name="SeatPrices[${index}].SeatId" value="${seat.id}" />
+                                <input type="number" step="0.01" class="form-control seat-price-input" name="SeatPrices[${index}].Price" />
+                            </div>`;
+                    });
+                    container.innerHTML = html;
+                    toggleRequiredInputs();
+                });
+        }
+
+        function toggleRequiredInputs() {
+            const isChecked = document.getElementById("IsManualPricingCheckbox").checked;
+            const inputs = document.querySelectorAll(".seat-price-input");
+            inputs.forEach(input => {
+                if (isChecked) {
+                    input.setAttribute("required", "required");
+                } else {
+                    input.removeAttribute("required");
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const manualCheckbox = document.getElementById("IsManualPricingCheckbox");
+            const manualSection = document.getElementById("manualPriceSection");
+
+            manualCheckbox.addEventListener("change", function () {
+                const show = this.checked;
+                manualSection.style.display = show ? "block" : "none";
+                toggleRequiredInputs();
+                if (show) loadSeatPrices();
+            });
+
+            document.querySelector("select[name='VenueId']").addEventListener("change", function () {
+                if (manualCheckbox.checked) {
+                    loadSeatPrices();
+                }
+            });
+
+            let scheduleIndex = 0;
+            document.getElementById("add-schedule").addEventListener("click", function () {
+                const container = document.getElementById("schedule-container");
+                const scheduleDiv = document.createElement("div");
+                scheduleDiv.classList.add("schedule-item", "mb-3");
+                scheduleDiv.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Date</label>
+                            <input type="date" name="Schedules[${scheduleIndex}].Date" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Start Time</label>
+                            <input type="time" name="Schedules[${scheduleIndex}].StartTime" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label>End Time</label>
+                            <input type="time" name="Schedules[${scheduleIndex}].EndTime" class="form-control" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger mt-4 remove-schedule">X</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(scheduleDiv);
+                scheduleIndex++;
+                scheduleDiv.querySelector(".remove-schedule").addEventListener("click", function () {
+                    scheduleDiv.remove();
+                });
+            });
+        });
+    </script>
+}
+
+
+
+
+@* @model EventCreateDto
+@{
+    var languages = ViewBag.Languages;
+    var venues = ViewBag.Venues;
+    var people = ViewBag.Persons;
+}
+<div class="container">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control">
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgeRestriction"></label>
+                <input asp-for="AgeRestriction" class="form-control">
+                <span class="text-danger" asp-validation-for="AgeRestriction"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control">
+                <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalTickets"></label>
+                <input asp-for="TotalTickets" class="form-control">
+                <span class="text-danger" asp-validation-for="TotalTickets"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxPrice"></label>
+                <input asp-for="MaxPrice" class="form-control">
+                <span class="text-danger" asp-validation-for="MaxPrice"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinPrice"></label>
+                <input asp-for="MinPrice" class="form-control">
+                <span class="text-danger" asp-validation-for="MinPrice"></span>
+            </div>
+            <div class="form-group">
+                <label>Select Venue</label>
+                <select class="form-select" asp-for="VenueId">
+                    <option disabled selected>Select Venue</option>
+                    @foreach (var venue in venues)
+                    {
+                        <option value="@venue.Id">@venue.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Select Languages</label>
+                <select multiple class="form-select" asp-for="EventLanguageIds">
+                    @foreach (var language in languages)
+                    {
+                        <option value="@language.Id">@language.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Select Speakers</label>
+                <select multiple class="form-select" asp-for="EventPersonIds">
+                    @foreach (var person in people)
+                    {
+                        <option value="@person.Id">@person.FullName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photos"></label>
+                <input asp-for="Photos" type="file" class="form-control" multiple>
+                <span class="text-danger" asp-validation-for="Photos"></span>
+            </div>
+
+            <!-- ✅ Seat qiymətləri inputları əlavə olunur -->
+            <div class="form-group mt-3">
+                <label>Seat Prices (based on selected venue)</label>
+                <div id="seatPricesContainer"></div>
+            </div>
 
             <!-- Dinamik Schedule Əlavə Sahəsi -->
             <div class="form-group">
@@ -131,4 +323,32 @@
             });
         });
     </script>
+
+    <script>
+        // ✅ Venue seçiləndə oturacaqlar yüklə
+        document.querySelector("select[name='VenueId']").addEventListener("change", function () {
+            const venueId = this.value;
+            const container = document.getElementById("seatPricesContainer");
+            container.innerHTML = "";
+
+            if (!venueId) return;
+
+            fetch(`/Manage/Venue/GetSeatsByVenueId?venueId=${venueId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = '<div class="row">';
+                    data.forEach((seat, index) => {
+                        html += `
+                            <div class="col-md-3 mb-2">
+                                <label>${seat.seatLabel}</label>
+                                <input type="hidden" name="SeatPrices[${index}].SeatId" value="${seat.id}" />
+                                <input type="number" step="0.01" class="form-control" name="SeatPrices[${index}].Price" required />
+                            </div>`;
+                    });
+                    html += '</div>';
+                    container.innerHTML = html;
+                });
+        });
+    </script>
 }
+ *@
