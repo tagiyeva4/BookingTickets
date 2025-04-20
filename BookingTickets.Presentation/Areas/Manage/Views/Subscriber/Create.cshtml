@@ -1,0 +1,19 @@
+﻿@using BookingTickets.Business.Dtos.SubscriberEmailDtos
+@model SubscriberCreateDto
+<div class="container">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" aria-describedby="emailHelp">
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a class="btn btn-outline-primary" asp-action="index">Go back</a>
+        </form>
+    </div>
+</div>
+@section scripts {
+    @await Html.PartialAsync("_ValidationPartial")
+}
+

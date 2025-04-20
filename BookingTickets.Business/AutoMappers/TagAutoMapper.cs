@@ -4,7 +4,7 @@ using BookingTickets.Core.Entities;
 
 namespace BookingTickets.Business.AutoMappers;
 
-public class TagAutoMapper : Profile
+internal class TagAutoMapper : Profile
 {
     public TagAutoMapper()
     {

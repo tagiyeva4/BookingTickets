@@ -231,13 +231,11 @@
 
 
                                     <form method="post" asp-action="ReserveTicket" asp-controller="Basket" >
-                                        @Html.AntiForgeryToken()
                                         <input type="hidden" name="eventId" value="@Model.Id" />
                                         <input type="hidden" name="seatId" id="selectedSeatId" />
-                                        <input type="hidden" name="scheduleId" id="selectedScheduleId" />
                                         <div class="form-group text-center">
                                             <label for="scheduleSelect" class="fw-bold mb-2">Tədbir Tarixini Seçin</label>
-                                            <select id="scheduleSelect" name="scheduleId" class="form-control test1234 w-50  mb-4" required>
+                                            <select id="scheduleSelect" name="scheduleId" class="form-control test1234 w-50 mx-auto mb-4" required>
                                                 <option value="">-- Tarixi seçin --</option>
                                                 @foreach (var schedule in Model.EventsSchedules)
                                                 {

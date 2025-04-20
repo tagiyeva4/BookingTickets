@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingTickets.Business.Dtos.EventDtos;
+using BookingTickets.Business.Dtos.VenueSeatDto;
 using BookingTickets.Business.Exceptions;
 using BookingTickets.Business.Helpers;
 using BookingTickets.Business.Services.Abstractions;
@@ -309,7 +310,7 @@ public class EventService : IEventService
 
     public async Task<EventUpdateDto> GetUpdatedDtoAsync(int id)
     {
-        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "Venue", "EventLanguages.Language", "EventPersons.Person", "EventsSchedules.Schedule");
+        var @event = await _repository.FindOneAsync(x => x.Id == id, "EventImages", "EventLanguages.Language", "EventPersons.Person", "EventsSchedules.Schedule", "Venue.Seats");
 
         if (@event == null)
         {
@@ -317,6 +318,14 @@ public class EventService : IEventService
         }
 
         var dto = _mapper.Map<EventUpdateDto>(@event);
+
+        dto.VenueSeats = @event.Venue.Seats.Select(s => new VenueSeatUpdateDto
+        {
+            Id = s.Id,
+            SeatLabel = s.SeatLabel,
+            Price = s.Price
+        }).ToList();
+
 
         return dto;
     }
@@ -336,7 +345,7 @@ public class EventService : IEventService
         }
 
         var existEvent = await _repository.FindOneAsync(x => x.Id == dto.Id,
-            "EventImages", "Venue",
+            "EventImages", "Venue.Seats",
             "EventLanguages.Language",
             "EventPersons.Person",
             "EventsSchedules.Schedule");
@@ -352,6 +361,19 @@ public class EventService : IEventService
         {
             throw new CustomException(400, "Event already exists");
         }
+
+        if (dto.VenueSeats != null && dto.VenueSeats.Any())
+        {
+            foreach (var seatDto in dto.VenueSeats)
+            {
+                var seat = await _dbContext.VenueSeats.FindAsync(seatDto.Id);
+                if (seat != null && seat.Price != seatDto.Price)
+                {
+                    seat.Price = (decimal)seatDto.Price; // yalnız dəyişibsə update et
+                }
+            }
+        }
+
 
         // 🔹 Validation for new uploaded images
         if (dto.Photos != null)

@@ -27,7 +27,8 @@
                 <input asp-for="ImageUrl" type="hidden" />
                 <span>Old Image:<img src=@Model.ImageUrl width="150" height="150" alt="" /></span>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a class="btn btn-outline-primary" asp-action="index">Go back</a>
         </form>
     </div>
 </div>

@@ -4,7 +4,7 @@ using BookingTickets.Core.Entities;
 
 namespace BookingTickets.Business.AutoMappers;
 
-public class EventScheduleAutoMapper:Profile
+internal class EventScheduleAutoMapper:Profile
 {
     public EventScheduleAutoMapper()
     {

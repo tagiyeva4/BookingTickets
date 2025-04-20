@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using BookingTickets.Business.Dtos.EventDtos;
+using BookingTickets.Business.Dtos.VenueSeatDto;
 using BookingTickets.Core.Entities;
 
 namespace BookingTickets.Business.AutoMappers;
 
-public class EventAutoMapper:Profile
+internal class EventAutoMapper:Profile
 {
     public EventAutoMapper()
     {
@@ -54,5 +55,6 @@ public class EventAutoMapper:Profile
         CreateMap<Schedule,ScheduleDto>().ReverseMap();
         CreateMap<Schedule, ScheduleUpdateDto>().ReverseMap();
         CreateMap<EventImage, EventImageDto>();
+        CreateMap<VenueSeat, VenueSeatUpdateDto>().ReverseMap();
     }
 }

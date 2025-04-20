@@ -1,4 +1,5 @@
-﻿using iText.IO.Image;
+﻿using BookingTickets.Business.Dtos.VenueSeatDto;
+using iText.IO.Image;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,8 @@ public class EventUpdateDto:IDto
     public List<int> SelectedPersonIds { get; set; } = [];
     public List<IFormFile>? Photos { get; set; }
     public List<EventImageDto> ExistingImages { get; set; } = [];
+    public List<VenueSeatUpdateDto>? VenueSeats { get; set; }
+
 }
 
 public class ScheduleUpdateDto

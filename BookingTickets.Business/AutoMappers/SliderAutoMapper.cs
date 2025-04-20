@@ -4,7 +4,7 @@ using BookingTickets.Core.Entities;
 
 namespace BookingTickets.Business.AutoMappers;
 
-public class SliderAutoMapper:Profile
+internal class SliderAutoMapper:Profile
 {
     public SliderAutoMapper()
     {

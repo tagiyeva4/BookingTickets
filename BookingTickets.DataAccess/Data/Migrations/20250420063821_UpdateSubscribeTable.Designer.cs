@@ -4,6 +4,7 @@ using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingTickets.DataAccess.Data.Migrations
 {
     [DbContext(typeof(BookingTicketsDbContext))]
-    partial class BookingTicketsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250420063821_UpdateSubscribeTable")]
+    partial class UpdateSubscribeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

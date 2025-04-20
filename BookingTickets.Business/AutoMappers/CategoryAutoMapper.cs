@@ -4,7 +4,7 @@ using BookingTickets.Core.Entities;
 
 namespace BookingTickets.Business.AutoMappers;
 
-public class CategoryAutoMapper : Profile
+internal class CategoryAutoMapper : Profile
 {
     public  CategoryAutoMapper()
     {

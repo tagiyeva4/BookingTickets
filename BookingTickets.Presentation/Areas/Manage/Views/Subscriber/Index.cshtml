@@ -1,0 +1,58 @@
+﻿@using BookingTickets.Business.Dtos.SubscriberEmailDtos
+@model List<SubscriberReturnDto>
+@{
+    int count = 1;
+}
+<div class="container">
+    <div class="row">
+        <a asp-action="Create" class="btn btn-outline-success">Create</a>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Count</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var slider in Model)
+                {
+                    <tr>
+                        <td>@(++count)</td>
+                        <td>@slider.Email</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Update" asp-route-id="@slider.Id">Edit</a>
+                            <a class="btn btn-primary" href="javascript:void(0);" onclick="confirmDelete(@slider.Id)">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts {
+    <script>
+                function confirmDelete(id) {
+            // SweetAlert ilə təsdiq pəncərəsi
+            Swal.fire({
+               title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Təsdiq edildikdən sonra delete əməliyyatı həyata keçirilir
+                    window.location.href = '/Manage/Slider/Delete/' + id; // Delete URL-ini dəyişdirin
+                } else {
+                    // Əgər istifadəçi ləğv edərsə, heç nə edilməz
+                    console.log('Silinmə əməliyyatı ləğv edildi.');
+                }
+            });
+        }
+
+    </script>
+}

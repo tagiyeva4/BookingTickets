@@ -44,6 +44,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<IBasketService, BasketService>();
         services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<ISubscriberService, SubscriberService>();
         services.AddScoped<LayoutServices>();
         services.AddScoped<EmailService>();
         services.AddScoped<QrCodeService>();

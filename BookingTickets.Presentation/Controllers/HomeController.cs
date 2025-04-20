@@ -1,3 +1,5 @@
+using BookingTickets.Business.Dtos.SubscriberEmailDtos;
+using BookingTickets.Business.Services.Abstractions;
 using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.Presentation.Models;
 using BookingTickets.Presentation.ViewModels;
@@ -11,11 +13,29 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly BookingTicketsDbContext _dbContext;
+    private readonly ISubscriberService _subscriberService;
 
-    public HomeController(ILogger<HomeController> logger, BookingTicketsDbContext dbContext)
+    public HomeController(ILogger<HomeController> logger, BookingTicketsDbContext dbContext, ISubscriberService subscriberService)
     {
         _logger = logger;
         _dbContext = dbContext;
+        _subscriberService = subscriberService;
+    }
+
+    public async Task<IActionResult> AddSubscriber(SubscriberCreateDto dto)
+    {
+        try
+        {
+            var result=await _subscriberService.CreateAsync(dto,ModelState);
+        }
+        catch(Exception ex)
+        {
+          Console.WriteLine(ex.Message);
+        }
+
+        string returnUrl = Request.Headers["Referer"];
+        return Redirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
+
     }
 
     public IActionResult Search(string search)

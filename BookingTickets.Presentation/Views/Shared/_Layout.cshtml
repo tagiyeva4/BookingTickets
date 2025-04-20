@@ -132,31 +132,8 @@
                         <div class="main-menu__main-menu-box">
                             <a href="#" class="mobile-nav__toggler"><i class="fa fa-bars"></i></a>
                             <ul class="main-menu__list">
-                                <li class="dropdown">
-                                    <a href="index.html">Home </a>
-                                    <ul>
-                                        <li><a href="index.html">Home One</a></li>
-                                        <li><a href="index2.html">Home Two</a></li>
-                                        <li><a href="index3.html">Home Three</a></li>
-                                        <li class="dropdown">
-                                            <a href="#">Header Styles</a>
-                                            <ul>
-                                                <li><a href="index.html">Header One</a></li>
-                                                <li><a href="index2.html">Header Two</a></li>
-                                                <li><a href="index3.html">Header Three</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="#">One Page Styles</a>
-                                            <ul>
-                                                <li><a href="index-one-page.html">One Page Styles One</a></li>
-                                                <li><a href="index2-one-page.html">One Page Styles Two</a></li>
-                                                <li>
-                                                    <a href="index3-one-page.html">One Page Styles Three</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Home">Home</a>
                                 </li>
                                 <li class="dropdown">
                                     <a href="#">Pages</a>
@@ -184,12 +161,8 @@
                                         <li><a href="dream-event-planners.html">Dream Event Planners</a></li>
                                     </ul>
                                 </li>
-                                <li class="dropdown">
-                                    <a href="#">Event</a>
-                                    <ul>
-                                        <li><a asp-controller="Event" asp-action="Index">Event</a></li>
-                                        <li><a href="event-details.html">Event Details</a></li>
-                                    </ul>
+                                <li>
+                                    <a asp-controller="Event" asp-action="Index">Event</a>
                                 </li>
                                 <li class="dropdown">
                                     <a href="#">Blog</a>
@@ -240,9 +213,9 @@
             <div class="container">
                 <div class="cta-one__inner">
                     <h3 class="cta-one__title">Get Latest Updateds Subscribe <br> to Our Newsletter</h3>
-                    <form class="cta-one__form mc-form" data-url="MC_FORM_URL" novalidate="novalidate">
+                    <form method="post" asp-action="AddSubscriber" asp-controller="Home" >
                         <div class="cta-one__form-input-box">
-                            <input type="email" placeholder="Enter your email" name="EMAIL">
+                            <input type="email" placeholder="Enter your email" name="Email">
                             <button type="submit" class="cta-one__btn"><span class="icon-paper-plan"></span></button>
                         </div>
                     </form>
