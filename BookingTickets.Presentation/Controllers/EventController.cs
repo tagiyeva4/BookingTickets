@@ -13,6 +13,8 @@ namespace BookingTickets.Presentation.Controllers
             var events=dbContext.Events
                 .Include(e => e.Venue)
                 .Include(e => e.EventImages)
+                .Include(e => e.EventsSchedules)
+                .ThenInclude(es => es.Schedule)
                 .Include(e => e.EventPersons)
                 .ThenInclude(ep => ep.Person)
                 .Include(e => e.EventLanguages)

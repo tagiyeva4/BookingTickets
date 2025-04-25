@@ -10,7 +10,7 @@
             </div>
             <h3 class="services-one__title"><a asp-action="detail" asp-controller="Service" asp-route-id="@service.Id">@service.Title</a></h3>
             <p class="services-one__text">
-                @service.Description
+                @service.Info
             </p>
             <a asp-action="detail" asp-controller="Service" asp-route-id="@service.Id" class="services-one__read-more">
                 @service.ButtonText <span class="icon-arrow-right"></span>

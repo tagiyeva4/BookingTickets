@@ -8,22 +8,11 @@
                 <div class="section-title__tagline-box">
                     <span class="section-title__tagline">Event Schedule</span>
                 </div>
-                <h2 class="section-title__title">Follow event schedule</h2>
+                <h2 class="section-title__title"></h2>
+
             </div>
             <div class="schedule-one__main-tab-box tabs-box">
                 <ul class="tab-buttons clearfix list-unstyled">
-                    <li data-tab="#1st-day" class="tab-btn active-btn">
-                        <h3>Day 01</h3>
-                        <p>16 April 2024</p>
-                    </li>
-                    <li data-tab="#2nd-day" class="tab-btn">
-                        <h3>Day 02</h3>
-                        <p>18 April 2024</p>
-                    </li>
-                    <li data-tab="#3rd-day" class="tab-btn">
-                        <h3>Day 03</h3>
-                        <p>24 April 2024</p>
-                    </li>
                 </ul>
                 <div class="tabs-content">
                     <!--tab-->
@@ -39,7 +28,7 @@
                                             </a>
                                         </h3>
                                         <p class="schedule-one__btn thm-btn">
-                                            From @envent.MinPrice ₼
+                                            From @envent.MinPrice - @envent.MaxPrice ₼
                                         </p>
                                     </div>
                                     <div class="schedule-one__img">
@@ -52,7 +41,14 @@
                                                     <span class="icon-clock"></span>
                                                 </div>
                                                 <div class="text">
-                                                    <p> To 10 Pm <br> 20 April 2024</p>
+                                                    @foreach (var schedule in envent.EventsSchedules)
+                                                    {
+                                                        var start = schedule.Schedule.Date.Add(schedule.Schedule.StartTime);
+                                                        var end = schedule.Schedule.Date.Add(schedule.Schedule.EndTime);
+                                                        <div>
+                                                            @($"{start:dd MMM yyyy HH:mm} - {end:HH:mm}")
+                                                        </div>
+                                                    }
                                                 </div>
                                             </li>
                                             <li>
@@ -65,7 +61,7 @@
                                             </li>
                                         </ul>
                                         <div class="schedule-one__btn-box">
-                                            <a href="contact.html" class="schedule-one__btn thm-btn">
+                                            <a asp-action="Detail" asp-controller="Event" asp-route-id="@envent.Id" class="schedule-one__btn thm-btn">
                                                 Buy Ticket<span class="icon-arrow-right"></span>
                                             </a>
                                         </div>

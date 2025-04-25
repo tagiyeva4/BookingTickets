@@ -23,10 +23,10 @@
                 <span class="text-danger" asp-validation-for="SecondDescription"></span>
             </div>
             <div class="form-group">
+                <input asp-for="BlogImages" type="hidden" />
                 <label asp-for="Photos"></label>
                 <input asp-for="Photos" class="form-control" aria-describedby="emailHelp">
                 <span class="text-danger" asp-validation-for="Photos"></span>
-                <input asp-for="BlogImages" type="hidden" />
             </div>
             <button type="submit" class="btn btn-primary">Save Changes</button>
             <a class="btn btn-outline-primary" asp-action="index">Go back</a>

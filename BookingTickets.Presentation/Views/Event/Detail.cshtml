@@ -149,20 +149,8 @@
                     <div class="event-details__main-tab-box tabs-box">
                         <ul class="tab-buttons clearfix list-unstyled">
                             <li data-tab="#year-1" class="tab-btn active-btn">
-                                @*  <p>@Model.Dates.FirstOrDefault().ToString("yyyy")</p> *@
+                                @Model.EventsSchedules.FirstOrDefault(x=>x.EventId==Model.Id).Schedule.Date.ToString("yyyy")
                             </li>
-                            @*  <li data-tab="#year-2" class="tab-btn">
-                                <p>2018</p>
-                            </li>
-                            <li data-tab="#year-3" class="tab-btn">
-                                <p>2020</p>
-                            </li>
-                            <li data-tab="#year-4" class="tab-btn">
-                                <p>2022</p>
-                            </li>
-                            <li data-tab="#year-5" class="tab-btn">
-                                <p>2024</p>
-                            </li> *@
                         </ul>
                         <div class="tabs-content">
                             <!--tab-->
@@ -172,7 +160,14 @@
                                         <li>
                                             <p>
                                                 <span class="icon-clock"></span>
-                                                @*  @Model.Dates.FirstOrDefault().ToString("dd MMMM yyyy") *@
+                                                @foreach(var schedule in Model.EventsSchedules)
+                                                {
+                                                var start = schedule.Schedule.Date.Add(schedule.Schedule.StartTime);
+                                                var end = schedule.Schedule.Date.Add(schedule.Schedule.EndTime);
+                                                    <div>
+                                                        @($"{start:dd MMM yyyy HH:mm} - {end:HH:mm}")
+                                                    </div>
+                                                }
                                             </p>
                                         </li>
                                         <li>

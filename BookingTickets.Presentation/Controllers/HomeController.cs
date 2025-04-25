@@ -63,11 +63,14 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         HomeVm homeVm = new HomeVm();
+        homeVm.Persons = _dbContext.People.Include(x => x.Profession)
+            .OrderBy(p => Guid.NewGuid()) 
+            .Take(3).ToList();
         homeVm.Sliders=_dbContext.Sliders.ToList();
         homeVm.SlidingTexts=_dbContext.SlidingTexts.ToList();
         homeVm.Brands=_dbContext.Brands.ToList();
        homeVm.Blogs = _dbContext.Blogs.Take(3).Include(x => x.BlogImages).ToList();
-        homeVm.Events = _dbContext.Events.Include(x=>x.Venue).Include(x=>x.EventLanguages).ThenInclude(el=>el.Language).Include(x=>x.EventPersons).ThenInclude(xp=>xp.Person).Include(e=>e.EventsSchedules).ThenInclude(es=>es.Schedule).Where(x=>x.IsAccess==true).ToList();
+        homeVm.Events = _dbContext.Events.Include(x=>x.Venue).Include(x=>x.EventLanguages).ThenInclude(el=>el.Language).Include(x=>x.EventPersons).ThenInclude(xp=>xp.Person).Include(e=>e.EventsSchedules).ThenInclude(es=>es.Schedule).Where(x=>x.IsAccess==true).OrderBy(p => Guid.NewGuid()).Take(5).ToList();
         return View(homeVm);
     }
 

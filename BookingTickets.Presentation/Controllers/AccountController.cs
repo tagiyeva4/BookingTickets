@@ -1,4 +1,5 @@
-﻿using BookingTickets.Business.Services.Implementations;
+﻿using BookingTickets.Business.Services.Abstractions;
+using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.Core.ViewModels.UserSystemViewModels;
 using BookingTickets.DataAccess.Data.Contexts;
@@ -14,7 +15,7 @@ namespace BookingTickets.Presentation.Controllers
         UserManager<AppUser> _userManager,
         SignInManager<AppUser> _signInManager,
         BookingTicketsDbContext _dbContext,
-        EmailService _emailService
+        IEmailService _emailService
         ) : Controller
     {
         public IActionResult Register()

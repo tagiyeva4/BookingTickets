@@ -1,6 +1,6 @@
 ﻿using BookingTickets.Business.Dtos;
-using BookingTickets.Business.Services;
 using BookingTickets.Business.Services.Abstractions;
+using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.Core.Enums;
 using BookingTickets.Core.ViewModels;
@@ -17,7 +17,7 @@ using System.Security.Claims;
 namespace BookingTickets.Presentation.Controllers
 {
 
-    public class OrderController(BookingTicketsDbContext dbContext, UserManager<AppUser> userManager, QrCodeService qrCodeService, IPaymentService _paymentService) : Controller
+    public class OrderController(BookingTicketsDbContext dbContext, UserManager<AppUser> userManager, TicketPdfService qrCodeService, IPaymentService _paymentService,IEmailService _emailService, IWebHostEnvironment _env) : Controller
     {
         /// <summary>
         /// Session-a bilet ID-lərini yazır
@@ -103,7 +103,7 @@ namespace BookingTickets.Presentation.Controllers
             dbContext.Orders.Add(order);
             await dbContext.SaveChangesAsync();
 
-            // Stripe session
+            #region Stripe session
             //var domain = "https://localhost:7230";
 
             //var options = new SessionCreateOptions
@@ -133,6 +133,7 @@ namespace BookingTickets.Presentation.Controllers
             //order.StripeSessionId = session.Id;
             //order.StripePaymentIntentId = session.PaymentIntentId;
             //await dbContext.SaveChangesAsync();
+            #endregion
 
             var response = await _paymentService.CreateAsync(new PaymentCreateDto
             {
@@ -149,7 +150,7 @@ namespace BookingTickets.Presentation.Controllers
             return Redirect(paymentUrl);
         }
 
-
+        #region
         //public async Task<IActionResult> PaymentSuccess(int orderId, [FromServices] IPdfService pdfService)
         //{
         //    var order = await dbContext.Orders
@@ -232,14 +233,70 @@ namespace BookingTickets.Presentation.Controllers
         //    return RedirectToAction("Index", "Home");
         //}
 
+        #endregion
 
 
         public async Task<IActionResult> CheckPayment(PaymentCheckDto dto)
         {
             var result = await _paymentService.CheckPaymentAsync(dto);
 
+            if (!result.IsSuccess)
+            {
+                TempData["Error"] = "Payment failed or not completed.";
+                return RedirectToAction("Checkout");
+            }
+
+            var order = await dbContext.Orders
+                .Include(o => o.AppUser)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Ticket)
+                        .ThenInclude(t => t.Event)
+                            .ThenInclude(e => e.Venue)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Ticket)
+                        .ThenInclude(t => t.VenueSeat)
+                .FirstOrDefaultAsync(o => o.Id == result.OrderId);
+
+            if (order == null)
+            {
+                TempData["Error"] = "Order not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            order.OrderStatus = OrderStatus.Completed;
+            order.PaidAt = DateTime.Now;
+
+            foreach (var item in order.OrderItems)
+            {
+                var ticket = item.Ticket;
+                ticket.Status = TicketStatus.Purchased;
+                ticket.PurchaseDate = DateTime.Now;
+
+                var pdfPath = qrCodeService.GenerateTicketPdf(ticket);
+
+                await _emailService.SendEmailWithAttachmentAsync(
+                    order.AppUser.Email,
+                    $"🎟 Your Ticket for {ticket.Event.Name}",
+                    $"<p>Hi {order.AppUser.FullName},</p>" +
+                    $"<p>Your ticket for <b>{ticket.Event.Name}</b> is confirmed. Please find it attached.</p>",
+                    Path.Combine(_env.WebRootPath, pdfPath.TrimStart('/'))
+                );
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            TempData["Success"] = "Payment successful. Your tickets have been emailed.";
             return RedirectToAction("Index", "Event");
         }
+
+
+
+        //public async Task<IActionResult> CheckPayment(PaymentCheckDto dto)
+        //{
+        //    var result = await _paymentService.CheckPaymentAsync(dto);
+
+        //    return RedirectToAction("Index", "Event");
+        //}
     }
 }
 

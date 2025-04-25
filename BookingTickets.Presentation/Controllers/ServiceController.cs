@@ -1,4 +1,5 @@
 ﻿using BookingTickets.Core.Entities;
+using BookingTickets.Core.ViewModels;
 using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +15,24 @@ namespace BookingTickets.Presentation.Controllers
         }
         public IActionResult Detail(int? id)
         {
-            if(id == null)
+            ServiceVm serviceVm = new ServiceVm();
+
+            serviceVm.Categories = dbContext.Categories.ToList();
+
+            serviceVm.Services = dbContext.Services.OrderBy(p => Guid.NewGuid())
+            .Take(3).ToList();
+
+            if (id == null)
             {
                 return BadRequest();
             }
-            Service? service = dbContext.Services.FirstOrDefault(x => x.Id == id);
-            if (service == null)
+            serviceVm.Service = dbContext.Services.FirstOrDefault(x => x.Id == id);
+
+            if (serviceVm.Service == null)
             {
                 return RedirectToAction("Index","Service");
             }
-            return View(service);
+            return View(serviceVm);
         }
     }
 }

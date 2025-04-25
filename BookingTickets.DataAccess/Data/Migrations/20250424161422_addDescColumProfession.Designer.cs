@@ -4,6 +4,7 @@ using BookingTickets.DataAccess.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingTickets.DataAccess.Data.Migrations
 {
     [DbContext(typeof(BookingTicketsDbContext))]
-    partial class BookingTicketsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250424161422_addDescColumProfession")]
+    partial class addDescColumProfession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,16 +95,16 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c9859979-e9af-4e20-ab24-94683ee9d391",
+                            Id = "12b6c71d-465a-4cec-b87e-4c202ba6d439",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "293989e4-1fb9-43b7-8e9b-026250d7255b",
+                            ConcurrencyStamp = "e9f1ff72-f2a2-431f-acb6-7c4c0646a926",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAECQd86aaKq0QPUsz1N7OfD3+zUaIb5fzBGhzBNGKgd4KyO9ex0618H+agN1WHV5Tpw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGqhFIsqwrNzbBo5fllFQSsMWsTaF6a/eJ2CJ4t/isfLgxcLbeUZZmIQewLl5OH8fQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ff4e1d20-9442-4426-8ba0-0e328fc25c82",
+                            SecurityStamp = "2d0d95e1-2ead-43d8-8da5-34538b4e71af",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
@@ -657,25 +660,21 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "A person who performs songs using their voice. They express emotions and tell stories through music",
                             Name = "Singer"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "A person who speaks in public or delivers speeches. They aim to inform, inspire, or persuade an audience.",
                             Name = "Speaker"
                         },
                         new
                         {
                             Id = 3,
-                            Description = " A person who designs, builds, and maintains computer programs. They solve problems using code and create digital solutions.",
                             Name = "Software Developer"
                         },
                         new
                         {
                             Id = 4,
-                            Description = "A professional who gives legal advice and represents people in court. They help solve disputes and protect rights.",
                             Name = "Lawyer"
                         });
                 });
@@ -719,14 +718,6 @@ namespace BookingTickets.DataAccess.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Info")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -989,25 +980,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7073c8ea-a6ce-4385-be31-62c2057a0937",
+                            Id = "c066ef40-d84d-4839-aedb-33373000d7e9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "268817f0-e963-4b52-8bfa-7512184059bd",
+                            Id = "61032311-1bb7-4d68-94a6-3f0cec3ef308",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "89c281d0-dc12-4ad8-85e9-c944be0912a7",
+                            Id = "5732fea0-9716-4d57-9fff-62724d01fc48",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "db297895-c0b5-4150-aecc-bdd53ae2afe0",
+                            Id = "5b633b2d-45a5-404d-aded-0380fac54637",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -1102,8 +1093,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "c9859979-e9af-4e20-ab24-94683ee9d391",
-                            RoleId = "268817f0-e963-4b52-8bfa-7512184059bd"
+                            UserId = "12b6c71d-465a-4cec-b87e-4c202ba6d439",
+                            RoleId = "61032311-1bb7-4d68-94a6-3f0cec3ef308"
                         });
                 });
 

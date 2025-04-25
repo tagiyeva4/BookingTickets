@@ -45,9 +45,11 @@ public static class BusinessServiceRegistration
         services.AddScoped<IBasketService, BasketService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<ISubscriberService, SubscriberService>();
+       services.AddScoped<ITicketPdfService, TicketPdfService>();
+        services.AddScoped<IQRCodeService, QRCodeService>();
         services.AddScoped<LayoutServices>();
-        services.AddScoped<EmailService>();
-        services.AddScoped<QrCodeService>();
+        services.AddScoped<IEmailService,EmailService>();
+        services.AddScoped<TicketPdfService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
     }
  }

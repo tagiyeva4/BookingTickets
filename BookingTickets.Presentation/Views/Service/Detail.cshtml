@@ -1,25 +1,26 @@
 ﻿@using BookingTickets.Core.Entities
-@model Service
+@using BookingTickets.Core.ViewModels
+@model ServiceVm
 <!--Page Header Start-->
 <section class="page-header">
     <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/page-header-bg.jpg);">
     </div>
     <div class="page-header__shape-1 float-bob-y">
-        <img src="~/assets/images/shapes/page-header-shape-1.png" alt="">
+        <img src="https://unicktheme.com/2024/eventflow/main-html/assets/images/backgrounds/page-header-bg.jpg" alt="">
     </div>
     <div class="page-header__shape-2 float-bob-x">
-        <img src="~/assets/images/shapes/page-header-shape-2.png" alt="">
+        <img src="https://unicktheme.com/2024/eventflow/main-html/assets/images/backgrounds/page-header-bg.jpg" alt="">
     </div>
     <div class="container">
         <div class="page-header__inner">
-            <h2>@Model.Title</h2>
+            <h2>@Model.Service.Title</h2>
             <div class="thm-breadcrumb__box">
                 <ul class="thm-breadcrumb list-unstyled">
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><span class="icon-angle-right"></span></li>
                     <li><a asp-controller="Service" asp-action="Index">Services</a></li>
                     <li><span class="icon-angle-right"></span></li>
-                    <li>@Model.Title</li>
+                    <li>@Model.Service.Info</li>
                 </ul>
             </div>
         </div>
@@ -34,46 +35,23 @@
                 <div class="col-xl-4 col-lg-5">
                     <div class="service-details__top-left">
                         <div class="service-details__all-category">
-                            <h3 class="service-details__category-title">Catagory</h3>
+                            <h3 class="service-details__category-title">Category</h3>
                             <ul class="service-details__all-category-list list-unstyled">
-                                <li>
-                                    <a href="event-prodigy.html">
-                                        <i class="icon-double-angle"></i>Event Prodigy
-                                        <span>(02)</span>
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a href="stellar-events-co.html">
-                                        <i class="icon-double-angle"></i>Stellar
-                                        Events
-                                        Co<span>(04)</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="elite-event-management.html">
-                                        <i class="icon-double-angle"></i>Elite
-                                        Event
-                                        Management<span>(01)</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="infinite-occasions.html">
-                                        <i class="icon-double-angle"></i>Infinite
-                                        Occasions<span>(06)</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="dream-event-planners.html">
-                                        <i class="icon-double-angle"></i>Dream
-                                        Event
-                                        Planners<span>(03)</span>
-                                    </a>
-                                </li>
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <li>
+                                        <a href="event-prodigy.html">
+                                            <i class="icon-double-angle"></i>@Html.Raw(category.Name)
+                                            <span>(0)</span>
+                                        </a>
+                                    </li>
+                                }
+
                             </ul>
                         </div>
                         <div class="service-details__get-touch">
                             <div class="service-details__get-touch-bg"
-                                 style="background-image: url(assets/images/backgrounds/service-details-get-touch-bg.jpg);">
+                            style="background-image: url(assets/images/backgrounds/service-details-get-touch-bg.jpg);">
                             </div>
                             <div class="service-details__get-touch-inner">
                                 <h3 class="service-details__get-touch-title">GET TOUCH</h3>
@@ -90,53 +68,35 @@
                                 </h4>
                             </div>
                         </div>
-                        <div class="service-details__download-box">
-                            <ul class="service-details__download-list list-unstyled">
-                                <li>
-                                    <a href="#">Information<span class="icon-download"></span></a>
-                                </li>
-                                <li>
-                                    <a href="#">Terms & Conditions<span class="icon-download"></span></a>
-                                </li>
-                            </ul>
-                        </div>
+                       <div class="service-details__download-box">
+    <ul class="service-details__download-list list-unstyled">
+        <li>
+            <a href="/files/information-for-booking-tickets.pdf" download>
+                Information<span class="icon-download"></span>
+            </a>
+        </li>
+        <li>
+            <a href="/files/terms-and-conditions-in-events.pdf" download>
+                Terms & Conditions<span class="icon-download"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+
                     </div>
                 </div>
                 <div class="col-xl-8 col-lg-7">
                     <div class="service-details__top-right">
                         <div class="service-details__img-1">
-                            <img src="~/assets/images/services/service-details-img-1.jpg" alt="">
+                            <img src=@Model.Service.Image alt="">
                         </div>
                         <h3 class="service-details__title-1">Where Every Event Shines Bright</h3>
                         <p class="service-details__text-1">
-                            Lorem Ipsum is simply dummy text of the printing
-                            Lorem
-                            Ipsum is simply dummy text of the printing .Lorem Ipsum is simply dummy text of the
-                            printing.Lorem Ipsum is simply dummy text of the printing
+                            @Model.Service.Description
                         </p>
-                        <div class="service-details__img-box">
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="service-details__img-box-img">
-                                        <img src="~/assets/images/services/service-details-img-box-img-1.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="service-details__img-box-img">
-                                        <img src="~/assets/images/services/service-details-img-box-img-2.jpg"
-                                             alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <h3 class="service-details__title-2">Experience the Magic of Events</h3>
-                        <p class="service-details__text-2">
-                            Lorem Ipsum is simply dummy text of the printing
-                            Lorem
-                            Ipsum is simply dummy text of the printing .Lorem Ipsum is simply dummy text of the
-                            printing.Lorem Ipsum is simply dummy text of the printing
-                        </p>
+
                         <p class="service-details__text-3">
                             Real estate is a lucrative industry that involves the
                             buying selling and renting properties It encompasses residential commercial and
@@ -152,85 +112,32 @@
         </div>
         <div class="service-details__bottom">
             <div class="row">
-                <!-- Services Two Single Start -->
-                <div class="col-xl-4 col-lg-4">
-                    <div class="service-details__single">
-                        <div class="service-details__icon">
-                            <span class="icon-theater"></span>
-                        </div>
-                        <h3 class="service-details__title">
-                            <a href="#">
-                                Elite Event Managment and Dream Event
-                                Planners
+                @foreach(var ser in Model.Services)
+                {
+                    <!-- Services Two Single Start -->
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="service-details__single">
+                            <div class="service-details__icon">
+                                <span class="@ser.Icon"></span>
+                            </div>
+                            <h3 class="service-details__title">
+                                <a asp-action="Detail" asp-controller="Service" asp-route-id="@ser.Id">
+                                    @ser.Title
+                                </a>
+                            </h3>
+                            <p class="service-details__text">
+                               @ser.Info
+                            </p>
+                            <a asp-action="Detail" asp-controller="Service" asp-route-id="@ser.Id" class="service-details__btn">
+                                Read More <span class="icon-arrow-right"></span>
                             </a>
-                        </h3>
-                        <p class="service-details__text">
-                            Events are special occasions where people gather
-                            together
-                            to
-                            celebrate
-                        </p>
-                        <a href="#" class="service-details__btn">
-                            Read More <span class="icon-arrow-right"></span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Services Two Single End -->
-                <!-- Services Two Single Start -->
-                <div class="col-xl-4 col-lg-4">
-                    <div class="service-details__single">
-                        <div class="service-details__icon">
-                            <span class="icon-magic-show"></span>
                         </div>
-                        <h3 class="service-details__title">
-                            <a href="#">
-                                Everlasting Moments the a
-                                Spectacular Events Ltd
-                            </a>
-                        </h3>
-                        <p class="service-details__text">
-                            Events are special occasions where people gather
-                            together
-                            to
-                            celebrate
-                        </p>
-                        <a href="#" class="service-details__btn">
-                            Read More <span class="icon-arrow-right"></span>
-                        </a>
                     </div>
-                </div>
-                <!-- Services Two Single End -->
-                <!-- Services Two Single Start -->
-                <div class="col-xl-4 col-lg-4">
-                    <div class="service-details__single">
-                        <div class="service-details__icon">
-                            <span class="icon-location"></span>
-                        </div>
-                        <h3 class="service-details__title">
-                            <a href="#">
-                                Events That Leave a Event Prodigy
-                                Impression
-                            </a>
-                        </h3>
-                        <p class="service-details__text">
-                            Events are special occasions where people gather
-                            together
-                            to
-                            celebrate
-                        </p>
-                        <a href="#" class="service-details__btn">
-                            Read More <span class="icon-arrow-right"></span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Services Two Single End -->
+                    <!-- Services Two Single End -->
+                }
+
             </div>
-            <p class="service-details__text-4">
-                Construction is an essential industry that involves building and
-                designing structures such as buildings roads, bridges, and more. It requires skilled workers,
-                materials, and the a careful planning to ensure successful completion Construction is an
-                essential industry that involves building design by man
-            </p>
+           
             <div class="service-details__faq-box">
                 <h3 class="service-details__faq-title">Creating Memories One Event at a Time</h3>
                 <div class="accrodion-grp faq-one-accrodion" data-grp-name="faq-one-accrodion-1">
@@ -242,15 +149,11 @@
                         <div class="accrodion-content">
                             <div class="inner">
                                 <p>
-                                    It is a long established fact that a reader will be distracted by the
-                                    readable
-                                    content of a page looking at its a layout. The point of using Lorem Ipsum is
-                                    that it has a more-or-less norIt is a long established fact that a reader
-                                    will
-                                    be distracted by the readable content of a page looking at its a layout. The
-                                    point of using Lorem Ipsum is that it has a more-or-less normal distribution
-                                    of
-                                    a letter as opposed to a using 'Content here,
+                                    We specialize in a wide variety of events including concerts, 
+                                    theater performances, movie screenings, workshops, conferences, 
+                                    sports games, and family-friendly shows. Whether it’s entertainment,
+                                    education, or business-related, our platform makes it easy to find and book tickets
+                                    for the experiences you care about most.
                                 </p>
                             </div><!-- /.inner -->
                         </div>
@@ -263,15 +166,9 @@
                         <div class="accrodion-content">
                             <div class="inner">
                                 <p>
-                                    It is a long established fact that a reader will be distracted by the
-                                    readable
-                                    content of a page looking at its a layout. The point of using Lorem Ipsum is
-                                    that it has a more-or-less norIt is a long established fact that a reader
-                                    will
-                                    be distracted by the readable content of a page looking at its a layout. The
-                                    point of using Lorem Ipsum is that it has a more-or-less normal distribution
-                                    of
-                                    a letter as opposed to a using 'Content here,
+                                    We recommend booking your tickets as early as possible — especially for popular events.
+                                    Some events sell out weeks in advance, so securing your spot 
+                                    early ensures the best seat options and avoids last-minute disappointments.
                                 </p>
                             </div><!-- /.inner -->
                         </div>
@@ -284,15 +181,10 @@
                         <div class="accrodion-content">
                             <div class="inner">
                                 <p>
-                                    It is a long established fact that a reader will be distracted by the
-                                    readable
-                                    content of a page looking at its a layout. The point of using Lorem Ipsum is
-                                    that it has a more-or-less norIt is a long established fact that a reader
-                                    will
-                                    be distracted by the readable content of a page looking at its a layout. The
-                                    point of using Lorem Ipsum is that it has a more-or-less normal distribution
-                                    of
-                                    a letter as opposed to a using 'Content here,
+                                    While our main focus is on ticket sales and seat management, 
+                                    we also collaborate with organizers by offering tools for scheduling,
+                                    venue setup, seat mapping, and ticket distribution. For full event planning support,
+                                    we’re happy to connect you with our trusted partners.
                                 </p>
                             </div><!-- /.inner -->
                         </div>

@@ -137,10 +137,10 @@ namespace BookingTickets.DataAccess.Data.Contexts
             );
 
             modelBuilder.Entity<Profession>().HasData(
-       new Profession { Id = 1, Name = "Singer" },
-       new Profession { Id = 2, Name = "Speaker" },
-       new Profession { Id = 3, Name = "Software Developer" },
-       new Profession { Id = 4, Name = "Lawyer" }
+       new Profession { Id = 1, Name = "Singer",Description= "A person who performs songs using their voice. They express emotions and tell stories through music" },
+       new Profession { Id = 2, Name = "Speaker" ,Description= "A person who speaks in public or delivers speeches. They aim to inform, inspire, or persuade an audience." },
+       new Profession { Id = 3, Name = "Software Developer",Description= " A person who designs, builds, and maintains computer programs. They solve problems using code and create digital solutions." },
+       new Profession { Id = 4, Name = "Lawyer",Description= "A professional who gives legal advice and represents people in court. They help solve disputes and protect rights." }
    );
             #endregion
 
