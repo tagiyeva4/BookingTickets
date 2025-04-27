@@ -108,7 +108,7 @@ public class BlogService :IBlogService
         }
 
         existBlog = _mapper.Map(dto,existBlog);
-        //remove deletedImages
+        
         var imagesToRemove = existBlog.BlogImages?.ToList() ?? new List<BlogImage>();
 
         foreach (var image in imagesToRemove)
@@ -116,7 +116,7 @@ public class BlogService :IBlogService
             existBlog.BlogImages.Remove(image);
             await _cloudinaryService.FileDeleteAsync(image.ImagePath);
         }
-        //add newImages
+        
         if (dto.Photos != null && dto.Photos.Any())
         {
             foreach (var newImage in dto.Photos)

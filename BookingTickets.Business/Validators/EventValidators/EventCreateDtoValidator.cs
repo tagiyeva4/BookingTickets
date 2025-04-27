@@ -24,5 +24,7 @@ public class EventCreateDtoValidator: AbstractValidator<EventCreateDto>
         RuleFor(x => x.VenueId).NotEmpty().WithMessage("VenueId field cannot be empty..");
         RuleFor(x => x.Photos).NotEmpty().WithMessage("Photos field cannot be empty..");
         RuleFor(x => x.TotalTickets).GreaterThan(0).NotEmpty().WithMessage("TotalTickets field cannot be empty..");
+        RuleFor(x => x.Schedules).NotEmpty().WithMessage("Schedules field cannot be empty..");
+         
     }
 }

@@ -190,11 +190,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="main-menu__btn-box">
-                                <a href="contact.html" class="main-menu__btn thm-btn">
-                                    Buy Ticket <span class="icon-arrow-right"></span>
-                                </a>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -476,6 +472,19 @@
                     });
             }
         });
+    </script>
+
+    <script>
+                    document.addEventListener("scroll", function () {
+            const mainBasket = document.querySelector(".main-menu .basketCountarea");
+            const stickyBasket = document.querySelector(".sticky-header__content .basketCountarea");
+
+            if (mainBasket && stickyBasket) {
+                stickyBasket.innerText = mainBasket.innerText;
+            }
+        });
+
+
     </script>
 
     <!-- template js -->

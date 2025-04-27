@@ -15,7 +15,6 @@ public static class DataAccessServiceRegistration
             options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
         });
         _addRepositories(services);
-        //_addIdentity(services);
         return services;
     }
     private static void _addRepositories(IServiceCollection services)
@@ -31,22 +30,6 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IPaymentRepository,PaymentRepository>();
         services.AddScoped<ISubscriberRepository, SubscriberRepository>();
     }
-    //private static void _addIdentity(IServiceCollection services)
-    //{
-    //    services.AddIdentity<AppUser, IdentityRole>(opt =>
-    //    {
-    //        opt.Password.RequireDigit = true;
-    //        opt.Password.RequireLowercase = true;
-    //        opt.Password.RequireNonAlphanumeric = true;
-    //        opt.Password.RequireUppercase = true;
-    //        opt.Password.RequiredLength = 6;
-    //        opt.User.RequireUniqueEmail = true;
-    //        opt.SignIn.RequireConfirmedEmail = true;
-    //        opt.Lockout.MaxFailedAccessAttempts = 3;
-    //        opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-    //        opt.Lockout.AllowedForNewUsers = true;
-    //    }).AddEntityFrameworkStores<BookingTicketsDbContext>().AddDefaultTokenProviders();
-
-    //}
+   
 
 }

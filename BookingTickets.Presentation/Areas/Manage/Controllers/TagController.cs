@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookingTickets.Presentation.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class TagController(ITagService tagService) : Controller
     {
         public async Task<IActionResult> Index()

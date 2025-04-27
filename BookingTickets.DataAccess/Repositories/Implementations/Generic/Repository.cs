@@ -77,10 +77,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         var query =Table.AsQueryable();
         foreach (var include in includes)
         {
-            query = query.Include(include);  //Select*from Books b join Author a on b.AuthorId=a.Id  join Sales s  on b.SalesId=s.Id  join Customer c s.CustomerId=c.Id 
+            query = query.Include(include); 
         }
 
-        var result = await query.ToListAsync(); //List<Book> books
+        var result = await query.ToListAsync(); 
 
         return result;
 

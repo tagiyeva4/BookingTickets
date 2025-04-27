@@ -1,8 +1,11 @@
+using BookingTickets.Business.Hubs;
 using BookingTickets.Business.ServiceRegistration;
+using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.DataAccess;
 using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.DataAccess.ServiceRegistration;
+using BookingTickets.Presentation.Extensions;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Stripe;
@@ -14,6 +17,8 @@ var config = builder.Configuration;
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddBusinessServices();  
 builder.Services.AddDataAccessServices(config);
+//builder.Services.AddSingleton<RedisService>();
+
 builder.Services.Configure<StripeSettings>(config.GetSection("Stripe"));
 builder.Services.AddAuthentication(options =>
 {
@@ -70,10 +75,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseMiddleware<GlobalExceptionHandler>();
     app.UseHsts();
 }
+else
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.UseHttpsRedirection();
 app.UseRouting();

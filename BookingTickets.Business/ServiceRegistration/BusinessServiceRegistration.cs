@@ -2,13 +2,12 @@
 using BookingTickets.Business.AutoMappers;
 using BookingTickets.Business.Services.Abstractions;
 using BookingTickets.Business.Services.Implementations;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-using BookingTickets.Business.Dtos.EventDtos;
 using BookingTickets.Business.Validators.BlogValidators;
-using BookingTickets.Business.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace BookingTickets.Business.ServiceRegistration;
 
@@ -16,13 +15,8 @@ public static class BusinessServiceRegistration
 {
     public static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(SliderAutoMapper));
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
      
-
-
-
-
-
         services.AddHttpClient();
 
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -31,6 +25,7 @@ public static class BusinessServiceRegistration
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining(typeof(BlogCreateDtoValidator));
         AddServices(services);
+        services.AddSignalR();
         return services; 
     }
     private static void AddServices(IServiceCollection services)

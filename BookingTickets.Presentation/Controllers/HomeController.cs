@@ -1,10 +1,13 @@
+using BookingTickets.Business.Dtos.ErrorDtos;
 using BookingTickets.Business.Dtos.SubscriberEmailDtos;
+using BookingTickets.Business.Exceptions;
 using BookingTickets.Business.Services.Abstractions;
 using BookingTickets.DataAccess.Data.Contexts;
 using BookingTickets.Presentation.Models;
 using BookingTickets.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace BookingTickets.Presentation.Controllers;
@@ -21,6 +24,8 @@ public class HomeController : Controller
         _dbContext = dbContext;
         _subscriberService = subscriberService;
     }
+
+
 
     public async Task<IActionResult> AddSubscriber(SubscriberCreateDto dto)
     {
@@ -80,8 +85,23 @@ public class HomeController : Controller
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult Error(string json)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        ErrorViewModel errorVm = new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        };
+
+        if (!string.IsNullOrWhiteSpace(json))
+        {
+            var errorData = JsonConvert.DeserializeObject<ErrorDto>(Uri.UnescapeDataString(json));
+            if (errorData != null)
+            {
+                errorVm.ErrorMessage = errorData.Message;
+            }
+        }
+
+        return View(errorVm);
     }
+   
 }

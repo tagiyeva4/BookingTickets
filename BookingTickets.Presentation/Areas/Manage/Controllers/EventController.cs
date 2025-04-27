@@ -2,13 +2,14 @@
 using BookingTickets.Business.Services.Abstractions;
 using BookingTickets.Business.Services.Implementations;
 using BookingTickets.DataAccess.Data.Contexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    //[Authorize(Roles = "EventOrganizer")]
+    [Authorize(Roles = "EventOrganizer,Admin")]
     public class EventController (IEventService eventService,BookingTicketsDbContext dbContext): Controller
     {
         public async Task<IActionResult> Index()
@@ -48,10 +49,7 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
         {
             var dto = await eventService.GetUpdatedDtoAsync(id);
 
-            // ViewBag-ə məlumatları əlavə etmək
             ViewBag.Venues = new SelectList(dbContext.Venues, "Id", "Name");
-            ViewBag.Languages = new MultiSelectList(dbContext.Languages, "Id", "Name");
-            ViewBag.Persons = new MultiSelectList(dbContext.People, "Id", "FullName");
 
             return View(dto);
         }
@@ -65,16 +63,12 @@ namespace BookingTickets.Presentation.Areas.Manage.Controllers
             if (!result)
             {
                 ViewBag.Venues = new SelectList(dbContext.Venues, "Id", "Name");
-                ViewBag.Languages = new MultiSelectList(dbContext.Languages, "Id", "Name");
-                ViewBag.Persons = new MultiSelectList(dbContext.People, "Id", "FullName");
-
                 return View(dto);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        
         public async Task<IActionResult> Detail(int id)
         {
             if (id == null)

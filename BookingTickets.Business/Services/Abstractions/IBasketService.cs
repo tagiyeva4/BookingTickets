@@ -1,9 +1,8 @@
 ﻿using BookingTickets.Core.ViewModels;
 
-namespace BookingTickets.Business.Services.Abstractions
+namespace BookingTickets.Business.Services.Abstractions;
+
+public interface IBasketService
 {
-   public interface IBasketService
-    {
-        Task<List<BasketItemVm>> GetUserBasketAsync(string userId);
-    }
+    Task<List<BasketItemVm>> GetUserBasketAsync(string userId);
 }

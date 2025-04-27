@@ -1,9 +1,10 @@
 ﻿using BookingTickets.Core.Entities;
 
-namespace BookingTickets.Business.Services.Abstractions
+namespace BookingTickets.Business.Services.Abstractions;
+
+public interface ITicketPdfService
 {
-    public interface ITicketPdfService
-    {
-        string GenerateTicketPdf(Ticket ticket);
-    }
+    string GenerateTicketPdf(Ticket ticket);
+    List<string> GenerateMultipleTicketPdfs(List<Ticket> tickets);
+    string GenerateTicketsZip(List<Ticket> tickets);
 }

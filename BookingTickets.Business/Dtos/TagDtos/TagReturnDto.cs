@@ -5,5 +5,6 @@ namespace BookingTickets.Business.Dtos.TagDtos;
 public class TagReturnDto:IDto
 {
     public int Id { get; set; }
+    [Required(ErrorMessage = "Tag name cannot be empty..")]
     public string Name { get; set; } = null!;
 }

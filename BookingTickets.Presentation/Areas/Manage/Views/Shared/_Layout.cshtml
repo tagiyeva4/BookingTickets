@@ -27,7 +27,7 @@
 <body>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-         data-sidebar-position="fixed" data-header-position="fixed">
+    data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         <aside class="left-sidebar">
             <!-- Sidebar scroll-->
@@ -47,44 +47,82 @@
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Home</span>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Venue" aria-expanded="false">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Venue" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </span>
+                                    <span>Venue</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Event" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-regular fa-calendar-days"></i>
+                                    </span>
+                                    <span>Event</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Person" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-person"></i>
+                                    </span>
+                                    <span>Person</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Subscriber" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+                                    <span>Subscriber</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Access" asp-controller="Sale" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-hat-wizard"></i>
+                                    </span>
+                                    <span>Access To Event</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Dashboard" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-layout-dashboard"></i>
+                                    </span>
+                                    <span>Dashboard</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Slider" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-sliders"></i>
+                                    </span>
+                                    <span>Slider</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Tag" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-tag"></i>
+                                    </span>
+                                    <span>Tag</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Category" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-swatchbook"></i>
+                                    </span>
+                                    <span>Category</span>
+                                </a>
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Blog" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-brands fa-product-hunt"></i>
+                                    </span>
+                                    <span>Blog</span>
+                                </a>
+                            </li>
+
+                        }
+
+                        @if (User.IsInRole("EventOrganizer"))
+                        {
+                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Event" aria-expanded="false">
                                 <span>
-                                    <i class="fa-solid fa-location-dot"></i>
+                                    <i class="fa-regular fa-calendar-days"></i>
                                 </span>
-                                <span>Venue</span>
+                                <span>Event</span>
                             </a>
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Dashboard" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-layout-dashboard"></i>
-                                </span>
-                                <span>Dashboard</span>
-                            </a>
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Slider" aria-expanded="false">
-                                <span>
-                                    <i class="fa-solid fa-sliders"></i>
-                                </span>
-                                <span>Slider</span>
-                            </a>
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Tag" aria-expanded="false">
-                                <span>
-                                    <i class="fa-solid fa-tag"></i>
-                                </span>
-                                <span>Tag</span>
-                            </a>
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Category" aria-expanded="false">
-                                <span>
-                                    <i class="fa-solid fa-swatchbook"></i>
-                                </span>
-                                <span>Category</span>
-                            </a>
-                            <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Blog" aria-expanded="false">
-                                <span>
-                                    <i class="fa-brands fa-product-hunt"></i>
-                                </span>
-                                <span>Blog</span>
-                            </a>
-                        </li>
+                        }
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">UI COMPONENTS</span>

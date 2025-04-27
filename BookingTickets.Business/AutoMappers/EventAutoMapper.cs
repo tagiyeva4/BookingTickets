@@ -16,45 +16,42 @@ internal class EventAutoMapper:Profile
             .ReverseMap();
 
         CreateMap<Event, EventUpdateDto>()
-            .ForMember(dest => dest.SelectedLanguageIds, opt => opt.MapFrom(src => src.EventLanguages.Select(e => e.LanguageId)))
-            .ForMember(dest => dest.SelectedPersonIds, opt => opt.MapFrom(src => src.EventPersons.Select(e => e.PersonId)))
-            .ForMember(dest => dest.EventSchedules, opt => opt.MapFrom(src => src.EventsSchedules.Select(es => new ScheduleUpdateDto
-            {
-                Id = es.ScheduleId,
-                Date = es.Schedule.Date,
-                StartTime = es.Schedule.StartTime,
-                EndTime = es.Schedule.EndTime
-            }).ToList()))
-            .ForMember(dest => dest.ExistingImages, opt => opt.MapFrom(src => src.EventImages.Select(ei => new EventImageDto
-            {
-                Id = ei.Id,
-                ImagePath = ei.ImagePath
-            }).ToList()));
+         .ForMember(dest => dest.NewImage, opt => opt.Ignore());
 
         CreateMap<EventUpdateDto, Event>()
-            .ForMember(dest => dest.EventLanguages, opt => opt.MapFrom(src => src.SelectedLanguageIds.Select(id => new EventLanguage { LanguageId = id }).ToList()))
-            .ForMember(dest => dest.EventPersons, opt => opt.MapFrom(src => src.SelectedPersonIds.Select(id => new EventPeron { PersonId = id }).ToList()))
-            .ForMember(dest => dest.EventsSchedules, opt => opt.MapFrom(src => src.EventSchedules.Select(schedule => new EventsSchedule
-            {
-                ScheduleId = schedule.Id,
-                EventId=src.Id
-            }).ToList()));
-
-
-
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.EventImages, opt => opt.Ignore());
+        
 
         CreateMap<Event, EventReturnDto>()
-            .ForMember(x=>x.EventLanguages,x=>x.MapFrom(x=>x.EventLanguages.Select(x=>x.Language)))
-            .ForMember(x => x.EventPersons, x => x.MapFrom(x => x.EventPersons.Select(x => x.Person)));
-       
- // CreateMap<Venue, VenueDtoInEvent>().ReverseMap();
+          .ForMember(dest => dest.EventLanguages, opt => opt.MapFrom(src => src.EventLanguages.Select(el => new LanguageDtoInEvent
+          {
+              Id = el.LanguageId,
+              Name = el.Language.Name
+          }).ToList()))
+          .ForMember(dest => dest.EventPersons, opt => opt.MapFrom(src => src.EventPersons.Select(ep => new PersonDtoInEvent
+          {
+              Id = ep.PersonId,
+              FullName = ep.Person.FullName
+          }).ToList()))
+          .ForMember(dest => dest.Schedules, opt => opt.MapFrom(src => src.EventsSchedules.Select(es => new ScheduleDtoInEvent
+          {
+              Date = es.Schedule.Date,
+              StartTime = es.Schedule.StartTime,
+              EndTime = es.Schedule.EndTime
+          }).ToList()))
+          .ForMember(dest => dest.EventImages, opt => opt.MapFrom(src => src.EventImages.Select(ei => ei.ImagePath).ToList()))
+          .ForMember(dest => dest.Venue, opt => opt.MapFrom(src => new VenueDtoInEvent
+          {
+              Id = src.Venue.Id,
+              Name = src.Venue.Name
+          }));
+
 
         CreateMap<Person, PersonDtoInEvent>().ReverseMap();
         CreateMap<Language, LanguageDtoInEvent>().ReverseMap();
         CreateMap<Schedule, ScheduleDtoInEvent>().ReverseMap();
         CreateMap<Schedule,ScheduleDto>().ReverseMap();
-        CreateMap<Schedule, ScheduleUpdateDto>().ReverseMap();
-        CreateMap<EventImage, EventImageDto>();
         CreateMap<VenueSeat, VenueSeatUpdateDto>().ReverseMap();
     }
 }

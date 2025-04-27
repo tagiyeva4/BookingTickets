@@ -1,0 +1,101 @@
+﻿@using BookingTickets.Core.ViewModels
+@model OrganizerLoginVm
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Event Organizer - Login</title>
+    <link rel="shortcut icon" type="image/png" href="~/adminmanage/assets/images/logos/favicon.png" />
+    <link rel="stylesheet" href="~/adminmanage/assets/css/styles.min.css" />
+    <style>
+        body {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+            .login-card h2 {
+                font-size: 28px;
+                color: #333;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .login-card .form-control {
+                height: 45px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }
+
+            .login-card .btn-primary {
+                background-color: #5a67d8;
+                border: none;
+                height: 45px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background 0.3s;
+            }
+
+                .login-card .btn-primary:hover {
+                    background-color: #434190;
+                }
+
+            .login-card a {
+                color: #5a67d8;
+                font-weight: bold;
+                font-size: 14px;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h2>Event Organizer Login</h2>
+        <p class="text-center mb-4" style="color: #666;">Sign in to manage your events easily</p>
+        <form method="post">
+            <div class="mb-3">
+                <input asp-for="UserName" class="form-control" placeholder="Username" />
+                <span class="text-danger" asp-validation-for="UserName"></span>
+            </div>
+            <div class="mb-3">
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="ForgotPassword">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <div class="d-flex align-items-center justify-content-center mt-4">
+                <p class="mb-0">Don't have an account?</p>
+                <a class="ms-2" asp-action="Register">Register</a>
+            </div>
+        </form>
+        <div class="text-danger mt-3" asp-validation-summary="ModelOnly"></div>
+    </div>
+
+    <script src="~/adminmanage/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/adminmanage/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+
+</body>
+</html>

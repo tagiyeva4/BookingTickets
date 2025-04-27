@@ -1,10 +1,9 @@
-﻿namespace BookingTickets.Core.Enums
+﻿namespace BookingTickets.Core.Enums;
+
+public enum TicketStatus
 {
-    public enum TicketStatus
-    {
-        Reserved = 0,
-        Purchased = 1,
-        Cancelled = 2,
-        Expired = 3
-    }
+    Reserved = 0,
+    Purchased = 1,
+    Cancelled = 2,
+    Expired = 3
 }

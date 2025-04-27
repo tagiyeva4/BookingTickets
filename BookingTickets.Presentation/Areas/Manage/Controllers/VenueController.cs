@@ -1,13 +1,14 @@
 ﻿using BookingTickets.Business.Dtos.VenueDtos;
 using BookingTickets.Business.Services.Abstractions;
 using BookingTickets.DataAccess.Data.Contexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers;
 
 [Area("Manage")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class VenueController(IVenueService venueService,BookingTicketsDbContext dbContext) : Controller
 {
     public async Task<IActionResult> Index()

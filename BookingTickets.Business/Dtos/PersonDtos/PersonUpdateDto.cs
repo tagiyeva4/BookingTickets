@@ -13,6 +13,5 @@ public class PersonUpdateDto:IDto
     public int ProfessionId { get; set; }
     public ICollection<EventPeron>? EventPersons { get; set; }
     public IFormFile? Photo { get; set; }
-
     public string? ImageUrl { get; set; }
 }

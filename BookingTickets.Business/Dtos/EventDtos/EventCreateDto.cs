@@ -32,9 +32,9 @@ public class EventCreateDto : IDto
     [Required(ErrorMessage = "Schedules field cannot be empty..")]
     
     public List<ScheduleDto> Schedules { get; set; } = [];
-    // ✅ Oturacaqlara qiymət təyin etmək üçün əlavə olunur
+   
     public List<SeatPriceDto> SeatPrices { get; set; } = new();
-    // ✅ İstəyirsə manual qiymətləndirmə etsin
+   
     public bool IsManualPricing { get; set; } = false;
 
 }

@@ -36,7 +36,7 @@ public class LayoutServices
             }
             catch
             {
-                list = new List<BasketItemVm>(); // Corrupted cookie varsa
+                list = new List<BasketItemVm>();
             }
         }
         else
@@ -79,7 +79,7 @@ public class LayoutServices
                 .Include(x => x.Event)
                 .FirstOrDefault(t => t.Id == item.Id);
 
-            // Null yoxlaması – problemli sətrin təhlükəsiz versiyası:
+            
             if (existProduct?.Event != null)
             {
                 item.Name = existProduct.Event.Name;
@@ -97,52 +97,5 @@ public class LayoutServices
         return list;
     }
 
-    //public List<BasketItemVm> GetUserBasketItems()
-    //{
-    //    List<BasketItemVm> list;
-
-    //    var basket=_httpContext.Request.Cookies["basket"];
-
-    //    if (basket != null)
-    //    {
-    //        list = JsonSerializer.Deserialize<List<BasketItemVm>>(basket);
-    //    }
-
-    //    else
-    //    {
-    //        list = new List<BasketItemVm>();
-    //    }
-
-    //    var user=_dbContext.Users
-    //        .Include(u => u.BasketItems)
-    //        .ThenInclude(b => b.Ticket)
-    //        .FirstOrDefault(u => u.UserName == _httpContext.User.Identity.Name);
-
-    //    if(user != null)
-    //    {
-    //        foreach (var dbBasketItem in user.BasketItems)
-    //        {
-    //            if(!list.Any(b => b.Id == dbBasketItem.TicketId))
-    //            {
-    //                BasketItemVm basketItemVm = new BasketItemVm();
-    //                basketItemVm.Id = dbBasketItem.TicketId;
-    //                basketItemVm.Name = dbBasketItem.Ticket.Event.Name;
-    //                basketItemVm.Price = dbBasketItem.Ticket.Event.MinPrice;
-    //                list.Add(basketItemVm);
-    //            }
-    //        }
-    //    }
-
-    //    foreach (var item in list)
-    //    {
-    //        var existProduct = _dbContext.Tickets.Include(x => x.Event).FirstOrDefault(t => t.Id == item.Id);
-    //        item.Name = existProduct.Event.Name;
-    //        item.Price = existProduct.Event.MinPrice;
-
-    //    }
-
-    //    _httpContext.Response.Cookies.Append("basket", JsonSerializer.Serialize(list));
-
-    //    return list;
-    //}
+   
 }

@@ -92,19 +92,43 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c9859979-e9af-4e20-ab24-94683ee9d391",
+                            Id = "863374a1-eb33-42c7-8208-2950e4045501",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "293989e4-1fb9-43b7-8e9b-026250d7255b",
+                            ConcurrencyStamp = "0bb69bb5-a752-4ffa-b929-191ce3157e85",
                             EmailConfirmed = false,
                             FullName = "Test testov",
                             LockoutEnabled = false,
                             NormalizedUserName = "_TEST",
-                            PasswordHash = "AQAAAAIAAYagAAAAECQd86aaKq0QPUsz1N7OfD3+zUaIb5fzBGhzBNGKgd4KyO9ex0618H+agN1WHV5Tpw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEObJU6Ffb56nyMoz4955xaGsnaHDtoamqpCz0vGS7hIoXrrW9pn2tAv00uU+eI7X7w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ff4e1d20-9442-4426-8ba0-0e328fc25c82",
+                            SecurityStamp = "625a7606-dee9-4914-8269-d9bf66464529",
                             TwoFactorEnabled = false,
                             UserName = "_test"
                         });
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.AppUserChat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("AppUserChats");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.BasketItem", b =>
@@ -274,6 +298,34 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Event", b =>
@@ -463,6 +515,45 @@ namespace BookingTickets.DataAccess.Data.Migrations
                             Code = "de",
                             Name = "Deutsch"
                         });
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Order", b =>
@@ -989,25 +1080,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7073c8ea-a6ce-4385-be31-62c2057a0937",
+                            Id = "60560dc4-1c60-48c2-bdb4-25238b7a944b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "268817f0-e963-4b52-8bfa-7512184059bd",
+                            Id = "7542485b-709e-4031-ba87-b418ee59dcb0",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "89c281d0-dc12-4ad8-85e9-c944be0912a7",
+                            Id = "3bfe4ad2-e2b9-4d3b-8307-3b3b5827115f",
                             Name = "EventOrganizer",
                             NormalizedName = "EVENTORGANIZER"
                         },
                         new
                         {
-                            Id = "db297895-c0b5-4150-aecc-bdd53ae2afe0",
+                            Id = "f7486ded-b0e8-4f67-88be-2ab581715381",
                             Name = "VipMember",
                             NormalizedName = "VIPMEMBER"
                         });
@@ -1102,8 +1193,8 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "c9859979-e9af-4e20-ab24-94683ee9d391",
-                            RoleId = "268817f0-e963-4b52-8bfa-7512184059bd"
+                            UserId = "863374a1-eb33-42c7-8208-2950e4045501",
+                            RoleId = "7542485b-709e-4031-ba87-b418ee59dcb0"
                         });
                 });
 
@@ -1124,6 +1215,25 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.AppUserChat", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingTickets.Core.Entities.Chat", "Chat")
+                        .WithMany("AppUserChats")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Chat");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.BasketItem", b =>
@@ -1250,6 +1360,23 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Message", b =>
+                {
+                    b.HasOne("BookingTickets.Core.Entities.Chat", "Chat")
+                        .WithMany()
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingTickets.Core.Entities.AppUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId");
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Order", b =>
@@ -1413,6 +1540,11 @@ namespace BookingTickets.DataAccess.Data.Migrations
                     b.Navigation("BlogComments");
 
                     b.Navigation("BlogImages");
+                });
+
+            modelBuilder.Entity("BookingTickets.Core.Entities.Chat", b =>
+                {
+                    b.Navigation("AppUserChats");
                 });
 
             modelBuilder.Entity("BookingTickets.Core.Entities.Event", b =>

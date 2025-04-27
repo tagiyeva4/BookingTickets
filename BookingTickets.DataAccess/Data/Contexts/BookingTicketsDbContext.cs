@@ -34,6 +34,9 @@ namespace BookingTickets.DataAccess.Data.Contexts
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<VenueSeat> VenueSeats { get; set; }
+        public DbSet<Message>Messages { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<AppUserChat> AppUserChats { get; set; }
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries<BaseAuditableEntity>();
@@ -66,7 +69,7 @@ namespace BookingTickets.DataAccess.Data.Contexts
                    .HasOne(t => t.VenueSeat)
                    .WithMany()
                    .HasForeignKey(t => t.VenueSeatId)
-                   .OnDelete(DeleteBehavior.Restrict); // burası vacibdir!
+                   .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
 
@@ -78,7 +81,7 @@ namespace BookingTickets.DataAccess.Data.Contexts
             var superAdminId = Guid.NewGuid().ToString();
             var vipmemberId = Guid.NewGuid().ToString();
 
-            //Seeding a  'Administrator' role to AspNetRoles table
+            
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {
@@ -106,20 +109,20 @@ namespace BookingTickets.DataAccess.Data.Contexts
                 }
 
             );
-            //a hasher to hash the password before seeding the user to the db
+            
             var hasher = new PasswordHasher<IdentityUser>();
 
             modelBuilder.Entity<AppUser>().HasData(
            new AppUser
            {
-               Id = userId, // primary key
+               Id = userId, 
                FullName = "Test testov",
                UserName = "_test",
                NormalizedUserName = "_TEST",
                PasswordHash = hasher.HashPassword(null, "12345@Tt")
            }
             );
-            //Seeding the relation between our user and role to AspNetUserRoles table
+           
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 {

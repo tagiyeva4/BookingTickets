@@ -1,0 +1,14 @@
+﻿@model List<Chat>
+
+<ul>
+    @foreach(var chat in Model)
+    {
+        <li>
+            <a asp-action="Detail" asp-route-id="@chat.Id">
+             @(string.IsNullOrEmpty(chat.Name)? chat.AppUserChats.FirstOrDefault()?.AppUser.FullName:chat.Name)
+            </a>
+        </li>
+    }
+
+
+    </ul>

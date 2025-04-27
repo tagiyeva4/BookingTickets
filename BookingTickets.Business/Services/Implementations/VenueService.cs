@@ -79,19 +79,19 @@ public class VenueService : IVenueService
         if (isExist)
             throw new CustomException("400", "Another venue with the same name already exists");
 
-        // Map base venue properties
+        
         _mapper.Map(dto, venue);
 
-        // Update capacity based on row and seat configuration
+       
         venue.Capacity = dto.NumberOfRows * dto.SeatsPerRow;
 
-        // First update the venue
+       
         await _repository.UpdateAsync(venue);
 
-        // Now update seats - first delete all existing seats
+        
         await _repository.DeleteAllAsync<VenueSeat>(s => s.VenueId == venue.Id);
 
-        // Create new seats based on configuration
+        
         var seats = new List<VenueSeat>();
         for (int i = 1; i <= dto.NumberOfRows; i++)
         {
@@ -112,7 +112,6 @@ public class VenueService : IVenueService
             }
         }
 
-        // Add all new seats
         await _seatRepository.AddManyAsync(seats);
 
         return true;
@@ -120,22 +119,21 @@ public class VenueService : IVenueService
 
     public async Task<VenueUpdateDto> GetUpdatedDtoAsync(int id)
     {
-        // Get venue with seats included
+        
         var venue = await _repository.FindOneAsync(x => x.Id == id, "Seats");
 
         if (venue == null)
             throw new CustomException(404, "Venue not found");
 
-        // Map basic properties
+       
         var dto = _mapper.Map<VenueUpdateDto>(venue);
 
-        // Set seating configuration properties
+        
         if (venue.Seats != null && venue.Seats.Any())
         {
             dto.NumberOfRows = venue.Seats.Max(s => s.RowNumber);
             dto.SeatsPerRow = venue.Seats.Count / dto.NumberOfRows;
 
-            // Determine naming style from first row's seats
             var firstRowSeat = venue.Seats.FirstOrDefault(s => s.RowNumber == 1);
             if (firstRowSeat != null && !string.IsNullOrEmpty(firstRowSeat.RowName))
             {
@@ -145,7 +143,7 @@ public class VenueService : IVenueService
         }
         else
         {
-            // Default values if no seats exist
+           
             dto.NumberOfRows = 10;
             dto.SeatsPerRow = 15;
             dto.RowNamingStyle = RowNamingStyle.Numeric;
@@ -191,7 +189,6 @@ public class VenueService : IVenueService
             return rowNumber.ToString();
         }
 
-        // Alphabetic: A, B, ..., Z, AA, AB, etc.
         rowNumber--;
         var name = "";
         while (rowNumber >= 0)
@@ -203,48 +200,3 @@ public class VenueService : IVenueService
     }
 }
 
-
-
-//    public async Task<VenueUpdateDto> GetUpdatedDtoAsync(int id)
-//    {
-//        var venue = await _repository.FindOneAsync(x => x.Id == id);
-
-//        if (venue == null)
-//        {
-//            throw new CustomException(404, "Venue not found");
-//        }
-
-//        var dto = _mapper.Map<VenueUpdateDto>(venue);
-
-//        return dto;
-//    }
-
-
-//    public async Task<bool> UpdateAsync(VenueUpdateDto dto, ModelStateDictionary ModelState)
-//    {
-//        if (!ModelState.IsValid)
-//        {
-//            return false;
-//        }
-
-//        var existVenue=await _repository.FindOneAsync(x=>x.Id == dto.Id);
-
-//        if (existVenue == null)
-//        {
-//            throw new CustomException(404, "Venue not found");
-//        }
-
-//        var isExist = await _repository.IsExistAsync(x => x.Id != dto.Id && x.Name == dto.Name);
-
-//        if (isExist)
-//        {
-//            throw new CustomException("400", "Venue already exist");
-//        }
-
-//        existVenue=_mapper.Map(dto,existVenue);
-
-//        await _repository.UpdateAsync(existVenue);
-
-//        return true;
-//    }
-//}

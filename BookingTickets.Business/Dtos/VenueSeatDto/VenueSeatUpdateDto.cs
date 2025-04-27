@@ -4,5 +4,5 @@ public class VenueSeatUpdateDto:IDto
 {
     public int Id { get; set; }
     public string SeatLabel { get; set; } = null!;
-    public decimal? Price { get; set; } // qiymət dəyişmək istəmirsə null göndər
+    public decimal? Price { get; set; } 
 }

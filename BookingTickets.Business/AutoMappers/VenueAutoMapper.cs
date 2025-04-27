@@ -12,8 +12,6 @@ internal class VenueAutoMapper : Profile
             .ForMember(dest => dest.Id, opt => opt.Ignore()) 
             .ForMember(dest => dest.Seats, opt => opt.Ignore()); 
 
-        //CreateMap<VenueUpdateDto, Venue>()
-        //    .ForMember(dest => dest.Seats, opt => opt.Ignore()); // Sıra və oturacaqlara müdaxilə olmur
 
         CreateMap<Venue, VenueUpdateDto>()
               .ForMember(dest => dest.NumberOfRows, opt => opt.Ignore())

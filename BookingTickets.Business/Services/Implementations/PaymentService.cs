@@ -1,18 +1,18 @@
 ﻿using BookingTickets.Business.Dtos;
+using BookingTickets.Business.Dtos.PaymentDtos;
+using BookingTickets.Business.Exceptions;
 using BookingTickets.Business.Services.Abstractions;
+using BookingTickets.Core.Entities;
 using BookingTickets.Core.Enums;
+using BookingTickets.DataAccess.Repositories.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Text;
-using BookingTickets.Business.Exceptions;
-using BookingTickets.DataAccess.Repositories.Abstractions;
-using BookingTickets.Core.Entities;
-using BookingTickets.Business.Dtos.PaymentDtos;
 
 namespace BookingTickets.Business.Services.Implementations;
 
@@ -69,28 +69,6 @@ internal class PaymentService : IPaymentService
         };
     }
 
-
-    //public async Task<bool> CheckPaymentAsync(PaymentCheckDto dto)
-    //{
-    //    var payment = await _repository.FindOneAsync(x => x.Token == dto.Token && x.ReceptId == dto.ID, "Order");
-
-    //    if (payment is null)
-    //        throw new CustomException(404, "Not found");
-
-    //    if (dto.STATUS == PaymentStatuses.FullyPaid)
-    //    {
-    //        payment.PaymentStatus = PaymentStatuses.FullyPaid;
-    //        payment.Order.IsPaid = true;
-
-    //        await _repository.UpdateAsync(payment);
-
-    //        return true;
-    //    }
-
-    //    await _repository.DeleteAsync(payment);
-
-    //    return false;
-    //}
 
     public async Task<PaymentResponseDto> CreateAsync(PaymentCreateDto dto)
     {

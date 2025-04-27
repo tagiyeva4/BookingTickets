@@ -1,11 +1,12 @@
 ﻿using BookingTickets.Business.Dtos.SubscriberEmailDtos;
 using BookingTickets.Business.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingTickets.Presentation.Areas.Manage.Controllers;
 
 [Area("Manage")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class SubscriberController : Controller
 {
     private readonly ISubscriberService _subscriberService;

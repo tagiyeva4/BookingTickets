@@ -30,7 +30,7 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid) return View();
         var user = await _userManager.FindByNameAsync(adminLoginVm.UserName);
-        if (user == null || (!await _userManager.IsInRoleAsync(user, "Admin") && !await _userManager.IsInRoleAsync(user, "EventOrganizer")))
+        if (user == null || (!await _userManager.IsInRoleAsync(user, "Admin") ))
         {
             ModelState.AddModelError("", "UserName or Password is incorrect...");
             return View();
@@ -46,7 +46,7 @@ public class AccountController : Controller
         return returnUrl != null ? Redirect(returnUrl) : RedirectToAction("Index", "Dashboard");
 
     }
-    [Authorize(Roles = "EventOrganizer,Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> LogOut()
     {
         await _signInManager.SignOutAsync();
@@ -61,7 +61,21 @@ public class AccountController : Controller
             FullName = "Admin",
         };
         IdentityResult identityResult = await _userManager.CreateAsync(user, "Admin123!");
-        await _userManager.AddToRoleAsync(user, "Admin");
-        return Json(identityResult);
+
+
+        if (identityResult.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, "Admin");
+        }
+        else
+        {
+            return Json(new
+            {
+                Success = false,
+                Errors = identityResult.Errors.Select(e => e.Description).ToList()
+            });
+        }
+
+        return Json(new { Success = true });
     }
 }

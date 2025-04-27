@@ -7,8 +7,7 @@ public class EventUpdateDtoValidator: AbstractValidator<EventUpdateDto>
 {
     public EventUpdateDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Name field cannot be empty..");
-        
-        RuleFor(x => x.Photos).NotEmpty().WithMessage("Photos field cannot be empty..");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name cannot be empty..");
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Description cannot be empty..");
     }
 }

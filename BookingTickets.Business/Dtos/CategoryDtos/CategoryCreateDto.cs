@@ -4,6 +4,6 @@ namespace BookingTickets.Business.Dtos.CategoryDtos;
 
 public class CategoryCreateDto:IDto
 {
-    [Required(ErrorMessage = "Tag name cannot be empty..")]
+    [Required(ErrorMessage = "Category name cannot be empty..")]
     public string Name { get; set; } = null!;
 }
