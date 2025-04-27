@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BookingTickets.Presentation.Areas.Manage.Controllers;
 
 [Area("Manage")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,EventOrganizer")]
 public class VenueController(IVenueService venueService,BookingTicketsDbContext dbContext) : Controller
 {
     public async Task<IActionResult> Index()
@@ -36,26 +36,26 @@ public class VenueController(IVenueService venueService,BookingTicketsDbContext 
         await venueService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
-    public async Task<ActionResult> Update(int id)
-    {
-        var result=await venueService.GetUpdatedDtoAsync(id);
-        if (result is null)
-        {
-            return NotFound();
-        }
-        return View(result);
-    }
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(VenueUpdateDto dto)
-    {
-        var result=await venueService.UpdateAsync(dto, ModelState);
-        if (result is false)
-        {
-            return View(dto);
-        }
-        return RedirectToAction(nameof(Index));
-    }
+    //public async Task<ActionResult> Update(int id)
+    //{
+    //    var result=await venueService.GetUpdatedDtoAsync(id);
+    //    if (result is null)
+    //    {
+    //        return NotFound();
+    //    }
+    //    return View(result);
+    //}
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> Update(VenueUpdateDto dto)
+    //{
+    //    var result=await venueService.UpdateAsync(dto, ModelState);
+    //    if (result is false)
+    //    {
+    //        return View(dto);
+    //    }
+    //    return RedirectToAction(nameof(Index));
+    //}
     public async Task<IActionResult> Detail(int id)
     {
         if (id == null)
@@ -72,6 +72,7 @@ public class VenueController(IVenueService venueService,BookingTicketsDbContext 
 
 
     [HttpGet]
+    [Route("/Manage/Venue/GetSeatsByVenueId")]
     public async Task<IActionResult> GetSeatsByVenueId(int venueId)
     {
         var seats = await dbContext.VenueSeats

@@ -1,0 +1,84 @@
+﻿.checkout-area {
+    background-color: #121212;
+    color: #ffffff;
+    padding: 80px 0;
+}
+
+    .checkout-area .card {
+        background-color: #1e1e1e;
+        color: #ffffff;
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        margin-bottom: 30px;
+    }
+
+    .checkout-area .card-header {
+        background-color: transparent;
+        border-bottom: 1px solid #2a2a2a;
+        padding-bottom: 12px;
+    }
+
+        .checkout-area .card-header h5 {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 20px;
+            margin: 0;
+        }
+
+    .checkout-area .form-label {
+        color: #cccccc;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .checkout-area .form-control {
+        background-color: #2a2a2a;
+        border: 1px solid #444;
+        color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 8px;
+    }
+
+        .checkout-area .form-control::placeholder {
+            color: #888888;
+        }
+
+    .checkout-area .table th, .checkout-area .table td {
+        color: #f1f1f1;
+        vertical-align: middle;
+        background-color: #1e1e1e;
+        border: none;
+        font-size: 15px;
+        padding: 12px 8px;
+    }
+
+    .checkout-area .table thead th {
+        background: #222;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .checkout-area .btn-success {
+        background: linear-gradient(90deg, #b08cfb 0%, #7e5bef 100%);
+        border: none;
+        font-weight: 600;
+        border-radius: 999px;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+    }
+
+        .checkout-area .btn-success:hover {
+            background: linear-gradient(90deg, #7e5bef 0%, #b08cfb 100%);
+            box-shadow: 0 8px 16px rgba(163, 112, 247, 0.4);
+            transform: translateY(-2px);
+        }
+
+    .checkout-area .text-dark {
+        color: #ffffff !important;
+    }
+
+    .checkout-area .text-muted {
+        color: #aaaaaa !important;
+    }

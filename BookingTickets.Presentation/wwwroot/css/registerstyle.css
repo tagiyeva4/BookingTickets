@@ -1,0 +1,81 @@
+﻿.register-section {
+    background-color: #121212;
+    padding: 100px 0;
+    color: #ffffff;
+}
+
+.register-card {
+    background-color: #1e1e1e;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.register-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.register-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #bbbbbb;
+    margin-bottom: 30px;
+}
+
+.form-control-custom {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+    .form-control-custom::placeholder {
+        color: #aaa;
+    }
+
+.form-check-custom {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .form-check-custom input {
+        accent-color: #7e5bef;
+        width: 18px;
+        height: 18px;
+    }
+
+.btn-gradient {
+    background: linear-gradient(90deg, #b08cfb 0%, #7e5bef 100%);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+    .btn-gradient:hover {
+        background: linear-gradient(90deg, #7e5bef 0%, #b08cfb 100%);
+        box-shadow: 0 8px 16px rgba(163, 112, 247, 0.4);
+        transform: translateY(-2px);
+    }
+
+.text-danger, .text-primary {
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}

@@ -26,7 +26,6 @@ public class HomeController : Controller
     }
 
 
-
     public async Task<IActionResult> AddSubscriber(SubscriberCreateDto dto)
     {
         try
@@ -39,6 +38,7 @@ public class HomeController : Controller
         }
 
         string returnUrl = Request.Headers["Referer"];
+
         return Redirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
 
     }
@@ -54,8 +54,8 @@ public class HomeController : Controller
                 .Include(x => x.EventPersons)
                 .ThenInclude(xp => xp.Person)
                 .Where(x => x.IsAccess == true &&
-                           (x.Name.ToLower().Contains(search.ToLower()) ||
-                            x.Description.ToLower().Contains(search.ToLower())))
+                  (x.Name.ToLower().Contains(search.ToLower()) ||
+                   x.Description.ToLower().Contains(search.ToLower())))
                 .ToList();
             return PartialView("_SearchPartial", data);
         }
@@ -68,14 +68,30 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         HomeVm homeVm = new HomeVm();
-        homeVm.Persons = _dbContext.People.Include(x => x.Profession)
+        homeVm.Persons = _dbContext.People
+            .Include(x => x.Profession)
             .OrderBy(p => Guid.NewGuid()) 
-            .Take(3).ToList();
+            .Take(3)
+            .ToList();
         homeVm.Sliders=_dbContext.Sliders.ToList();
         homeVm.SlidingTexts=_dbContext.SlidingTexts.ToList();
         homeVm.Brands=_dbContext.Brands.ToList();
-       homeVm.Blogs = _dbContext.Blogs.Take(3).Include(x => x.BlogImages).ToList();
-        homeVm.Events = _dbContext.Events.Include(x=>x.Venue).Include(x=>x.EventLanguages).ThenInclude(el=>el.Language).Include(x=>x.EventPersons).ThenInclude(xp=>xp.Person).Include(e=>e.EventsSchedules).ThenInclude(es=>es.Schedule).Where(x=>x.IsAccess==true).OrderBy(p => Guid.NewGuid()).Take(5).ToList();
+       homeVm.Blogs = _dbContext.Blogs
+            .OrderBy(p => Guid.NewGuid())
+            .Take(3)
+            .Include(x => x.BlogImages)
+            .ToList();
+        homeVm.Events = _dbContext.Events
+            .Include(x=>x.EventImages)
+            .Include(x=>x.Venue)
+            .Include(x=>x.EventLanguages)
+            .ThenInclude(el=>el.Language)
+            .Include(x=>x.EventPersons)
+            .ThenInclude(xp=>xp.Person)
+            .Include(e=>e.EventsSchedules)
+            .ThenInclude(es=>es.Schedule)
+            .Where(x=>x.IsAccess==true)
+            .OrderBy(p => Guid.NewGuid()).Take(5).ToList();
         return View(homeVm);
     }
 

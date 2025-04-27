@@ -1,5 +1,4 @@
 ﻿using BookingTickets.Business.Services.Abstractions;
-using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.Core.ViewModels.UserSystemViewModels;
 using BookingTickets.DataAccess.Data.Contexts;
@@ -65,15 +64,14 @@ namespace BookingTickets.Presentation.Controllers
                 _dbContext.SubscribeEmails.Add(subscribeEmail);
                 _dbContext.SaveChanges();
             }
-            //send email
+
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var url = Url.Action("VerifyEmail", "Account", new { email = user.Email, token }, Request.Scheme);
 
-            //send email
             using StreamReader reader = new StreamReader("wwwroot/templates/emailconfirm.html");
             var body = reader.ReadToEnd();
             body = body.Replace("{{{url}}}", url);
-           //body = body.Replace("{{{username}}}", user.UserName);
+
             _emailService.SendEmail(user.Email, "Verify Email Address for BookingTickets", body);
             TempData["Succsess"] = "Email successfully sended to" + user.Email;
 
@@ -83,9 +81,11 @@ namespace BookingTickets.Presentation.Controllers
         public async Task<IActionResult> VerifyEmail(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || !await _userManager.IsInRoleAsync(user, "Member")) return RedirectToAction("notfound", "error");
+
+            if (user == null || !await _userManager.IsInRoleAsync(user, "Member")) return RedirectToAction("Error", "Home");
+
             await _userManager.ConfirmEmailAsync(user, token);
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Account");
         }
 
         public IActionResult Login()
@@ -97,8 +97,11 @@ namespace BookingTickets.Presentation.Controllers
         public async Task<IActionResult> Login(UserLoginVm userLoginVm, string? returnUrl)
         {
             TempData["Succsess"] = "Email successfully sended to";
+
             if (!ModelState.IsValid) return View();
+
             AppUser? user = await _userManager.FindByNameAsync(userLoginVm.UserNameOrEmail);
+
             if (user == null || !await _userManager.IsInRoleAsync(user, "Member"))
             {
                 user = await _userManager.FindByEmailAsync(userLoginVm.UserNameOrEmail);
@@ -110,6 +113,7 @@ namespace BookingTickets.Presentation.Controllers
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, userLoginVm.Password, userLoginVm.RememberMe, true);
+
             if (!user.EmailConfirmed)
             {
                 ModelState.AddModelError("", "Email is not confirmed..");
@@ -125,12 +129,13 @@ namespace BookingTickets.Presentation.Controllers
                 ModelState.AddModelError("", "Username or email or password is invalid..");
                 return View();
             }
-           // HttpContext.Response.Cookies.Append("basket", "");
+          
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
+
             return RedirectToAction("Index", "Home");
 
         }
@@ -138,7 +143,8 @@ namespace BookingTickets.Presentation.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+
+            return RedirectToAction("Login","Account");
         }
         public IActionResult ForgotPassword()
         {
@@ -149,29 +155,37 @@ namespace BookingTickets.Presentation.Controllers
         public async Task<IActionResult> ForgotPassword(ForgotPasswordVm forgotPasswordVm)
         {
             if (!ModelState.IsValid) return View();
+
             var user = await _userManager.FindByEmailAsync(forgotPasswordVm.Email);
-            if (user == null || !await _userManager.IsInRoleAsync(user, "Member")) return RedirectToAction("notfound", "error");
+
+            if (user == null || !await _userManager.IsInRoleAsync(user, "Member")) return RedirectToAction("Error", "Home");
+
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             var url = Url.Action("VerifyPassword", "Account", new { email = user.Email, token }, Request.Scheme);
 
-            //send email
             using StreamReader reader = new StreamReader("wwwroot/templates/resetpassword.html");
+
             var body = reader.ReadToEnd();
             body = body.Replace("{{{url}}}", url);
-           // body = body.Replace("{{{username}}}", user.UserName);
+
             _emailService.SendEmail(user.Email, "Reset Password for Login", body);
+
             TempData["Succsess"] = "Email successfully sended to " + user.Email;
+
             return View();
         }
         public async Task<IActionResult> VerifyPassword(string token, string email)
         {
             TempData["token"] = token;
             TempData["email"] = email;
+
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || !await _userManager.IsInRoleAsync(user, "Member")) return RedirectToAction("notfound", "error");
+            if (user == null || !await _userManager.IsInRoleAsync(user, "Member")) return RedirectToAction("Error", "Home");
+
             if (!await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", token))
             {
-                return RedirectToAction("notfound", "error");
+                return RedirectToAction("Error", "Home");
             }
 
             return RedirectToAction("ResetPassword");
@@ -187,6 +201,7 @@ namespace BookingTickets.Presentation.Controllers
         {
             TempData["token"] = passwordResetVm.Token;
             TempData["email"] = passwordResetVm.Email;
+
             if (!ModelState.IsValid) return View();
             var user = await _userManager.FindByEmailAsync(passwordResetVm.Email);
 
@@ -194,7 +209,7 @@ namespace BookingTickets.Presentation.Controllers
 
             if (!await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", passwordResetVm.Token))
             {
-                return RedirectToAction("notfound", "error");
+                return RedirectToAction("Error", "Home");
             }
 
             var result = await _userManager.ResetPasswordAsync(user, passwordResetVm.Token, passwordResetVm.Password);
@@ -207,28 +222,33 @@ namespace BookingTickets.Presentation.Controllers
                 }
                 return View();
             }
+
             return RedirectToAction("Login");
         }
 
         public IActionResult GoogleLogin()
         {
             var redirectUrl = Url.Action("GoogleResponse", "Account");
+
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, redirectUrl);
+
             return new ChallengeResult(GoogleDefaults.AuthenticationScheme, properties);
         }
 
         public async Task<IActionResult> GoogleResponse()
         {
             var result = await _signInManager.GetExternalLoginInfoAsync();
+
             if (result == null)
             {
-                return RedirectToAction("Login", "Account"); // Əgər Google-dan məlumat gəlməyibsə, Login səhifəsinə yönləndir
+                return RedirectToAction("Login", "Account"); 
             }
 
             var email = result.Principal.FindFirstValue(ClaimTypes.Email);
+
             if (email == null)
             {
-                return View("Error"); // Email tapılmayıbsa, səhv səhifəsinə yönləndir
+                return View("Error"); 
             }
 
             var user = await _userManager.FindByEmailAsync(email);
@@ -244,13 +264,14 @@ namespace BookingTickets.Presentation.Controllers
                 var createResult = await _userManager.CreateAsync(user);
                 if (!createResult.Succeeded)
                 {
-                    return View("Error", createResult.Errors); // Əgər user yaratmaqda səhv olarsa, error səhifəsi göstər
+                    return View("Error", createResult.Errors); 
                 }
 
                 await _userManager.AddToRoleAsync(user, "Member");
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
+
             return RedirectToAction("Index", "Home");
         }
 

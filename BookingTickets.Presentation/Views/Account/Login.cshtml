@@ -1,52 +1,49 @@
 ﻿@using BookingTickets.Core.ViewModels.UserSystemViewModels
 @model UserLoginVm
-<!--Contact One Start-->
-<section class="contact-one">
+
+<link rel="stylesheet" href="~/css/loginstyle.css" />
+
+<section class="login-section">
     <div class="container">
-        <div class="row">
-            <div class="contact-one__inner">
-                <h3 class="contact-one__title">Login</h3>
-                <p class="contact-one__text">
-                    "Access amazing events with ease! Log in now to manage your tickets and stay updated on upcoming experiences."
-                </p>
-                <form class="contact-form-validated1 contact-one__form" method="post">
+        <div class="login-card">
+            <h3 class="login-title">Login</h3>
+            <p class="login-subtitle">
+                "Access amazing events with ease! Log in now to manage your tickets and stay updated on upcoming experiences."
+            </p>
 
-                    <div class="col-xl-12 col-lg-12">
-                        <div class="contact-one__input-box">
-                            <input asp-for="UserNameOrEmail" placeholder="User Name or Email" required="">
-                        </div>
-                        <span class="text-primary" asp-validation-for="UserNameOrEmail"></span>
-                    </div>
-                    <div class="col-xl-12 col-lg-12">
-                        <div class="contact-one__input-box">
-                            <input asp-for="Password" placeholder="Password" required="">
-                        </div>
-                        <span class="text-primary" asp-validation-for="Password"></span>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 form-check">
-                        <input type="checkbox" asp-for="RememberMe" class="form-check-input">
-                        <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-                    </div>
-                    <div class="main-menu__btn-box">
-                        <button type="submit" class="main-menu__btn thm-btn">
-                            Login <span class="icon-arrow-right"></span>
-                        </button>
-                    </div>
+            <form method="post" novalidate>
+                <input asp-for="UserNameOrEmail" placeholder="User Name or Email" class="form-control-custom" />
+                <span class="text-primary" asp-validation-for="UserNameOrEmail"></span>
 
-                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                </form>
-                <div class="result">
-                    <a asp-action="ForgotPassword" class="forget-pwd">Forget Password?</a><br />
-                    <a asp-action="Register" class="forget-pwd">Register</a> <br />
-                    <a asp-action="GoogleLogin"><i class="fa-brands fa-google"></i></a>
+                <input asp-for="Password" placeholder="Password" class="form-control-custom" type="password" />
+                <span class="text-primary" asp-validation-for="Password"></span>
+
+                <div class="form-check-custom">
+                    <input type="checkbox" asp-for="RememberMe" id="RememberMeCheckbox" />
+                    <label for="RememberMeCheckbox" class="text-muted">Remember Me</label>
                 </div>
-            </div>
+
+                <button type="submit" class="btn-gradient">
+                    Login <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <div class="extra-links">
+                    <a asp-action="ForgotPassword">Forgot Password?</a> |
+                    <a asp-action="Register">Register</a>|
+                    <a asp-action="GoogleLogin" class="google-login">Google Login
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </section>
-<!--Contact One End-->
-@section scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js" integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js" crossorigin="anonymous"></script>
 }
+
+
+

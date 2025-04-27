@@ -13,11 +13,9 @@ using Stripe;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddBusinessServices();  
 builder.Services.AddDataAccessServices(config);
-//builder.Services.AddSingleton<RedisService>();
 
 builder.Services.Configure<StripeSettings>(config.GetSection("Stripe"));
 builder.Services.AddAuthentication(options =>
@@ -32,6 +30,7 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 });
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
 {
     opt.Password.RequireDigit = true;
@@ -47,6 +46,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
 })
 .AddEntityFrameworkStores<BookingTicketsDbContext>()
 .AddDefaultTokenProviders();
+
 builder.Services.ConfigureApplicationCookie(opt =>
 {
     opt.Events.OnRedirectToLogin = opt.Events.OnRedirectToAccessDenied = context =>

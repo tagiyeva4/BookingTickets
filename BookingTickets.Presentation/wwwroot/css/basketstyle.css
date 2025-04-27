@@ -1,0 +1,87 @@
+﻿.profile-page {
+    background-color: #121212;
+    padding: 80px 0;
+    color: #ffffff;
+}
+
+.profile-card {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .profile-card h2 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .profile-card p {
+        color: #aaaaaa;
+        margin-bottom: 0;
+        font-size: 16px;
+    }
+
+.basket-card {
+    background: #111111;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    color: #f8f9fa;
+}
+
+    .basket-card h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: white;
+        text-align: center;
+    }
+
+.table-basket th, .table-basket td {
+    color: #f8f9fa;
+    background: #1a1a1a;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.table-basket th {
+    text-transform: uppercase;
+    background: #222222;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding: 5px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+    .btn-delete:hover {
+        background-color: #bb2d3b;
+        transform: translateY(-2px);
+    }
+
+.btn-proceed {
+    background: linear-gradient(90deg, #b08cfb 0%, #7e5bef 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 30px;
+}
+
+    .btn-proceed:hover {
+        background: linear-gradient(90deg, #7e5bef 0%, #b08cfb 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(163, 112, 247, 0.4);
+    }

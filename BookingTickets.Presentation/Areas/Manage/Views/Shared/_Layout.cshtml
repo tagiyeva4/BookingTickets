@@ -50,6 +50,12 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Order" aria-expanded="false">
+                                    <span>
+                                        <i class="fa-solid fa-ticket"></i>
+                                    </span>
+                                    <span>Order</span>
+                                </a>
                                 <a class="sidebar-link" asp-area="manage" asp-action="Index" asp-controller="Venue" aria-expanded="false">
                                     <span>
                                         <i class="fa-solid fa-location-dot"></i>

@@ -2,61 +2,65 @@
 
 @model IEnumerable<BasketItemVm>
 
-<section class="event section-padding">
+<link rel="stylesheet" href="~/css/basketstyle.css" />
+
+
+<section class="profile-page">
     <div class="container">
-        <div class="section-title text-center">
-            <h2 class="title">Səbətiniz</h2>
+
+        <!-- Profile Info -->
+        <div class="profile-card">
+            <h2>Full Name :@(User.Identity?.Name ?? "Guest User")</h2>
         </div>
 
+        <!-- Basket Section -->
         @if (!Model.Any())
         {
-            <!-- Səbət boşdur mesajı -->
-            <div class="text-center mt-5">
-                <img src="https://img.icons8.com/emoji/48/000000/ticket-emoji.png" alt="Bilet" />
-                <h5 class="mt-3">Səbətinizdə bilet yoxdur.</h5>
+            <div class="basket-card text-center">
+                <h3>Your Basket</h3>
+                <div class="py-5">
+                    <i class="fa-solid fa-ticket fa-4x text-secondary mb-3"></i>
+                    <p class="text-muted fs-5">There is no ticket</p>
+                </div>
             </div>
         }
         else
         {
-            <!-- Cədvəl yalnız bilet olduqda görünəcək -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <table class="table table-bordered table-hover text-center align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Oturacaq</th>
-                                <th>Hadisə</th>
-                                <th>Qiymət</th>
-                                <th>Geri Sayım</th>
-                                <th>Əməliyyat</th>
+            <div class="basket-card">
+                <h3>Your Basket</h3>
+                <table class="table table-borderless table-basket">
+                    <thead>
+                        <tr>
+                            <th>Seat</th>
+                            <th>Event</th>
+                            <th>Price</th>
+                            <th>Timer</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody id="basket-table-body">
+                        @foreach (var item in Model)
+                        {
+                            <tr data-id="@item.Id">
+                                <td>@item.SeatLocation</td>
+                                <td>@item.EventName</td>
+                                <td>@item.Price.ToString("0.00") AZN</td>
+                                <td>
+                                    <span class="countdown-timer text-danger fw-bold" data-expire="@item.ExpireAt.ToUniversalTime().ToString("o")">
+                                        15:00
+                                    </span>
+                                </td>
+                                <td>
+                                    <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-delete">Delete</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody id="basket-table-body">
-                            @foreach (var item in Model)
-                            {
-                                <tr data-id="@item.Id">
-                                    <td>@item.SeatLocation</td>
-                                    <td>@item.EventName</td>
-                                    <td>@item.Price.ToString("0.00") AZN</td>
-                                    <td>
-                                        <span class="countdown-timer text-danger fw-bold" data-expire="@item.ExpireAt.ToUniversalTime().ToString("o")">
-                                            15:00
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Sil</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                        }
+                    </tbody>
+                </table>
 
-                    <div class="text-end mt-4">
-                        <a asp-controller="Order" asp-action="Checkout" class="btn btn-primary btn-lg">
-                            Ödənişə keç <i class="bi bi-credit-card ms-2"></i>
-                        </a>
-                    </div>
-                </div>
+                <a asp-controller="Order" asp-action="Checkout" class="btn btn-proceed">
+                    <i class="bi bi-credit-card me-2"></i> Proceed to payment
+                </a>
             </div>
         }
     </div>
@@ -77,7 +81,7 @@
                     timer.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
                     if (diff <= 0) {
-                        timer.innerText = "Müddət bitdi";
+                        timer.innerText = "Expired";
                         const row = timer.closest("tr");
                         row.style.opacity = 0.5;
                         row.classList.add("table-warning");
@@ -96,3 +100,158 @@
         document.addEventListener("DOMContentLoaded", startCountdowns);
     </script>
 }
+
+
+@* @model IEnumerable<BasketItemVm>
+<style>
+    .basket-card {
+        background: #111111;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        color: #f8f9fa;
+    }
+
+        .basket-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+    .table-basket th, .table-basket td {
+        color: #f8f9fa;
+        background: #1a1a1a;
+        vertical-align: middle;
+        font-size: 16px;
+    }
+
+    .table-basket th {
+        text-transform: uppercase;
+        background: #222222;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 5px 15px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+        .btn-delete:hover {
+            background-color: #bb2d3b;
+            transform: translateY(-2px);
+        }
+
+    .btn-proceed {
+        background: linear-gradient(90deg, #b08cfb 0%, #7e5bef 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 999px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 30px;
+    }
+
+        .btn-proceed:hover {
+            background: linear-gradient(90deg, #7e5bef 0%, #b08cfb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(163, 112, 247, 0.4);
+        }
+</style>
+
+<section class="event section-padding" style="padding-top: 150px;">
+    <div class="container">
+
+        @if (!Model.Any())
+        {
+            <div class="basket-card text-center">
+                <h3>Your Basket</h3>
+                <div class="py-5">
+                    <i class="fa-solid fa-ticket fa-4x text-secondary mb-3"></i>
+                    <p class="text-muted fs-5">There is no ticket</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="basket-card">
+                <h3>Your Basket</h3>
+                <table class="table table-borderless table-basket">
+                    <thead>
+                        <tr>
+                            <th>Seat</th>
+                            <th>Event</th>
+                            <th>Price</th>
+                            <th>Timer</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody id="basket-table-body">
+                        @foreach (var item in Model)
+                        {
+                            <tr data-id="@item.Id">
+                                <td>@item.SeatLocation</td>
+                                <td>@item.EventName</td>
+                                <td>@item.Price.ToString("0.00") AZN</td>
+                                <td>
+                                    <span class="countdown-timer text-danger fw-bold" data-expire="@item.ExpireAt.ToUniversalTime().ToString("o")">
+                                        15:00
+                                    </span>
+                                </td>
+                                <td>
+                                    <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-delete">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <a asp-controller="Order" asp-action="Checkout" class="btn btn-proceed">
+                    <i class="bi bi-credit-card me-2"></i> Proceed to payment
+                </a>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function startCountdowns() {
+            const timers = document.querySelectorAll('.countdown-timer');
+            timers.forEach(timer => {
+                const expireTime = new Date(timer.dataset.expire);
+
+                function update() {
+                    const now = new Date();
+                    const diff = Math.max(0, expireTime - now);
+                    const minutes = Math.floor(diff / 60000);
+                    const seconds = Math.floor((diff % 60000) / 1000);
+                    timer.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                    if (diff <= 0) {
+                        timer.innerText = "Expired";
+                        const row = timer.closest("tr");
+                        row.style.opacity = 0.5;
+                        row.classList.add("table-warning");
+
+                        setTimeout(() => {
+                            row.remove();
+                        }, 5000);
+                    }
+                }
+
+                update();
+                setInterval(update, 1000);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", startCountdowns);
+    </script>
+} *@

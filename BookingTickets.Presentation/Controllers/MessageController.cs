@@ -56,12 +56,15 @@ namespace BookingTickets.Presentation.Controllers
             return View(chat);
 
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendMessage(int chatId, string text)
+        public class Test
         {
-            if (string.IsNullOrWhiteSpace(text))
+            public string Text { get; set; } = null!;
+            public int ChatId { get; set; }
+        } 
+        [HttpPost]
+        public async Task<IActionResult> SendMessage([FromBody]Test test)
+        {
+            if (string.IsNullOrWhiteSpace(test.Text))
             {
                 return BadRequest("Mesaj boş ola bilməz.");
             }
@@ -76,7 +79,7 @@ namespace BookingTickets.Presentation.Controllers
                 .Include(c => c.AppUserChats)
                 .ThenInclude(c => c.AppUser)
                 .Include(c => c.Messages)
-                .FirstOrDefaultAsync(c => c.Id == chatId && c.AppUserChats.Any(c => c.AppUserId == userId));
+                .FirstOrDefaultAsync(c => c.Id == test.ChatId && c.AppUserChats.Any(c => c.AppUserId == userId));
 
             if (chat == null)
             {
@@ -85,9 +88,9 @@ namespace BookingTickets.Presentation.Controllers
 
             var message = new Message
             {
-                Text = text.Trim(),
+                Text = test.Text.Trim(),
                 SenderId = userId,
-                ChatId = chatId,
+                ChatId = test.ChatId,
                 CreatedDate = DateTime.Now
             };
 
@@ -118,6 +121,9 @@ namespace BookingTickets.Presentation.Controllers
             });
         }
 
-
+        public IActionResult ChatBot()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,99 @@
+﻿* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f0f2f5;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-container {
+    background: white;
+    width: 350px;
+    height: 600px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 20px 15px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+    .message.received {
+        background-color: #e0e0e0;
+        align-self: flex-start;
+    }
+
+    .message.sent {
+        background-color: #dcf8c6;
+        align-self: flex-end;
+    }
+
+.chat-footer {
+    padding: 10px;
+    background-color: #eee;
+    display: flex;
+    gap: 10px;
+}
+
+    .chat-footer input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+
+    .chat-footer button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .chat-footer button:hover {
+            background-color: #45a049;
+        }
+/* Add this at the end of your CSS */
+.message.typing {
+    font-style: italic;
+    color: gray;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}

@@ -39,6 +39,7 @@ public class OrganizerController (UserManager<AppUser> _userManager, SignInManag
     public async Task<IActionResult> LogOut()
     {
         await _signInManager.SignOutAsync();
+
         return RedirectToAction("Login", "Organizer");
     }
 

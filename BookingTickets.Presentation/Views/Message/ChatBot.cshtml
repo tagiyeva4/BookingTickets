@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/chatstyle.css" />
+</head>
+<body>
+
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+
+        <div class="chat-footer">
+            <input id="user-input" type="text" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+            <a asp-action="Index" asp-controller="Home" class="go-back-btn">←</a>
+
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (text === '') return;
+
+            addMessage(text, 'user');
+            userInput.value = '';
+
+            setTimeout(() => {
+                showTyping(text);
+            }, 500);
+        }
+
+        function showTyping(userText) {
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('bot-message', 'typing');
+            typingDiv.textContent = 'Bot is typing...';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                typingDiv.remove();
+                const botReply = generateBotReply(userText);
+                addMessage(botReply, 'bot');
+            }, 1500);
+        }
+
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = sender === 'bot' ? 'bot-message' : 'user-message';
+            div.textContent = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+               function generateBotReply(userText) {
+            userText = userText.toLowerCase();
+
+            if (userText.includes('hello') || userText.includes('hi')) {
+                return "Hello! How can I assist you today?";
+            }
+            else if (userText.includes('ticket') || userText.includes('buy ticket')) {
+                return "You can purchase tickets from our Events page.";
+            }
+            else if (userText.includes('price') || userText.includes('cost')) {
+                return "Ticket prices vary depending on the event and seat location.";
+            }
+            else if (userText.includes('thanks') || userText.includes('thank you')) {
+                return "You're welcome! Feel free to ask anything else.";
+            }
+            else if (userText.includes('event') || userText.includes('events')) {
+                return "We offer a variety of events. Check the Events section for more details.";
+            }
+            else if (userText.includes('support') || userText.includes('help') || userText.includes('assist')) {
+                return "I'm here to help! Please describe your issue.";
+            }
+            else if (userText.includes('cancel') || userText.includes('cancellation')) {
+                return "To cancel your ticket, please visit your account page or contact support.";
+            }
+            else if (userText.includes('location') || userText.includes('where')) {
+                return "Events are held at various venues. Check the event details for exact locations.";
+            }
+            else if (userText.includes('date') || userText.includes('time')) {
+                return "Event dates and times are listed under each event in the Events section.";
+            }
+            else if (userText.includes('payment') || userText.includes('pay')) {
+                return "We accept payments via credit card.";
+            }
+            else if (userText.includes('contact') || userText.includes('phone') || userText.includes('email')) {
+                return "You can contact us via the Contact page. We usually respond within 24 hours.";
+            }
+            else {
+                return "I'm sorry, I didn't fully understand. Could you please rephrase?";
+            }
+        }
+
+    </script>
+
+
+</body>
+</html>

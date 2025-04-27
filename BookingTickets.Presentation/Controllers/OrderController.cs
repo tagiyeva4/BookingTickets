@@ -1,6 +1,5 @@
 ﻿using BookingTickets.Business.Dtos;
 using BookingTickets.Business.Services.Abstractions;
-using BookingTickets.Business.Services.Implementations;
 using BookingTickets.Core.Entities;
 using BookingTickets.Core.Enums;
 using BookingTickets.Core.ViewModels;
@@ -10,13 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Stripe;
-using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace BookingTickets.Presentation.Controllers
 {
-
+    [Authorize]
     public class OrderController(BookingTicketsDbContext dbContext, UserManager<AppUser> userManager, TicketPdfService qrCodeService, IPaymentService _paymentService,IEmailService _emailService, IWebHostEnvironment _env) : Controller
     {
         /// <summary>
@@ -101,6 +98,8 @@ namespace BookingTickets.Presentation.Controllers
             };
 
             dbContext.Orders.Add(order);
+            order.TotalPrice = order.OrderItems.Sum(x => x.Ticket.Price);
+
             await dbContext.SaveChangesAsync();
 
             #region Stripe session
@@ -235,7 +234,6 @@ namespace BookingTickets.Presentation.Controllers
 
         #endregion
 
-
         public async Task<IActionResult> CheckPayment(PaymentCheckDto dto)
         {
             var result = await _paymentService.CheckPaymentAsync(dto);
@@ -289,14 +287,6 @@ namespace BookingTickets.Presentation.Controllers
             return RedirectToAction("Index", "Event");
         }
 
-
-
-        //public async Task<IActionResult> CheckPayment(PaymentCheckDto dto)
-        //{
-        //    var result = await _paymentService.CheckPaymentAsync(dto);
-
-        //    return RedirectToAction("Index", "Event");
-        //}
     }
 }
 

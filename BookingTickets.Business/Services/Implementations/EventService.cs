@@ -80,14 +80,14 @@ public class EventService : IEventService
         }
 
         // ✅ Seat qiymətləri təyin et
-        //foreach (var seatPrice in dto.SeatPrices)
-        //{
-        //    var seat = @event.Venue.Seats.FirstOrDefault(s => s.Id == seatPrice.SeatId);
-        //    if (seat != null)
-        //    {
-        //        seat.Price = seatPrice.Price;
-        //    }
-        //}
+        foreach (var seatPrice in dto.SeatPrices)
+        {
+            var seat = @event.Venue.Seats.FirstOrDefault(s => s.Id == seatPrice.SeatId);
+            if (seat != null)
+            {
+                seat.Price = seatPrice.Price;
+            }
+        }
         if (dto.IsManualPricing && dto.SeatPrices.Any())
         {
             foreach (var seatPrice in dto.SeatPrices)
