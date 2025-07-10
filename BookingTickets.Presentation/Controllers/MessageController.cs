@@ -16,15 +16,15 @@ namespace BookingTickets.Presentation.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
 
-            var user=await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            var chats=await _context.Chats.Where(x=>x.AppUserChats.Any(x=>x.AppUserId==user.Id)).ToListAsync(); 
-            
+            var chats = await _context.Chats.Where(x => x.AppUserChats.Any(x => x.AppUserId == user.Id)).ToListAsync();
+
 
             return View(chats);
         }
@@ -42,11 +42,11 @@ namespace BookingTickets.Presentation.Controllers
             }
 
             var chat = await _context.Chats
-                .Include(x=>x.AppUserChats)
-                .ThenInclude(x=>x.AppUser)
+                .Include(x => x.AppUserChats)
+                .ThenInclude(x => x.AppUser)
                 .Include(x => x.Messages)
-                .FirstOrDefaultAsync(x => x.Id == id 
-                && x.AppUserChats.Any(x=>x.AppUserId==userId));
+                .FirstOrDefaultAsync(x => x.Id == id
+                && x.AppUserChats.Any(x => x.AppUserId == userId));
 
             if (chat is null)
             {
@@ -60,9 +60,9 @@ namespace BookingTickets.Presentation.Controllers
         {
             public string Text { get; set; } = null!;
             public int ChatId { get; set; }
-        } 
+        }
         [HttpPost]
-        public async Task<IActionResult> SendMessage([FromBody]Test test)
+        public async Task<IActionResult> SendMessage([FromBody] Test test)
         {
             if (string.IsNullOrWhiteSpace(test.Text))
             {

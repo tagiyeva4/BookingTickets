@@ -6,33 +6,37 @@
     <div class="row">
         <a asp-action="Create" class="btn btn-outline-success">Create</a>
     </div>
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Count</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Setting</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var eventReturn in Model)
-                {
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@(++count)</td>
-                        <td>@Html.Raw(eventReturn.Name)</td>
-                        <td>@Html.Raw(eventReturn.Description)</td>
-                        <td>
-                            <a class="btn btn-primary" asp-action="Update" asp-route-id="@eventReturn.Id">Edit</a>
-                            <a class="btn btn-primary" asp-action="detail" asp-route-id="@eventReturn.Id">Detail</a>
-                            <a class="btn btn-primary" href="javascript:void(0);" onclick="confirmDelete(@eventReturn.Id)">Delete</a>
-                        </td>
+                        <th scope="col">Count</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Setting</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var eventReturn in Model)
+                    {
+                        <tr>
+                            <td>@(++count)</td>
+                            <td>@Html.Raw(eventReturn.Name)</td>
+                            <td>@Html.Raw(eventReturn.Description)</td>
+                            <td>
+                                <a class="btn btn-primary" asp-action="Update" asp-route-id="@eventReturn.Id">Edit</a>
+                                <a class="btn btn-primary" asp-action="detail" asp-route-id="@eventReturn.Id">Detail</a>
+                                <a class="btn btn-primary" href="javascript:void(0);" onclick="confirmDelete(@eventReturn.Id)">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    
 </div>
 @section scripts {
     <script>

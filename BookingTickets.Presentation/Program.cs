@@ -73,9 +73,9 @@ builder.Services.AddDistributedMemoryCache();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+    app.UseMiddleware<GlobalExceptionHandler>();
 if (!app.Environment.IsDevelopment())
 {
-    app.UseMiddleware<GlobalExceptionHandler>();
     app.UseHsts();
 }
 else

@@ -16,7 +16,7 @@ public class EmailService : IEmailService
 
         using var smtp = new SmtpClient();
         smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        smtp.Authenticate("aysuht@code.edu.az", "xonk mvaf kpah iagi");
+        smtp.Authenticate("aysuht@code.edu.az", "wtyp bnlh undx jstn");
         smtp.Send(email);
         smtp.Disconnect(true);
     }
@@ -42,7 +42,7 @@ public class EmailService : IEmailService
 
         using var smtp = new SmtpClient();
         await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        await smtp.AuthenticateAsync("aysuht@code.edu.az", "xonk mvaf kpah iagi");
+        await smtp.AuthenticateAsync("aysuht@code.edu.az", "wtyp bnlh undx jstn");
         await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
     }

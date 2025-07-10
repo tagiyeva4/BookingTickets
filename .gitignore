@@ -369,3 +369,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /MotorDoctor.Presentation/appsettings.Development.json
+/BookingTickets.Presentation/appsettings.Development.json
